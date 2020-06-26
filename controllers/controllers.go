@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/edcamero/api-go/db"
-	"github.com/edcamero/api-go/v1/view"
+	"github.com/edcamero/api-go/view"
 
 	response "github.com/edcamero/api-go/view"
 
@@ -46,7 +46,7 @@ func GetUsers(ctx iris.Context) {
 	db := db.GetConnection()
 	defer db.Close()
 	db.Find(&users)
-	j, _ := json.Marshal(contacts)
+	j, _ := json.Marshal(users)
 	// Se envian los datos
 	view.SendResponse(ctx, http.StatusOK, j)
 }
@@ -63,7 +63,7 @@ func StoreUsers(ctx iris.Context) {
 		view.SendErr(ctx, http.StatusBadRequest)
 		return
 	}
-	err = db.Create(&contact).Error
+	err = db.Create(&user).Error
 	if err != nil {
 		// Sí hay algun error al guardar los datos se devolvera un error 500
 		fmt.Println(err)
@@ -71,15 +71,15 @@ func StoreUsers(ctx iris.Context) {
 		return
 	}
 	// Se codifica el nuevo registro y se devuelve
-	j, _ := json.Marshal(contact)
+	j, _ := json.Marshal(user)
 	view.SendResponse(ctx, http.StatusCreated, j)
 
 }
 
 func UpdateUser(ctx iris.Context) {
 	// Estructuras donde se almacenaran los datos
-	userFind := models.Contact{}
-	userData := models.Contact{}
+	userFind := models.User{}
+	userData := models.User{}
 	// Se obtiene el parametro id de la URL
 	id := ctx.Params().Get("id")
 	// Conexión a la DB
@@ -118,10 +118,10 @@ func DeleteUser(ctx iris.Context) {
 	db.Find(&user, id)
 	if user.ID > 0 {
 		// Sí existe, se borra y se envia contenido vacio
-		db.Delete(contact)
-		utils.SendResponse(ctx, http.StatusOK, []byte(`{}`))
+		db.Delete(user)
+		view.SendResponse(ctx, http.StatusOK, []byte(`{}`))
 	} else {
 		// Sí no existe el registro especificado se devuelde un error 404
-		utils.SendErr(ctx, http.StatusNotFound)
+		view.SendErr(ctx, http.StatusNotFound)
 	}
 }
