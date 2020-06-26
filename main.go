@@ -1,7 +1,7 @@
 package main
 
 import (
-	"./controllers"
+	"github.com/edcamero/api-go/controllers"
 
 	"github.com/kataras/iris/v12"
 )

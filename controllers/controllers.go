@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"../db"
+	"github.com/edcamero/api-go/db"
 
-	response "../view/"
+	response "github.com/edcamero/api-go/view"
 
-	"../models"
+	"github.com/edcamero/api-go/models"
 	"github.com/kataras/iris/v12"
 )
 

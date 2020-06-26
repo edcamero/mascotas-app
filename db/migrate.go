@@ -3,7 +3,7 @@ package db
 import (
 	"fmt"
 
-	"../models"
+	"github.com/edcamero/api-go/models"
 )
 
 func MigrateDB() {
