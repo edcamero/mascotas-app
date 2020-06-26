@@ -13,4 +13,5 @@ func MigrateDB() {
 	fmt.Println("Migrating models....")
 	// Automigrate se encarga de migrar la base de datos sí no se ha migrado, y lo hace a partir del modelo
 	db.AutoMigrate(&models.User{})
+	db.Close()
 }

@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/edcamero/api-go/controllers"
-
+	"github.com/edcamero/api-go/db"
 	"github.com/kataras/iris/v12"
 )
 
@@ -21,6 +21,10 @@ func main() {
 
 	app.Get("/hello", func(ctx iris.Context) {
 		ctx.JSON(iris.Map{"message": "Hello Iris!"})
+	})
+
+	app.Get("/migraciones", func(ctx iris.Context) {
+		db.MigrateDB()
 	})
 
 	// Listens and serves incoming http requests
