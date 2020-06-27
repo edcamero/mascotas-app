@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/edcamero/api-go/db"
@@ -36,6 +37,7 @@ func GetUser(ctx iris.Context) {
 		response.SendResponse(ctx, http.StatusOK, j)
 	} else {
 		// Si no existe se envia un error 404
+		log.Println("ayuda")
 		response.SendErr(ctx, http.StatusNotFound)
 	}
 
