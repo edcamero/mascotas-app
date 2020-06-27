@@ -17,7 +17,7 @@ import (
 
 func GetUser(ctx iris.Context) {
 	//Estructura vacia donde se gurdarán los datos
-	var user models.User
+	users := models.User{}
 
 	// Se obtiene el parametro id de la URL
 	//id := ctx.Params().GetUint64Default("id", 0)
@@ -28,20 +28,17 @@ func GetUser(ctx iris.Context) {
 	defer db.Close()
 
 	// Consulta a la DB - SELECT * FROM contacts WHERE ID = ?
-	db.First(&user)
-	db.Close()
+	db.First(&users, 1)
 
-	if user.ID > 0 {
+	if users.ID > 0 {
 		//Se codifican los datos a formato JSON
-		j, _ := json.Marshal(user)
+		j, _ := json.Marshal(users)
 		// Se envian los datos
 		response.SendResponse(ctx, http.StatusOK, j)
 	} else {
 		// Si no existe se envia un error 404
-		log.Println(user)
-		j, _ := json.Marshal(user)
-		//response.SendErr(ctx, http.StatusNotFound)
-		response.SendResponse(ctx, http.StatusOK, j)
+		log.Println(users)
+		response.SendErr(ctx, http.StatusNotFound)
 	}
 
 }
