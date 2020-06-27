@@ -37,7 +37,7 @@ func GetUser(ctx iris.Context) {
 		response.SendResponse(ctx, http.StatusOK, j)
 	} else {
 		// Si no existe se envia un error 404
-		log.Println(user)
+		log.Println(json.Marshal(user))
 		response.SendErr(ctx, http.StatusNotFound)
 	}
 
