@@ -17,7 +17,7 @@ import (
 
 func GetUser(ctx iris.Context) {
 	//Estructura vacia donde se gurdarán los datos
-	user := models.User{}
+	var user models.User
 
 	// Se obtiene el parametro id de la URL
 	//id := ctx.Params().GetUint64Default("id", 0)
