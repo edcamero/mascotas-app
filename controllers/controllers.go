@@ -28,7 +28,7 @@ func GetUser(ctx iris.Context) {
 	defer db.Close()
 
 	// Consulta a la DB - SELECT * FROM contacts WHERE ID = ?
-	db.First(&user, 1)
+	db.First(&user)
 	db.Close()
 
 	if user.ID > 0 {
@@ -39,7 +39,9 @@ func GetUser(ctx iris.Context) {
 	} else {
 		// Si no existe se envia un error 404
 		log.Println(user)
-		response.SendErr(ctx, http.StatusNotFound)
+		j, _ := json.Marshal(user)
+		//response.SendErr(ctx, http.StatusNotFound)
+		response.SendResponse(ctx, http.StatusOK, j)
 	}
 
 }
