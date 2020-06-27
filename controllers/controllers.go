@@ -29,6 +29,7 @@ func GetUser(ctx iris.Context) {
 
 	// Consulta a la DB - SELECT * FROM contacts WHERE ID = ?
 	db.First(&user, 1)
+	db.Close()
 
 	if user.ID > 0 {
 		//Se codifican los datos a formato JSON
