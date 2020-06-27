@@ -33,7 +33,8 @@ func GetUser(ctx iris.Context) {
 		//Se codifican los datos a formato JSON
 		j, _ := json.Marshal(user)
 		// Se envian los datos
-		response.SendResponse(ctx, http.StatusOK, j)
+		//response.SendResponse(ctx, http.StatusOK, j)
+		ctx.JSON(j)
 	} else {
 		// Si no existe se envia un error 404
 		response.SendErr(ctx, http.StatusNotFound)
