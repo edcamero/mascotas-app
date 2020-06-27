@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/edcamero/api-go/db"
+	"github.com/edcamero/api-go/router"
 	"github.com/kataras/iris/v12"
 )
 
@@ -24,7 +25,7 @@ func main() {
 		db.MigrateDB()
 	})
 
-	AddRutas(app)
+	router.AddRutas(app)
 
 	// Listens and serves incoming http requests
 	// on http://localhost:8080.
