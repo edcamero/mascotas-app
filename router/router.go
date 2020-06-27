@@ -6,12 +6,11 @@ import (
 )
 
 func AddRutas(app *iris.Application) {
-	api := app.Party("/api")
 
-	api.Get("/user/{id:uint64}", controllers.GetUser)
-	api.Get("/user", controllers.AllUsers)
-	api.Post("/user", controllers.StoreUsers)
-	api.Put("/user/{id:uint64}", controllers.UpdateUser)
-	api.Delete("/user/{id:uint64}", controllers.DeleteUser)
+	app.Get("/api/user/{id:uint64}", controllers.GetUser)
+	app.Get("/api/user", controllers.AllUsers)
+	app.Post("/api/user", controllers.StoreUsers)
+	app.Put("/api/user/{id:uint64}", controllers.UpdateUser)
+	app.Delete("/api/user/{id:uint64}", controllers.DeleteUser)
 
 }
