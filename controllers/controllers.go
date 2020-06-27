@@ -20,7 +20,7 @@ func GetUser(ctx iris.Context) {
 	user := models.User{}
 
 	// Se obtiene el parametro id de la URL
-	id := ctx.Params().Get("id")
+	id := ctx.Params().GetUint64Default("id", 0)
 
 	//Conexión a la DB
 	db := db.GetConnection()
