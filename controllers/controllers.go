@@ -20,7 +20,7 @@ func GetUser(ctx iris.Context) {
 	user := models.User{}
 
 	// Se obtiene el parametro id de la URL
-	id := ctx.Params().GetUint64Default("id", 0)
+	//id := ctx.Params().GetUint64Default("id", 0)
 
 	//Conexión a la DB
 	db := db.GetConnection()
@@ -28,7 +28,7 @@ func GetUser(ctx iris.Context) {
 	defer db.Close()
 
 	// Consulta a la DB - SELECT * FROM contacts WHERE ID = ?
-	db.First(&user, id)
+	db.First(&user, 1)
 
 	if user.ID > 0 {
 		//Se codifican los datos a formato JSON
