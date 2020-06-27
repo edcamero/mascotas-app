@@ -1,16 +1,14 @@
 package main
 
 import (
-	"github.com/edcamero/api-go/controllers"
 	"github.com/edcamero/api-go/db"
 	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/core/router"
 )
 
 func main() {
 	app := iris.New()
-	app.Get("/users/{id:uint64}", func(ctx iris.Context) {
-		controllers.GetUser(ctx)
-	})
+
 	app.Logger().SetLevel("debug")
 	app.Handle("GET", "/ping", func(ctx iris.Context) {
 		ctx.JSON(iris.Map{"message": "hacienod ping"})
@@ -26,6 +24,8 @@ func main() {
 	app.Get("/migraciones", func(ctx iris.Context) {
 		db.MigrateDB()
 	})
+
+	router.AddRutas(app)
 
 	// Listens and serves incoming http requests
 	// on http://localhost:8080.
