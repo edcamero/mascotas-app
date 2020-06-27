@@ -41,7 +41,7 @@ func GetUser(ctx iris.Context) {
 
 }
 
-func GetUsers(ctx iris.Context) {
+func AllUsers(ctx iris.Context) {
 	users := []models.User{}
 	db := db.GetConnection()
 	defer db.Close()
