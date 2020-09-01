@@ -10,6 +10,7 @@ import (
 	"github.com/edcamero/api-go/db"
 	"github.com/edcamero/api-go/view"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo/options"
 
 	response "github.com/edcamero/api-go/view"
 
@@ -29,34 +30,52 @@ func GetUser(ctx iris.Context) {
 	db := db.GetConnection()
 	filter := bson.D{}
 
-	collection := db.Database("test").Collection("trainers")
+	collection := db.Database("mascota").Collection("users")
 	// Consulta a la DB - SELECT * FROM contacts WHERE ID = ?
-	var result models.User
-	var err = collection.FindOne(context.TODO(), filter).Decode(&result)
+
+	var err = collection.FindOne(context.TODO(), filter).Decode(&users)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	if users.ID > 0 {
-		//Se codifican los datos a formato JSON
-		j, _ := json.Marshal(users)
-		// Se envian los datos
-		response.SendResponse(ctx, http.StatusOK, j)
-	} else {
-		// Si no existe se envia un error 404
-		log.Println(users)
-		response.SendErr(ctx, http.StatusNotFound)
-	}
+	//Se codifican los datos a formato JSON
+	j, _ := json.Marshal(users)
+	// Se envian los datos
+	response.SendResponse(ctx, http.StatusOK, j)
+
+	// Si no existe se envia un error 404
+	//log.Println(users)
+	//response.SendErr(ctx, http.StatusNotFound)
 
 }
 
 //AllUsers retorna todos los usuarios
 func AllUsers(ctx iris.Context) {
 	users := []models.User{}
-	//db := db.GetConnection()
-	//defer db.Close()
-	//db.Find(&users)
+	db := db.GetConnection()
+	filter := bson.D{{}}
+	findOptions := options.Find()
+
+	collection := db.Database("mascota").Collection("users")
+	// Consulta a la DB - SELECT * FROM contacts WHERE ID = ?
+
+	cur, err := collection.Find(context.TODO(), filter, findOptions)
+	if err != nil {
+		log.Fatal(err)
+	}
+	for cur.Next(context.TODO()) {
+
+		// create a value into which the single document can be decoded
+		var elem models.User
+		err := cur.Decode(&elem)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		users = append(users, elem)
+	}
+	cur.Close(context.TODO())
 	j, _ := json.Marshal(users)
 	// Se envian los datos
 	view.SendResponse(ctx, http.StatusOK, j)
