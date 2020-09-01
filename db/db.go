@@ -2,6 +2,7 @@ package db
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"time"
 
@@ -22,5 +23,7 @@ func GetConnection() *mongo.Client {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println("Conecto")
+
 	return client
 }
