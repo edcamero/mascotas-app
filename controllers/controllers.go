@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -8,6 +9,7 @@ import (
 
 	"github.com/edcamero/api-go/db"
 	"github.com/edcamero/api-go/view"
+	"go.mongodb.org/mongo-driver/bson"
 
 	response "github.com/edcamero/api-go/view"
 
@@ -15,6 +17,7 @@ import (
 	"github.com/kataras/iris/v12"
 )
 
+//GetUser retorna un usuario
 func GetUser(ctx iris.Context) {
 	//Estructura vacia donde se gurdarán los datos
 	users := models.User{}
@@ -24,11 +27,16 @@ func GetUser(ctx iris.Context) {
 
 	//Conexión a la DB
 	db := db.GetConnection()
+	filter := bson.D{}
 
-	defer db.Close()
-
+	collection := db.Database("test").Collection("trainers")
 	// Consulta a la DB - SELECT * FROM contacts WHERE ID = ?
-	db.First(&users, 1)
+	var result models.User
+	var err = collection.FindOne(context.TODO(), filter).Decode(&result)
+
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	if users.ID > 0 {
 		//Se codifican los datos a formato JSON
@@ -43,21 +51,23 @@ func GetUser(ctx iris.Context) {
 
 }
 
+//AllUsers retorna todos los usuarios
 func AllUsers(ctx iris.Context) {
 	users := []models.User{}
-	db := db.GetConnection()
-	defer db.Close()
-	db.Find(&users)
+	//db := db.GetConnection()
+	//defer db.Close()
+	//db.Find(&users)
 	j, _ := json.Marshal(users)
 	// Se envian los datos
 	view.SendResponse(ctx, http.StatusOK, j)
 }
 
+//StoreUsers almacena un usuario
 func StoreUsers(ctx iris.Context) {
 	// Estructura donde se gurdaran los datos del body
 	user := models.User{}
-	db := db.GetConnection()
-	defer db.Close()
+	//db := db.GetConnection()
+	//defer db.Close()
 	err := json.NewDecoder(ctx.Request().Body).Decode(&user)
 	if err != nil {
 		// Sí hay algun error en los datos se devolvera un error 400
@@ -65,7 +75,7 @@ func StoreUsers(ctx iris.Context) {
 		view.SendErr(ctx, http.StatusBadRequest)
 		return
 	}
-	err = db.Create(&user).Error
+	//err = db.Create(&user).Error
 	if err != nil {
 		// Sí hay algun error al guardar los datos se devolvera un error 500
 		fmt.Println(err)
@@ -78,17 +88,18 @@ func StoreUsers(ctx iris.Context) {
 
 }
 
+//UpdateUser actualizar usuario
 func UpdateUser(ctx iris.Context) {
 	// Estructuras donde se almacenaran los datos
 	userFind := models.User{}
 	userData := models.User{}
 	// Se obtiene el parametro id de la URL
-	id := ctx.Params().Get("id")
+	//id := ctx.Params().Get("id")
 	// Conexión a la DB
-	db := db.GetConnection()
-	defer db.Close()
+	//db := db.GetConnection()
+	//defer db.Close()
 	// Se buscan los datos
-	db.Find(&userFind, id)
+	//db.Find(&userFind, id)
 	if userFind.ID > 0 {
 		// Si existe el registro se decodifican los datos del body
 		err := json.NewDecoder(ctx.Request().Body).Decode(&userData)
@@ -98,7 +109,7 @@ func UpdateUser(ctx iris.Context) {
 			return
 		}
 		// Se modifican los datos
-		db.Model(&userFind).Updates(userData)
+		//db.Model(&userFind).Updates(userData)
 		// Se codifica el registro modificado y se devuelve
 		j, _ := json.Marshal(userFind)
 		view.SendResponse(ctx, http.StatusOK, j)
@@ -109,18 +120,18 @@ func UpdateUser(ctx iris.Context) {
 
 }
 
-// DeleteContact elimina un contacto por ID
+//DeleteUser  elimina un contacto por ID
 func DeleteUser(ctx iris.Context) {
 	// Estructura donde se guardara el registo buscado
 	user := models.User{}
 	// Se obtiene el parametro id de la URL
-	id := ctx.Params().Get("id")
-	db := db.GetConnection()
-	defer db.Close()
-	db.Find(&user, id)
+	//id := ctx.Params().Get("id")
+	//db := db.GetConnection()
+
+	//db.Find(&user, id)
 	if user.ID > 0 {
 		// Sí existe, se borra y se envia contenido vacio
-		db.Delete(user)
+		//db.Delete(user)
 		view.SendResponse(ctx, http.StatusOK, []byte(`{}`))
 	} else {
 		// Sí no existe el registro especificado se devuelde un error 404
