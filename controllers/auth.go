@@ -5,7 +5,7 @@ import (
     "github.com/iris-contrib/middleware/jwt"
 )
 
-func getTokenHandler(ctx iris.Context) {
+func GetTokenHandler(ctx iris.Context) {
     token := jwt.NewTokenWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
         "foo": "bar",
     })
@@ -17,7 +17,7 @@ func getTokenHandler(ctx iris.Context) {
     <a href="/secured?token=` + tokenString + `">/secured?token=` + tokenString + `</a>`)
 }
 
-func myAuthenticatedHandler(ctx iris.Context) {
+func MyAuthenticatedHandler(ctx iris.Context) {
     user := ctx.Values().Get("jwt").(*jwt.Token)
 
     ctx.Writef("This is an authenticated request\n")
