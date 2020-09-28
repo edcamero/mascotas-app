@@ -8,9 +8,6 @@ import (
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-
-	// mysql
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 // GetConnection obtiene una conexión a la base de datos
@@ -27,3 +24,6 @@ func GetConnection() *mongo.Client {
 
 	return client
 }
+
+
+
