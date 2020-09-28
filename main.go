@@ -5,7 +5,7 @@ import (
 	myrouter "github.com/edcamero/api-go/router"
 	"github.com/kataras/iris/v12"
 	"github.com/iris-contrib/middleware/jwt"
-	auth "github.com/edcamero/api-go/controllers/auth"
+	"github.com/edcamero/api-go/controllers"
 )
 
 func main() {
@@ -35,7 +35,7 @@ func main() {
 		ctx.JSON(iris.Map{"message": "Hello Iris!"})
 	})
 
-	app.Get("/secured", j.Serve, auth.myAuthenticatedHandler)
+	app.Get("/secured", j.Serve, controllers.myAuthenticatedHandler)
 
 	app.Get("/migraciones", func(ctx iris.Context) {
 		db.MigrateDB()
