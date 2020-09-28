@@ -3,8 +3,10 @@ package main
 import (
 	"github.com/edcamero/api-go/db"
 	myrouter "github.com/edcamero/api-go/router"
-
+	"github.com/edcamero/api-go/controllers/auth"
+	
 	"github.com/kataras/iris/v12"
+	"github.com/iris-contrib/middleware/jwt"
 	
 )
 
@@ -13,7 +15,16 @@ func main() {
 
 	app.Logger().SetLevel("debug")
 
+	j := jwt.New(jwt.Config{
+        // Extract by "token" url parameter.
+        Extractor: jwt.FromParameter("token"),
 
+        ValidationKeyGetter: func(token *jwt.Token) (interface{}, error) {
+            return []byte("My Secret"), nil
+        },
+        SigningMethod: jwt.SigningMethodHS256,
+	})
+	
 
 	app.Handle("GET", "/ping", func(ctx iris.Context) {
 		ctx.JSON(iris.Map{"message": "hacienod ping"})
@@ -26,7 +37,7 @@ func main() {
 		ctx.JSON(iris.Map{"message": "Hello Iris!"})
 	})
 
-	
+	app.Get("/secured", j.Serve, auth.myAuthenticatedHandler)
 
 	app.Get("/migraciones", func(ctx iris.Context) {
 		db.MigrateDB()
