@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/Joker/hpp v1.0.0 // indirect
+	github.com/iris-contrib/middleware/cors v0.0.0-20200913183508-5d1bed0e6ea4
 	github.com/iris-contrib/middleware/jwt v0.0.0-20200913183508-5d1bed0e6ea4
 	github.com/jinzhu/gorm v1.9.16
 	github.com/k0kubun/colorstring v0.0.0-20150214042306-9440f1994b88 // indirect

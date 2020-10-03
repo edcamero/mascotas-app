@@ -5,26 +5,47 @@ import (
     "github.com/iris-contrib/middleware/jwt"
 )
 
-func GetTokenHandler(ctx iris.Context) {
-    token := jwt.NewTokenWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-        "foo": "bar",
-    })
-
-    // Sign and get the complete encoded token as a string using the secret
-    tokenString, _ := token.SignedString([]byte("My Secret"))
-
-    ctx.HTML(`Token: ` + tokenString + `<br/><br/>
-    <a href="/secured?token=` + tokenString + `">/secured?token=` + tokenString + `</a>`)
+type Token struct {
+    TokenUser string  `json:"tokenUser"`
 }
 
-func MyAuthenticatedHandler(ctx iris.Context) {
+func Login(ctx iris.Context) {
+    token:=jwt.NewTokenWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+        "rol": "adoptante",
+    })
+    // Sign and get the complete encoded token as a string using the secret
+    tokenString, _ := token.SignedString([]byte("Mascotas unipamplona"))
+    tokenG := Token{
+        TokenUser:tokenString,
+    }
+   
+    ctx.JSON(tokenG)
+    //ctx.JSON(iris.Map{"token": tokenString,})
+}
+
+
+func AuthenticatedAdoptante(ctx iris.Context) {
     user := ctx.Values().Get("jwt").(*jwt.Token)
 
     ctx.Writef("This is an authenticated request\n")
     ctx.Writef("Claim content:\n")
 
     foobar := user.Claims.(jwt.MapClaims)
+    resp:=false
     for key, value := range foobar {
+        
         ctx.Writef("%s = %s", key, value)
+        if key=="rol"&&value=="adoptante"{
+            resp=true;
+        }
     }
+
+    if !resp {
+        user=nil
+    }
+
+   
+ 
+    
+    
 }

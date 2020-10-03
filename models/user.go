@@ -1,15 +1,16 @@
 package models
 
 import (
-	. "github.com/jinzhu/gorm"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type User struct {
-	Model
-	Nombre      string `json:"nombre"`
-	Edad        uint   `json:"edad"`
-	Telefono    string `json:"telefono" gorm:"size:20"`
-	Direccion   string `json:"direccion"`
-	Email       string `json:"email"`
-	Descripcion string `json:"descripcion" gorm:"type:TEXT"`
+	ID        primitive.ObjectID `bson:"_id"`
+	UserName	string `bson:"username"`
+	Password	string  `bson:"password"`
+	//Edad        uint   `bson:"edad"`
+	//Telefono    string `bson:"telefono"`
+	//Direccion   string `bson:"direccion"`
+	//Email       string `bson:"email"`
+	//Descripcion string `bson:"descripcion"`
 }
