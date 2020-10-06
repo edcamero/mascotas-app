@@ -9,6 +9,7 @@ const (
     PROD Env = "production"
     DEV  Env = "development"
     DATABASE string ="Mascota"
+    SECRETKEY string="Unipamplona"
 
 )
 

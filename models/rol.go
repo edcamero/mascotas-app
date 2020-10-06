@@ -1,5 +1,5 @@
 package models
 
 type Rol struct {
-	Nombre string `bson:"rolnombre"`
+	Nombre string `json:"nombre" bson:"rolnombre"`
 }

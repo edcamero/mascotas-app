@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"log"
 	"context"
-	"encoding/hex"
-	"crypto/sha1"
 	"time"
 	
 	
@@ -17,6 +15,7 @@ import (
 	"github.com/edcamero/api-go/db"
 	"github.com/edcamero/api-go/models"
 	"github.com/edcamero/api-go/view"
+	"github.com/edcamero/api-go/util"
 )
 
 func RegisterAdoptante(ctx iris.Context){
@@ -24,6 +23,7 @@ func RegisterAdoptante(ctx iris.Context){
 	rol:=models.Rol{Nombre:"adoptante"}
 	err := json.NewDecoder(ctx.Request().Body).Decode(&user)
 	user.ID=primitive.NewObjectID()
+	user.InsertedAt=time.Now()
 	user.LastUpdate = time.Now()
 	fmt.Println(time.Now())
 	user.Rol=rol
@@ -35,12 +35,12 @@ func RegisterAdoptante(ctx iris.Context){
 		//view.SendErr(ctx, http.StatusBadRequest)
 		return
 	}
-	password :=  Encrypt([]byte(user.Password))
+	password :=  util.Encrypt([]byte(user.Password))
 	user.Password=password
 	//fmt.Println(user)
 	conexion := db.GetConnection()
 	collection:= conexion.Database(environment.DATABASE).Collection("users")
-	_,err = collection.InsertOne(context.TODO(), user)
+	_,err = collection.InsertOne(context.TODO(), &user)
 	if err != nil {
 		// Sí hay algun error al guardar los datos se devolvera un error 500
 		//fmt.Println(err)
@@ -62,12 +62,4 @@ func RegisterAdoptante(ctx iris.Context){
 	
 
 
-}
-
-func Encrypt(password []byte) string{
-	h := sha1.New()
-	h.Write(append(password))
-	vector:=hex.EncodeToString(h.Sum(nil))
-	//vector:=h.Sum([]byte{})
-	return string(vector)
 }

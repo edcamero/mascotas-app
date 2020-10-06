@@ -21,7 +21,7 @@ func AddRutas(app *iris.Application) {
 
 	//api := app.Party("/api")
 
-	app.Get("/api/login", Controllers.Login)
+	app.Post("/api/login", Controllers.Login)
 	app.Post("/api/adoptante/registrar",Controllers.RegisterAdoptante)
 
 	app.Get("/api/adoptante", j.Serve, Controllers.AuthenticatedAdoptante)
