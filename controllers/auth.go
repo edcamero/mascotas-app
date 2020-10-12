@@ -54,25 +54,31 @@ func Login(ctx iris.Context) {
 func AuthenticatedAdoptante(ctx iris.Context) {
 
 	user := ctx.Values().Get("jwt").(*jwt.Token)
-
-	foobar := user.Claims.(jwt.MapClaims)
-	resp := false
-	for key, value := range foobar {
-
-		ctx.Writef("%s = %s", key, value)
-		if key == "rol" && value == "adoptante" {
-			resp = true
-		}
+	item := user.Claims.(jwt.MapClaims)
+	if item["rol"] == "adoptante" {
+		ctx.Next()
+	} else {
+		ctx.StopWithStatus(iris.StatusUnauthorized)
 	}
 
-	if !resp {
-
-		user = nil
-	}
-
+	return
 }
 
 func AuthenticatedAdmin(ctx iris.Context) {
+	//ctx.StopWithStatus(iris.StatusUnauthorized)
+
+	user := ctx.Values().Get("jwt").(*jwt.Token)
+	item := user.Claims.(jwt.MapClaims)
+	if item["rol"] == "admin" {
+		ctx.Next()
+	} else {
+		ctx.StopWithStatus(iris.StatusUnauthorized)
+	}
+
+	return
+}
+
+func AuthenticatedFundacion(ctx iris.Context) {
 	//ctx.StopWithStatus(iris.StatusUnauthorized)
 
 	user := ctx.Values().Get("jwt").(*jwt.Token)
