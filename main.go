@@ -4,13 +4,9 @@ import (
 	"github.com/edcamero/api-go/db"
 	myrouter "github.com/edcamero/api-go/router"
 	"github.com/iris-contrib/middleware/cors"
-	
+
 	"github.com/kataras/iris/v12"
-	
-	
 )
-
-
 
 func main() {
 	app := iris.New()
@@ -19,13 +15,13 @@ func main() {
 		AllowedOrigins:   []string{"*"}, // allows everything, use that to change the hosts.
 		AllowedMethods:   []string{"GET", "POST", "DELETE"},
 		AllowCredentials: true,
+		AllowedHeaders:   []string{"*"},
 	})
 	app.UseRouter(crs)
 	app.AllowMethods(iris.MethodOptions) // <- permite el Cors
 
 	app.Logger().SetLevel("debug")
 
-		
 	app.Handle("GET", "/ping", func(ctx iris.Context) {
 		ctx.JSON(iris.Map{"message": "hacienod ping"})
 	})
@@ -37,7 +33,6 @@ func main() {
 		ctx.JSON(iris.Map{"message": "Hello Iris!"})
 	})
 
-	
 	app.Get("/migraciones", func(ctx iris.Context) {
 		db.MigrateDB()
 	})

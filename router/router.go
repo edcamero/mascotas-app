@@ -2,35 +2,38 @@ package router
 
 import (
 	Controllers "github.com/edcamero/api-go/controllers"
-	"github.com/kataras/iris/v12"
+	"github.com/edcamero/api-go/environment"
 	"github.com/iris-contrib/middleware/jwt"
+	"github.com/kataras/iris/v12"
 )
 
-
-
 func AddRutas(app *iris.Application) {
+
 	j := jwt.New(jwt.Config{
 		// Extract by "token" url parameter.
-		Extractor: jwt.FromParameter("token"),
-	
+		//Extractor: jwt.FromParameter("token"),
+
 		ValidationKeyGetter: func(token *jwt.Token) (interface{}, error) {
-			return []byte("Mascotas unipamplona"), nil
+			return []byte(environment.SECRETKEY), nil
 		},
 		SigningMethod: jwt.SigningMethodHS256,
 	})
 
-	//api := app.Party("/api")
+	api := app.Party("/api")
+	api.Post("/login", Controllers.Login)
+	api.Post("/adoptante/registrar", Controllers.RegisterAdoptante)
 
-	app.Post("/api/login", Controllers.Login)
-	app.Post("/api/adoptante/registrar",Controllers.RegisterAdoptante)
+	adopApi := api.Party("/adoptante")
+	adminApi := api.Party(("/admin"), j.Serve, Controllers.AuthenticatedAdmin)
 
-	app.Get("/api/adoptante", j.Serve, Controllers.AuthenticatedAdoptante)
-	
+	adopApi.Get("/", Controllers.AuthenticatedAdoptante)
 
-	app.Get("/api/user/{id:uint64}", Controllers.GetUser)
-	app.Get("/api/user", Controllers.AllUsers)
-	app.Post("/api/user", Controllers.StoreUsers)
-	app.Put("/api/user/{id:uint64}", Controllers.UpdateUser)
-	app.Delete("/api/user/{id:uint64}", Controllers.DeleteUser)
+	adminApi.Post("/registrar", Controllers.RegisterAdmin)
+
+	api.Get("/user/{id:uint64}", Controllers.GetUser)
+	api.Get("/user", Controllers.AllUsers)
+	api.Post("/user", Controllers.StoreUsers)
+	api.Put("/user/{id:uint64}", Controllers.UpdateUser)
+	api.Delete("/user/{id:uint64}", Controllers.DeleteUser)
 
 }
