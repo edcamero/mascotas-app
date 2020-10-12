@@ -1,6 +1,6 @@
 module github.com/edcamero/api-go
-go1.12.17
-go 1.13.8
+
+go 1.12.17
 
 require (
 	github.com/Bowery/prompt v0.0.0-20190916142128-fa8279994f75 // indirect
