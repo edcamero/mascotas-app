@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/edcamero/api-go/db"
 	myrouter "github.com/edcamero/api-go/router"
 	"github.com/iris-contrib/middleware/cors"
@@ -10,6 +12,10 @@ import (
 
 func main() {
 	app := iris.New()
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080" //localhost
+	}
 
 	crs := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"}, // allows everything, use that to change the hosts.
@@ -41,7 +47,7 @@ func main() {
 
 	// Listens and serves incoming http requests
 	// on http://localhost:8080.
-	app.Listen(":8080")
+	app.Listen(":" + port)
 }
 
 func myMiddleware(ctx iris.Context) {
