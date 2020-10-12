@@ -1,5 +1,5 @@
 module github.com/edcamero/api-go
-
+go1.12.17
 go 1.13.8
 
 require (
