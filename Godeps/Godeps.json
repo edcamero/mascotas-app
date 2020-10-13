@@ -1,5 +1,5 @@
 {
-	"ImportPath": "github.com/edcamero/api-go",
+	"ImportPath": "main",
 	"GoVersion": "go1.14",
 	"GodepVersion": "v80",
 	"Packages": [
