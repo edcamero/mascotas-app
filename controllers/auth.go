@@ -5,6 +5,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/iris-contrib/middleware/jwt"
 	"github.com/kataras/iris/v12"
@@ -22,7 +23,7 @@ type Token struct {
 
 func Login(ctx iris.Context) {
 
-	user := models.User{}
+	user := models.
 	//err := json.NewDecoder(ctx.Request().Body).Decode(&filter)
 	username := ctx.FormValue("username")
 	password := util.Encrypt([]byte(ctx.FormValue("password")))
@@ -32,10 +33,11 @@ func Login(ctx iris.Context) {
 	//fmt.Println(ctx.FormValue("password"))
 
 	conexion := db.GetConnection()
-	collection := conexion.Database(environment.DATABASE).Collection("users")
+	collection := conexion.Database(os.Getenv("DATABASE")).Collection("users")
 	err := collection.FindOne(context.TODO(), filter).Decode(&user)
 	if err != nil {
 		log.Println(err)
+		ctx.StopWithStatus(iris.Status)
 		return
 	} else {
 		fmt.Println(user)
@@ -60,8 +62,6 @@ func AuthenticatedAdoptante(ctx iris.Context) {
 	} else {
 		ctx.StopWithStatus(iris.StatusUnauthorized)
 	}
-
-	return
 }
 
 func AuthenticatedAdmin(ctx iris.Context) {
@@ -74,8 +74,6 @@ func AuthenticatedAdmin(ctx iris.Context) {
 	} else {
 		ctx.StopWithStatus(iris.StatusUnauthorized)
 	}
-
-	return
 }
 
 func AuthenticatedFundacion(ctx iris.Context) {
@@ -88,6 +86,4 @@ func AuthenticatedFundacion(ctx iris.Context) {
 	} else {
 		ctx.StopWithStatus(iris.StatusUnauthorized)
 	}
-
-	return
 }

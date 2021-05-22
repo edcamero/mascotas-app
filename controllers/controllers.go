@@ -1,15 +1,14 @@
 package controllers
 
 import (
+	"app-mascota/view"
 	"context"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
-	
 
 	"github.com/edcamero/api-go/db"
-	"github.com/edcamero/api-go/view"
 	"github.com/edcamero/api-go/environment"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -30,9 +29,6 @@ func GetUser(ctx iris.Context) {
 
 	//Conexión a la DB
 	//db := db.GetConnection()
-	
-
-
 
 	//Se codifican los datos a formato JSON
 	j, _ := json.Marshal(users)
@@ -47,7 +43,7 @@ func GetUser(ctx iris.Context) {
 
 //AllUsers retorna todos los usuarios
 func AllUsers(ctx iris.Context) {
-	
+
 	fmt.Println("Conecto con el controlador")
 	users := []models.User{}
 	db := db.GetConnection()
@@ -71,7 +67,7 @@ func AllUsers(ctx iris.Context) {
 			log.Fatal(err)
 		}
 
-		users = append(users,elem)
+		users = append(users, elem)
 	}
 	cur.Close(context.Background())
 	//j, _ := json.Marshal(users)
@@ -108,7 +104,7 @@ func StoreUsers(ctx iris.Context) {
 //UpdateUser actualizar usuario
 func UpdateUser(ctx iris.Context) {
 	// Estructuras donde se almacenaran los datos
-//	userFind := models.User{}
+	//	userFind := models.User{}
 	userData := models.User{}
 	// Se obtiene el parametro id de la URL
 	//id := ctx.Params().Get("id")
@@ -118,13 +114,13 @@ func UpdateUser(ctx iris.Context) {
 	// Se buscan los datos
 	//db.Find(&userFind, id)
 	//if userFind.ID > 0 {
-		// Si existe el registro se decodifican los datos del body
-		err := json.NewDecoder(ctx.Request().Body).Decode(&userData)
-		if err != nil {
-			// Sí hay algun error en los datos se devolvera un error 400
-			view.SendErr(ctx, http.StatusBadRequest)
-			return
-	//	}
+	// Si existe el registro se decodifican los datos del body
+	err := json.NewDecoder(ctx.Request().Body).Decode(&userData)
+	if err != nil {
+		// Sí hay algun error en los datos se devolvera un error 400
+		view.SendErr(ctx, http.StatusBadRequest)
+		return
+		//	}
 		// Se modifican los datos
 		//db.Model(&userFind).Updates(userData)
 		// Se codifica el registro modificado y se devuelve
@@ -146,12 +142,12 @@ func DeleteUser(ctx iris.Context) {
 	//db := db.GetConnection()
 
 	//db.Find(&user, id)
-	
-		// Sí existe, se borra y se envia contenido vacio
-		//db.Delete(user)
-		view.SendResponse(ctx, http.StatusOK, []byte(`{}`))
-	
-		// Sí no existe el registro especificado se devuelde un error 404
-		view.SendErr(ctx, http.StatusNotFound)
-	
+
+	// Sí existe, se borra y se envia contenido vacio
+	//db.Delete(user)
+	view.SendResponse(ctx, http.StatusOK, []byte(`{}`))
+
+	// Sí no existe el registro especificado se devuelde un error 404
+	view.SendErr(ctx, http.StatusNotFound)
+
 }
