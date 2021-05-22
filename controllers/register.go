@@ -18,7 +18,7 @@ import (
 )
 
 func RegisterAdoptante(ctx iris.Context) {
-	user := models.User{}
+	user := models.Usuario{}
 	rol := models.Rol{Nombre: "adoptante"}
 	err := json.NewDecoder(ctx.Request().Body).Decode(&user)
 	user.ID = primitive.NewObjectID()

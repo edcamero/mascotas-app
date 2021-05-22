@@ -9,7 +9,8 @@ import (
 type Usuario struct {
 	ID         primitive.ObjectID `bson:"_id"`
 	UserName   string             `json:"username" bson:"username"`
-	Password   string             `json:"password" bson:"password"`
+	Password   string             `bson:"password"`
+	Email      string             `json:"email" bson:"email"`
 	Rol        Rol                `json:"rol" bson:"rol"`
 	InsertedAt time.Time          `json:"inserted_at" bson:"inserted_at"`
 	LastUpdate time.Time          `json:"last_update" bson:"last_update"`
@@ -19,4 +20,10 @@ type Usuario struct {
 	//Direccion   string `bson:"direccion"`
 	//Email       string `bson:"email"`
 	//Descripcion string `bson:"descripcion"`
+}
+
+type UsuarioView struct {
+	ID       primitive.ObjectID `bson:"_id"`
+	UserName string             `json:"username" bson:"username"`
+	Rol      Rol                `json:"rol" bson:"rol"`
 }

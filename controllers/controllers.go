@@ -23,7 +23,7 @@ import (
 //GetUser retorna un usuario
 func GetUser(ctx iris.Context) {
 	//Estructura vacia donde se gurdarán los datos
-	users := []models.User{}
+	users := []models.Usuario{}
 
 	// Se obtiene el parametro id de la URL
 	//id := ctx.Params().GetUint64Default("id", 0)
@@ -46,7 +46,7 @@ func GetUser(ctx iris.Context) {
 func AllUsers(ctx iris.Context) {
 
 	fmt.Println("Conecto con el controlador")
-	users := []models.User{}
+	users := []models.Usuario{}
 	db := db.GetConnection()
 	filter := bson.D{{}}
 	findOptions := options.Find()
@@ -61,7 +61,7 @@ func AllUsers(ctx iris.Context) {
 	for cur.Next(context.TODO()) {
 
 		// create a value into which the single document can be decoded
-		var elem models.User
+		var elem models.Usuario
 
 		err := cur.Decode(&elem)
 		if err != nil {
@@ -79,7 +79,7 @@ func AllUsers(ctx iris.Context) {
 //StoreUsers almacena un usuario
 func StoreUsers(ctx iris.Context) {
 	// Estructura donde se gurdaran los datos del body
-	user := models.User{}
+	user := models.Usuario{}
 	//db := db.GetConnection()
 	//defer db.Close()
 	err := json.NewDecoder(ctx.Request().Body).Decode(&user)
@@ -106,7 +106,7 @@ func StoreUsers(ctx iris.Context) {
 func UpdateUser(ctx iris.Context) {
 	// Estructuras donde se almacenaran los datos
 	//	userFind := models.User{}
-	userData := models.User{}
+	userData := models.Usuario{}
 	// Se obtiene el parametro id de la URL
 	//id := ctx.Params().Get("id")
 	// Conexión a la DB
