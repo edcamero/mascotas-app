@@ -23,12 +23,12 @@ type Token struct {
 
 func Login(ctx iris.Context) {
 
-	user := models.Usuario{}
+	user := models.UsuarioView{}
 	//err := json.NewDecoder(ctx.Request().Body).Decode(&filter)
 	username := ctx.FormValue("username")
 	password := util.Encrypt([]byte(ctx.FormValue("password")))
 	filter := bson.M{"username": username, "password": password}
-	fmt.Println(username)
+	fmt.Println(ctx.FormValue("username"))
 	fmt.Println(password)
 	//fmt.Println(ctx.FormValue("password"))
 
@@ -36,18 +36,17 @@ func Login(ctx iris.Context) {
 	collection := conexion.Database(os.Getenv("DATABASE")).Collection("usuarios")
 	err := collection.FindOne(context.TODO(), filter).Decode(&user)
 	if err != nil {
+		log.Println(username)
 		log.Println(err)
-		ctx.StopWithStatus(iris.StatusForbidden)
+		ctx.StopWithStatus(iris.StatusUnauthorized)
 		return
 	} else {
-		fmt.Println(user)
 		token := jwt.NewTokenWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 			"rol":      user.Rol.Nombre,
 			"username": user.UserName,
 		})
 		tokenString, _ := token.SignedString([]byte(environment.SECRETKEY))
-		user.Password = ""
-		ctx.JSON(iris.Map{"user": user, "tokenUser": tokenString})
+		ctx.JSON(iris.Map{"user": user, "token": tokenString})
 
 	}
 
