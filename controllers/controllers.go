@@ -1,12 +1,13 @@
 package controllers
 
 import (
-	"app-mascota/view"
 	"context"
 	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/edcamero/api-go/view"
 
 	"github.com/edcamero/api-go/db"
 	"github.com/edcamero/api-go/environment"

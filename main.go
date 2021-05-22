@@ -1,8 +1,9 @@
 package main
 
 import (
-	"app-mascota/environment"
 	"os"
+
+	"github.com/edcamero/api-go/environment"
 
 	myrouter "github.com/edcamero/api-go/router"
 	"github.com/iris-contrib/middleware/cors"
