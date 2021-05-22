@@ -7,14 +7,11 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/edcamero/api-go/view"
-
 	"github.com/edcamero/api-go/db"
 	"github.com/edcamero/api-go/environment"
+	"github.com/edcamero/api-go/view"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo/options"
-
-	response "github.com/edcamero/api-go/view"
 
 	"github.com/edcamero/api-go/models"
 	"github.com/kataras/iris/v12"
@@ -34,7 +31,7 @@ func GetUser(ctx iris.Context) {
 	//Se codifican los datos a formato JSON
 	j, _ := json.Marshal(users)
 	// Se envian los datos
-	response.SendResponse(ctx, http.StatusOK, j)
+	view.SendResponse(ctx, http.StatusOK, j)
 
 	// Si no existe se envia un error 404
 	log.Println(users)
