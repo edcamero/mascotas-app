@@ -3,7 +3,6 @@ package controllers
 import (
 	//"encoding/json"
 	"context"
-	"fmt"
 	"log"
 	"os"
 
@@ -25,18 +24,15 @@ func Login(ctx iris.Context) {
 
 	user := models.UsuarioView{}
 	//err := json.NewDecoder(ctx.Request().Body).Decode(&filter)
-	username := ctx.FormValue("username")
+	email := ctx.FormValue("email")
 	password := util.Encrypt([]byte(ctx.FormValue("password")))
-	filter := bson.M{"username": username, "password": password}
-	fmt.Println(ctx.FormValue("username"))
-	fmt.Println(password)
-	//fmt.Println(ctx.FormValue("password"))
+	filter := bson.M{"email": email, "password": password}
 
 	conexion := db.GetConnection()
 	collection := conexion.Database(os.Getenv("DATABASE")).Collection("usuarios")
 	err := collection.FindOne(context.TODO(), filter).Decode(&user)
 	if err != nil {
-		log.Println(username)
+		log.Println(email)
 		log.Println(err)
 		ctx.StopWithStatus(iris.StatusUnauthorized)
 		return

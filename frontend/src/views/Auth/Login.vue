@@ -66,7 +66,7 @@ export default {
       if (this.email && this.password) {
         //console.log(process.env.VUE_APP_RUTA_API+'login')
         console.log(this.password);
-        formData.append("username", this.email);
+        formData.append("email", this.email);
         formData.append("password", this.password);
         axios
           .post(process.env.VUE_APP_RUTA_API + "login", formData)
