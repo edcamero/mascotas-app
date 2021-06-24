@@ -27,10 +27,17 @@ func Login(ctx iris.Context) {
 	email := ctx.FormValue("email")
 	password := util.Encrypt([]byte(ctx.FormValue("password")))
 	filter := bson.M{"email": email, "password": password}
-
+	userExists := bson.M{"email": email}
 	conexion := db.GetConnection()
 	collection := conexion.Database(os.Getenv("DATABASE")).Collection("usuarios")
-	err := collection.FindOne(context.TODO(), filter).Decode(&user)
+	err := collection.FindOne(context.TODO(), userExists).Decode(&user)
+
+	if err != nil {
+		ctx.StopWithStatus(iris.StatusNotFound)
+		return
+	}
+
+	err = collection.FindOne(context.TODO(), filter).Decode(&user)
 	if err != nil {
 		log.Println(email)
 		log.Println(err)

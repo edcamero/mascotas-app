@@ -11,6 +11,11 @@
             <label for="email" data-error="wrong" data-success="right"
               >Email</label
             >
+            <span
+              v-if="error.status === 404"
+              class="helper-text red-text"
+              >Error en el correo</span
+            >
           </div>
         </div>
         <div class="row">
@@ -18,6 +23,11 @@
             <i class="material-icons prefix">lock_outline</i>
             <input id="password" type="password" v-model="password" />
             <label for="password">Password</label>
+            <span
+              v-if="error.status === 401"
+              class="helper-text red-text"
+              >Contraseña no valida</span
+            >
           </div>
         </div>
         <div class="row">
@@ -51,12 +61,14 @@
 </template>
 
 <script>
+const statusNotfound = 404;
 export default {
   data: () => ({
     email: null,
     password: null,
     token: "",
     user: null,
+    error: { status: 0, message: "" },
   }),
 
   methods: {
@@ -64,7 +76,7 @@ export default {
       const axios = require("axios").default;
       let formData = new FormData();
       if (this.email && this.password) {
-        console.log(process.env.VUE_APP_RUTA_API+'login')
+        console.log(process.env.VUE_APP_RUTA_API + "login");
         console.log(this.password);
         formData.append("email", this.email);
         formData.append("password", this.password);
@@ -83,8 +95,12 @@ export default {
               this.redireccionar(this.user.rol.name)
             )
           )
-          .catch(function(error) {
-            console.log(error);
+          .catch((error) => {
+            this.error.status = error.response.status;
+            this.error.message =
+              error.response.status === statusNotfound
+                ? "Correo no registrado"
+                : "Error en la contraseña";
           });
       }
     },
