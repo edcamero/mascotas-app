@@ -3,23 +3,22 @@ name: CI
 on:[push, pull_request]
 
 jobs:
-
-     build:
-        runs-on: ubuntu-latest
+  frontend:
+    runs-on: ubuntu-latest
     
-        steps:
-            -   name: Run a one-line script
-                uses: actions/checkout@v2
+    steps:
+    -   name: Run a one-line script
+        uses: actions/checkout@v2
 
-            -   name: Install Vue Dependencias
-                run: cd frontend && yarn install
-                
-            -   name: Check code with EsLint 
-                run: cd frontend && yarn lint
-            
-            -   name Check code with Prettier
-                run: cd frontend && yarn prettier
-                
-            -   name Build Vue APP
-                run: cd frontend && yarn build
+    -   name: Install Vue Dependencias
+        run: cd frontend && yarn install
+        
+    -   name: Check code with EsLint 
+        run: cd frontend && yarn lint
+    
+    -   name Check code with Prettier
+        run: cd frontend && yarn prettier
+        
+    -   name Build Vue APP
+        run: cd frontend && yarn build
 
