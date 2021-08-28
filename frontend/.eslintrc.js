@@ -3,7 +3,7 @@ module.exports = {
   env: {
     node: true,
   },
-  extends: ["eslint:recommended", "plugin:vue/vue3-recommended"],
+  extends: ["eslint:recommended", "plugin:vue/vue3-recommended", "prettier"],
 
   // the ts-eslint recommended ruleset sets the parser so we need to set it back
   parser: require.resolve("vue-eslint-parser"),
