@@ -19,6 +19,6 @@ jobs:
     -   name: Check code with Prettier
         run: cd frontend && yarn prettier
         
-    -   name Build Vue APP
+    -   name: Build Vue APP
         run: cd frontend && yarn build
 
