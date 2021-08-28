@@ -9,18 +9,18 @@ on:
              - 'frontend/**'
 jobs:
     main:
-    runs-on: ubuntu-latest
-    
-    steps:
-    -   name: Run a one-line script
-        uses: actions/checkout@v2
+        runs-on: ubuntu-latest
+        
+        steps:
+        -   name: Run a one-line script
+            uses: actions/checkout@v2
 
-    -   name: Set up Go
-        uses: actions/setup-go@v2
-        with:
-            go-version: 1.17
+        -   name: Set up Go
+            uses: actions/setup-go@v2
+            with:
+                go-version: 1.17
 
-    -   name: Build Go App
-        run: go build -v ./...
+        -   name: Build Go App
+            run: go build -v ./...
 
 
