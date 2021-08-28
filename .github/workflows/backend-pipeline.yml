@@ -1,7 +1,12 @@
 name: CI
 
-on:[push, pull_request]
-
+on: 
+    push:
+        paths-ignore:
+            - 'frontend/**'
+    pull_request:
+        paths-ignore:
+             - 'frontend/**'
 jobs:
     main:
     runs-on: ubuntu-latest
