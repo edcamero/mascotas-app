@@ -37,7 +37,10 @@
 export default {
   name: "BannerMain",
   props: {
-    title
+    title: {
+      type: String,
+      default: "title",
+    },
   },
 };
 </script>
