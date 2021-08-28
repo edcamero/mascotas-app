@@ -2,22 +2,28 @@
   <div id="login-page" class="row">
     <div class="col s12 l4 offset-l4 z-depth-6 card-panel">
       <form class="login-form" @submit.prevent="login">
-        <div class="row"></div>
+        <div class="row" />
         <div class="row">
           <h4>Login</h4>
           <div class="input-field col s12">
             <i class="material-icons prefix">mail_outline</i>
-            <input class="validate" id="email" type="email" v-model="email" />
+            <input id="email" v-model="email" class="validate" type="email" />
             <label for="email" data-error="wrong" data-success="right"
               >Email</label
+            >
+            <span v-if="error.status === 404" class="helper-text red-text"
+              >Error en el correo</span
             >
           </div>
         </div>
         <div class="row">
           <div class="input-field col s12">
             <i class="material-icons prefix">lock_outline</i>
-            <input id="password" type="password" v-model="password" />
+            <input id="password" v-model="password" type="password" />
             <label for="password">Password</label>
+            <span v-if="error.status === 401" class="helper-text red-text"
+              >Contraseña no valida</span
+            >
           </div>
         </div>
         <div class="row">
@@ -37,7 +43,9 @@
         </div>
         <div class="row">
           <div class="input-field col s6 m6 l6">
-            <p class="margin medium-small"><a href="#">Registrarme!</a></p>
+            <p class="margin medium-small">
+              <a href="#">Registrarme!</a>
+            </p>
           </div>
           <div class="input-field col s6 m6 l6">
             <p class="margin right-align medium-small">
@@ -51,12 +59,14 @@
 </template>
 
 <script>
+const statusNotfound = 404;
 export default {
   data: () => ({
     email: null,
     password: null,
-    token: "hola",
+    token: "",
     user: null,
+    error: { status: 0, message: "" },
   }),
 
   methods: {
@@ -64,29 +74,31 @@ export default {
       const axios = require("axios").default;
       let formData = new FormData();
       if (this.email && this.password) {
-        //console.log(process.env.VUE_APP_RUTA_API+'login')
+        console.log(process.env.VUE_APP_RUTA_API + "login");
         console.log(this.password);
-        formData.append("username", this.email);
+        formData.append("email", this.email);
         formData.append("password", this.password);
         axios
           .post(process.env.VUE_APP_RUTA_API + "login", formData)
           .then(
             (response) => (
-              (this.token = response.data.tokenUser),
+              (this.token = response.data.token),
               console.log(response.data),
               localStorage.setItem("isLogin", "true"),
               localStorage.setItem("token", this.token),
               (this.$root.isLogin = true),
               (this.user = response.data.user),
-              (this.$root.user = this.user),
-              (this.$root.rol = this.user.rol.nombre),
               localStorage.setItem("username", this.user.username),
-              localStorage.setItem("rol", this.user.rol.nombre),
-              this.redireccionar(this.user.rol.nombre)
+              localStorage.setItem("rol", this.user.rol.name),
+              this.redireccionar(this.user.rol.name)
             )
           )
-          .catch(function(error) {
-            console.log(error);
+          .catch((error) => {
+            this.error.status = error.response.status;
+            this.error.message =
+              error.response.status === statusNotfound
+                ? "Correo no registrado"
+                : "Error en la contraseña";
           });
       }
     },

@@ -1,5 +1,5 @@
 <template>
-  <div class="section no-pad-bot" id="index-banner">
+  <div id="index-banner" class="section no-pad-bot">
     <div class="container-fluid">
       <div class="row center">
         <div class="col s12 m10 offset-m1">

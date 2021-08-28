@@ -2,7 +2,7 @@
   <ul
     id="slide-in"
     class="sidenav sidenav-fixed"
-    style="transform: translateX(0%);"
+    style="transform: translateX(0%)"
   >
     <li>
       <div class="user-view">
@@ -32,12 +32,19 @@
       <ul class="collapsible collapsible-accordion">
         <li>
           <a class="collapsible-header"
-            >Mascotas<i class="material-icons">arrow_drop_down</i></a
-          >
+            >Mascotas<i class="material-icons">arrow_drop_down</i>
+          </a>
           <div class="collapsible-body">
             <ul>
-              <li> <router-link  class="waves-effect waves-light" to="/fundacion/mascota/registrar">Agregar</router-link></li>
-   
+              <li>
+                <router-link
+                  class="waves-effect waves-light"
+                  to="/fundacion/mascota/registrar"
+                >
+                  Agregar
+                </router-link>
+              </li>
+
               <li><a href="#!">Listar</a></li>
             </ul>
           </div>
@@ -48,7 +55,7 @@
       <a href="#!">Second Link</a>
     </li>
     <li>
-      <div class="divider"></div>
+      <div class="divider" />
     </li>
     <li>
       <a class="subheader">Subheader</a>

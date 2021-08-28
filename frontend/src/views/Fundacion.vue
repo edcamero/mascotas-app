@@ -1,11 +1,11 @@
 <template>
   <div class="fundacion container">
     <div class="col s12 m3">
-      <Menu></Menu>
+      <Menu />
     </div>
 
     <main>
-      <router-view></router-view>
+      <router-view />
     </main>
   </div>
 </template>

@@ -1,13 +1,13 @@
 <template>
-  <div id="login-page" class="row ">
+  <div id="login-page" class="row">
     <div class="col s12 l4 offset-l4 z-depth-6 card-panel">
       <form class="login-form" @submit.prevent="register">
-        <div class="row"></div>
+        <div class="row" />
         <div class="row">
           <h4>Registro de Adoptante</h4>
           <div class="input-field col s12">
             <i class="material-icons prefix">mail_outline</i>
-            <input class="validate" id="email" type="email" v-model="email" />
+            <input id="email" v-model="email" class="validate" type="email" />
             <label for="email" data-error="wrong" data-success="right"
               >Email</label
             >
@@ -16,7 +16,7 @@
         <div class="row">
           <div class="input-field col s12">
             <i class="material-icons prefix">lock_outline</i>
-            <input id="password" type="password" v-model="password" />
+            <input id="password" v-model="password" type="password" />
             <label for="password">Password</label>
           </div>
         </div>
@@ -25,8 +25,8 @@
             <i class="material-icons prefix">lock_outline</i>
             <input
               id="confirm-password"
-              type="password"
               v-model="confirmPassword"
+              type="password"
             />
             <label for="password">Confirmar Password</label>
           </div>
