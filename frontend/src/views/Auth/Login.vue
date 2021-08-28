@@ -2,18 +2,16 @@
   <div id="login-page" class="row">
     <div class="col s12 l4 offset-l4 z-depth-6 card-panel">
       <form class="login-form" @submit.prevent="login">
-        <div class="row"></div>
+        <div class="row" />
         <div class="row">
           <h4>Login</h4>
           <div class="input-field col s12">
             <i class="material-icons prefix">mail_outline</i>
-            <input class="validate" id="email" type="email" v-model="email" />
+            <input id="email" v-model="email" class="validate" type="email" />
             <label for="email" data-error="wrong" data-success="right"
               >Email</label
             >
-            <span
-              v-if="error.status === 404"
-              class="helper-text red-text"
+            <span v-if="error.status === 404" class="helper-text red-text"
               >Error en el correo</span
             >
           </div>
@@ -21,11 +19,9 @@
         <div class="row">
           <div class="input-field col s12">
             <i class="material-icons prefix">lock_outline</i>
-            <input id="password" type="password" v-model="password" />
+            <input id="password" v-model="password" type="password" />
             <label for="password">Password</label>
-            <span
-              v-if="error.status === 401"
-              class="helper-text red-text"
+            <span v-if="error.status === 401" class="helper-text red-text"
               >Contraseña no valida</span
             >
           </div>
@@ -47,7 +43,9 @@
         </div>
         <div class="row">
           <div class="input-field col s6 m6 l6">
-            <p class="margin medium-small"><a href="#">Registrarme!</a></p>
+            <p class="margin medium-small">
+              <a href="#">Registrarme!</a>
+            </p>
           </div>
           <div class="input-field col s6 m6 l6">
             <p class="margin right-align medium-small">

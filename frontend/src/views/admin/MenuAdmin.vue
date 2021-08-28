@@ -2,7 +2,7 @@
   <ul
     id="slide-in"
     class="sidenav sidenav-fixed"
-    style="transform: translateX(0%);"
+    style="transform: translateX(0%)"
   >
     <li>
       <div class="user-view">
@@ -40,18 +40,18 @@
                 <router-link
                   class="waves-effect waves-light"
                   to="/admin/fundacion/registrar"
-                  >Agregar</router-link
                 >
+                  Agregar
+                </router-link>
               </li>
               <li>
                 <router-link
                   class="waves-effect waves-light"
                   to="/admin/fundacion/lista"
-                  >Listar</router-link
                 >
+                  Listar
+                </router-link>
               </li>
-
-             
             </ul>
           </div>
         </li>
@@ -70,8 +70,9 @@
                 <router-link
                   class="waves-effect waves-light"
                   to="/fundacion/mascota/registrar"
-                  >Agregar</router-link
                 >
+                  Agregar
+                </router-link>
               </li>
 
               <li><a href="#!">Listar</a></li>
@@ -84,7 +85,7 @@
       <a href="#!">Second Link</a>
     </li>
     <li>
-      <div class="divider"></div>
+      <div class="divider" />
     </li>
     <li>
       <a class="subheader">Subheader</a>
