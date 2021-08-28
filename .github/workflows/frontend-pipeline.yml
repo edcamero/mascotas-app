@@ -1,12 +1,6 @@
 name: CI
 
-on: 
-    push:
-        paths:
-            - 'frontend/**'
-    pull_request:
-        paths:
-             - 'frontend/**'
+on: [push,pull_request]
 
 jobs:
   frontend:
@@ -22,7 +16,7 @@ jobs:
     -   name: Check code with EsLint 
         run: cd frontend && yarn lint
     
-    -   name Check code with Prettier
+    -   name: Check code with Prettier
         run: cd frontend && yarn prettier
         
     -   name Build Vue APP
