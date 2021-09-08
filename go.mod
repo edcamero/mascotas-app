@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/Joker/hpp v1.0.0 // indirect
+	github.com/andybalholm/brotli v1.0.3 // indirect
 	github.com/iris-contrib/middleware/cors v0.0.0-20201012144513-9d3d1026d313
 	github.com/iris-contrib/middleware/jwt v0.0.0-20201012144513-9d3d1026d313
 	github.com/joho/godotenv v1.3.0
