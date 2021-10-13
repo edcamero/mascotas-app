@@ -3,9 +3,8 @@ package services
 import (
 	"context"
 
-	"github.com/edcamero/api-go/environment"
 	"github.com/edcamero/api-go/models"
-	"github.com/iris-contrib/middleware/jwt"
+	"github.com/edcamero/api-go/util"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -38,15 +37,13 @@ func (service *userService) Login(ctx context.Context, email string, password st
 	if err != nil {
 		return userLoginResponse, err
 	}
-	token := jwt.NewTokenWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"id":       userData.ID,
-		"rol":      userData.Rol.Nombre,
-		"username": userData.UserName,
-	})
-	tokenString, _ := token.SignedString([]byte(environment.SECRETKEY))
+	token, err := util.GenerateToken(userData)
+	if err != nil {
+		return userLoginResponse, err
+	}
 	userLoginResponse.User = userData
-	userLoginResponse.Token = tokenString
-	userLoginResponse.RefreshToken = tokenString
+	userLoginResponse.Token = token
+	userLoginResponse.RefreshToken = token
 
 	return userLoginResponse, err
 
