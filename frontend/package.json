@@ -30,7 +30,8 @@
     "vue": "^3.0.0-0",
     "vue-loader-v16": "^16.0.0-beta.5.4",
     "vue-material": "^1.0.0-beta-15",
-    "vue-router": "^4.0.0-0"
+    "vue-router": "^4.0.0-0",
+    "vue3-dropzone": "^0.0.7"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.13",

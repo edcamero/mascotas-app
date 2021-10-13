@@ -3,6 +3,7 @@ package main
 import (
 	"os"
 
+	"github.com/edcamero/api-go/db"
 	"github.com/edcamero/api-go/environment"
 
 	myrouter "github.com/edcamero/api-go/router"
@@ -19,9 +20,11 @@ func main() {
 		port = "8080" //localhost
 	}
 
+	database := db.GetDatabase()
+
 	crs := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"}, // allows everything, use that to change the hosts.
-		AllowedMethods:   []string{"GET", "POST", "DELETE"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
 		AllowCredentials: true,
 		AllowedHeaders:   []string{"*"},
 	})
@@ -41,14 +44,14 @@ func main() {
 		ctx.JSON(iris.Map{"message": "Hello Iris!"})
 	})
 
-	myrouter.AddRutas(app)
+	myrouter.AddRutas(app, database)
 
 	// Listens and serves incoming http requests
 	// on http://localhost:8080.
 	app.Listen(":" + port)
 }
 
-func myMiddleware(ctx iris.Context) {
+/*func myMiddleware(ctx iris.Context) {
 	ctx.Application().Logger().Infof("Runs before %s", ctx.Path())
 	ctx.Next()
-}
+}*/

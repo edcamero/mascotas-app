@@ -23,7 +23,13 @@ type Usuario struct {
 }
 
 type UsuarioView struct {
-	ID       primitive.ObjectID `bson:"_id"`
+	ID       primitive.ObjectID `json:"id" bson:"_id"`
 	UserName string             `json:"username" bson:"username"`
 	Rol      Rol                `json:"rol" bson:"rol"`
+}
+
+type UsuarioLoginResponse struct {
+	User         UsuarioView `json:"user"`
+	Token        string      `json:"token"`
+	RefreshToken string      `json:"refrechToken"`
 }

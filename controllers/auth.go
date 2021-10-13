@@ -13,6 +13,7 @@ import (
 	"github.com/edcamero/api-go/db"
 	"github.com/edcamero/api-go/environment"
 	"github.com/edcamero/api-go/models"
+	"github.com/edcamero/api-go/services"
 	"github.com/edcamero/api-go/util"
 )
 
@@ -20,7 +21,29 @@ type Token struct {
 	TokenUser string `json:"tokenUser"`
 }
 
-func Login(ctx iris.Context) {
+type AuthService struct {
+	service services.AuthService
+}
+
+func NewAuthController(service services.AuthService) *AuthService {
+	return &AuthService{service: service}
+}
+
+func (handler *AuthService) Login(ctx iris.Context) {
+	email := ctx.FormValue("email")
+	password := util.Encrypt([]byte(ctx.FormValue("password")))
+	user, err := handler.service.Login(nil, email, password)
+	if err != nil {
+		log.Println(email)
+		log.Println(err)
+		ctx.StopWithStatus(iris.StatusUnauthorized)
+		return
+	}
+
+	ctx.JSON(user)
+
+}
+func Login1(ctx iris.Context) {
 
 	user := models.UsuarioView{}
 	//err := json.NewDecoder(ctx.Request().Body).Decode(&filter)
