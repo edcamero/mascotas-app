@@ -3,6 +3,7 @@ package models
 import (
 	"time"
 
+	"github.com/kataras/iris/v12/middleware/jwt"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -29,7 +30,6 @@ type UsuarioView struct {
 }
 
 type UsuarioLoginResponse struct {
-	User         UsuarioView `json:"user"`
-	Token        string      `json:"token"`
-	RefreshToken string      `json:"refrechToken"`
+	User  UsuarioView   `json:"user"`
+	Token jwt.TokenPair `json:"token"`
 }
