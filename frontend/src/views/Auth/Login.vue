@@ -60,18 +60,20 @@
 
 <script>
 const statusNotfound = 404;
+import TokenService from "../../services/token.service";
+import axios from "../../services/axios.services"
+
 export default {
   data: () => ({
     email: null,
     password: null,
-    token: "",
-    user: null,
+    token: { access_token: "", refresh_token: "" },
+    user: {id: "",username:"",rol:{ name: ""}},
     error: { status: 0, message: "" },
   }),
 
   methods: {
     login() {
-      const axios = require("axios").default;
       let formData = new FormData();
       if (this.email && this.password) {
         console.log(process.env.VUE_APP_RUTA_API + "login");
@@ -82,17 +84,17 @@ export default {
           .post(process.env.VUE_APP_RUTA_API + "login", formData)
           .then(
             (response) => (
+              (this.user = response.data.user),
               (this.token = response.data.token),
               console.log(response.data),
               localStorage.setItem("isLogin", "true"),
-              localStorage.setItem("token", this.token),
               (this.$root.isLogin = true),
-              (this.user = response.data.user),
-              localStorage.setItem("username", this.user.username),
-              localStorage.setItem("rol", this.user.rol.name),
+              
+              TokenService.setUser(response.data.user),
+              TokenService.setToken(response.data.token),
               this.redireccionar(this.user.rol.name)
             )
-          )
+          )           
           .catch((error) => {
             this.error.status = error.response.status;
             this.error.message =
@@ -103,7 +105,6 @@ export default {
       }
     },
     redireccionar(rol) {
-      console.log("redireccionando a:" + rol);
       switch (rol) {
         case "adoptante":
           this.$router.push("/adoptante");

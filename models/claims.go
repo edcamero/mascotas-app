@@ -1,9 +1,12 @@
 package models
 
 type Claims struct {
-	Id       string `json:"id" bson:"_id"`
-	Rol      string `json:"rol"`
-	UserName string `json:"username"`
+	Id          string `json:"id" bson:"_id"`
+	Rol         string `json:"rol"`
+	UserName    string `json:"username"`
+	FullName    string `json:"fullname"`
+	Email       string `json:"email"`
+	ImagePerfil string `json:"imagePerfil"`
 }
 
 type IClaims interface {

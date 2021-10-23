@@ -40,7 +40,7 @@ func (service *authService) Login(ctx context.Context, email string, password st
 	if err != nil {
 		return userLoginResponse, err
 	}
-	claims := models.Claims{Id: userData.ID.Hex(), Rol: userData.Rol.Nombre, UserName: userData.UserName}
+	claims := models.Claims{Id: userData.ID.Hex(), Rol: userData.Rol.Nombre, UserName: userData.UserName, FullName: userData.FullName, Email: userData.Email, ImagePerfil: userData.ImagePerfil}
 	token, err := util.GenerateToken(claims)
 	if err != nil {
 		return userLoginResponse, err

@@ -58,6 +58,9 @@ func GetClaims(ctx iris.Context) models.Claims {
 	claims.Id = claimsMap["id"].(string)
 	claims.Rol = claimsMap["rol"].(string)
 	claims.UserName = claimsMap["username"].(string)
+	claims.FullName = claimsMap["fullname"].(string)
+	claims.Email = claimsMap["email"].(string)
+	claims.ImagePerfil = claimsMap["imagePerfil"].(string)
 	return claims
 }
 func AuthenticatedAdoptante(ctx iris.Context) {

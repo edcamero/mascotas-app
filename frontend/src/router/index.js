@@ -12,6 +12,7 @@ import RegistrarMascotaFundacion from "../views/fundacion/RegistrarMascotaFundac
 import Adoptante from "../views/Adoptante.vue";
 import Login from "../views/Auth/Login.vue";
 import Register from "../views/Auth/Register.vue";
+import TokenService from "../services/token.service";
 const routes = [
   {
     path: "/",
@@ -92,11 +93,11 @@ router.beforeEach((to, from, next) => {
     if (localStorage.getItem("isLogin") === "true") {
       var urlArray = to.path.split("/");
       console.log(urlArray[1]);
-      if (localStorage.getItem("rol") === urlArray[1]) {
+      if (TokenService.getUser().rol.name === urlArray[1]) {
         next();
       } else {
         console.log(to.path);
-        next("/" + localStorage.getItem("rol"));
+        next("/" + TokenService.getUser().rol.name);
       }
     } else {
       next("/login");
