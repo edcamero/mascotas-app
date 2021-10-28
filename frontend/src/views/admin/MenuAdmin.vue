@@ -5,14 +5,14 @@
     style="transform: translateX(0%)"
   >
     <li>
-      <div v-if="user" class="user-view" >
+      <div v-if="user" class="user-view">
         <div class="background">
           <img
             src="http://www.dauro.es/wp-content/uploads/2017/06/mobiliario-de-oficina-43.jpg"
           />
         </div>
         <a href="#user">
-          <img class="circle"  :src="user.imagePerfil" />
+          <img class="circle" :src="user.imagePerfil" />
         </a>
         <a href="#name">
           <span class="white-text name">{{ user.fullname }}</span>

@@ -61,14 +61,14 @@
 <script>
 const statusNotfound = 404;
 import TokenService from "../../services/token.service";
-import axios from "../../services/axios.services"
+import axios from "../../services/axios.services";
 
 export default {
   data: () => ({
     email: null,
     password: null,
     token: { access_token: "", refresh_token: "" },
-    user: {id: "",username:"",rol:{ name: ""}},
+    user: { id: "", username: "", rol: { name: "" } },
     error: { status: 0, message: "" },
   }),
 
@@ -89,12 +89,11 @@ export default {
               console.log(response.data),
               localStorage.setItem("isLogin", "true"),
               (this.$root.isLogin = true),
-              
               TokenService.setUser(response.data.user),
               TokenService.setToken(response.data.token),
               this.redireccionar(this.user.rol.name)
             )
-          )           
+          )
           .catch((error) => {
             this.error.status = error.response.status;
             this.error.message =
