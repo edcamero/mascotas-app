@@ -33,12 +33,17 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 	var (
 		// Collections.
 		usersCollection = database.Collection("usuarios")
+		petsCollection  = database.Collection("animal")
 
 		// Services.
 
 		authService = services.NewAuthService(usersCollection)
+		petsService = services.NewPetsService(petsCollection)
+
+		//Controllers
 
 		authController = controllers.NewAuthController(authService)
+		petsController = controllers.NewPetsController(petsService)
 	)
 
 	j := jwt.New(jwt.Config{
@@ -53,6 +58,7 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 
 	api := app.Party("/api")
 	api.Post("/login", authController.Login)
+	api.Get("/pets", petsController.GetAll)
 	//api.Use(util.Verify())
 	api.Use(j.Serve)
 	api.Get("/refresh", authController.RefreshToken)
