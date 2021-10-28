@@ -18,7 +18,7 @@
           <span class="white-text name">{{ user.fullname }}</span>
         </a>
         <a href="#email">
-          <span class="white-text email">{{ user.fullname }}</span>
+          <span class="white-text email">{{ user.email }}</span>
         </a>
       </div>
     </li>
