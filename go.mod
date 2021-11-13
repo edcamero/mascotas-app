@@ -12,5 +12,5 @@ require (
 	github.com/mattn/go-colorable v0.1.8 // indirect
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	github.com/yudai/pp v2.0.1+incompatible // indirect
-	go.mongodb.org/mongo-driver v1.5.1
+	go.mongodb.org/mongo-driver v1.7.4
 )
