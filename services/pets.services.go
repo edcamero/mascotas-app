@@ -27,10 +27,22 @@ func NewPetsService(collection *mongo.Collection) PetsService {
 }
 
 func (service petsService) GetAll(ctx context.Context) ([]models.AnimalView, error) {
-	findOptions := options.Find()
+
+	projection := bson.D{
+		primitive.E{Key: "nombre", Value: 1},
+		primitive.E{Key: "color", Value: 1},
+		primitive.E{Key: "tamaño", Value: 1},
+		primitive.E{Key: "esterilizado", Value: 1},
+		primitive.E{Key: "descripcion", Value: 1},
+		primitive.E{Key: "fecha_nacimiento", Value: 1},
+		primitive.E{Key: "especie", Value: 1},
+		primitive.E{Key: "fotos", Value: 1},
+	}
+
+	findOptions := options.Find().SetProjection(projection)
 	cursor, err := service.animalCollection.Find(ctx, bson.D{}, findOptions)
 	if err != nil {
-		fmt.Println("este error")
+		fmt.Println(err)
 		return nil, err
 	}
 	defer cursor.Close(ctx)

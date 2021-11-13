@@ -31,7 +31,7 @@ type AnimalView struct {
 	Descripcion      string    `json:"descripcion" bson:"descripcion"`
 	Fecha_nacimiento time.Time `json:"fecha_nacimiento" bson:"fecha_nacimiento"`
 	Especie          string    `json:"especie" bson:"especie"`
-	Foto             Foto      `json:"fotos" bson:"fotos"`
+	Foto             []Foto    `json:"fotos" bson:"fotos"`
 }
 
 type AnimalDetail struct {
