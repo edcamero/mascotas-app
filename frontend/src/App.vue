@@ -96,12 +96,16 @@
         <router-link v-if="!isLogin" to="/register/"> Registrarme </router-link>
       </li>
     </ul>
+    <FooterComponent />
   </div>
 </template>
 
 <script>
-import M from "materialize-css";
+import M from "materialize-css"
+import FooterComponent from "./views/FooterComponent.vue"
+
 export default {
+  components: { FooterComponent },
   data: () => ({
     isLogin: false,
     user: null,
@@ -141,7 +145,6 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 </style>

@@ -36,7 +36,8 @@ func (service petsService) GetAll(ctx context.Context) ([]models.AnimalView, err
 		primitive.E{Key: "descripcion", Value: 1},
 		primitive.E{Key: "fecha_nacimiento", Value: 1},
 		primitive.E{Key: "especie", Value: 1},
-		primitive.E{Key: "fotos", Value: 1},
+		primitive.E{Key: "fotos", Value: bson.D{primitive.E{Key: "$slice", Value: 1}}},
+		primitive.E{Key: "sexo", Value: 1},
 	}
 
 	findOptions := options.Find().SetProjection(projection)

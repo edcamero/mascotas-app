@@ -12,6 +12,7 @@ import RegistrarMascotaFundacion from "../views/fundacion/RegistrarMascotaFundac
 import Adoptante from "../views/Adoptante.vue";
 import Login from "../views/Auth/Login.vue";
 import Register from "../views/Auth/Register.vue";
+import PetsDetails from "../components/PublicPets/PetsDetails.component.vue"
 import TokenService from "../services/token.service";
 const routes = [
   {
@@ -81,6 +82,12 @@ const routes = [
     name: "Register",
     component: Register,
   },
+  {
+    path: "/pets/:id",
+    name: "pet details",
+    component: PetsDetails,
+  },
+
 ];
 
 const router = createRouter({
