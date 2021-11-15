@@ -13,14 +13,14 @@
             ><i class="material-icons">menu</i></a
           >
           <ul id="nav-mobile" class="right hide-on-med-and-down">
-            <li>
+            <li @click="changeMenu()">
               <router-link class="waves-effect waves-light" to="/">
                 Home
               </router-link>
             </li>
-            <li>
+            <li @click="changeMenu()">
               <router-link
-                v-if="rol == 'admin'"
+                v-if="user?.rol?.name == 'admin' && isPublic"
                 class="waves-effect waves-light"
                 to="/admin/"
               >
@@ -29,14 +29,14 @@
             </li>
             <li>
               <router-link
-                v-if="rol == 'fundacion'"
+                v-if="user?.rol?.name == 'fundacion'"
                 class="waves-effect waves-light"
                 to="/fundacion/"
               >
                 Fundacion
               </router-link>
             </li>
-            <li>
+            <li @click="changeMenu">
               <router-link
                 v-if="rol == 'adoptante'"
                 class="waves-effect waves-light"
@@ -96,17 +96,24 @@
         <router-link v-if="!isLogin" to="/register/"> Registrarme </router-link>
       </li>
     </ul>
+    <FooterComponent />
   </div>
 </template>
 
 <script>
 import M from "materialize-css";
+import FooterComponent from "./views/FooterComponent.vue";
+import TokenService from "./services/token.service";
+
 export default {
+  components: { FooterComponent },
   data: () => ({
+    isPublic: true,
     isLogin: false,
     user: null,
     rol: null,
   }),
+  computed: {},
   watch: {
     isLogin(newLogin) {
       localStorage.isLogin = newLogin;
@@ -119,6 +126,10 @@ export default {
   },
   mounted() {
     M.AutoInit();
+    this.user = TokenService.getUser();
+  },
+  updated() {
+    console.log(this.$router.options.history.location);
   },
   methods: {
     logOut() {
@@ -132,6 +143,13 @@ export default {
       localStorage.removeItem("username");
       this.$router.push("/");
     },
+    changeMenu() {
+      if (this.$router.options.history.location === "/admin/") {
+        this.isPublic = false;
+      } else {
+        this.isPublic = true;
+      }
+    },
   },
 };
 </script>
@@ -141,7 +159,6 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 </style>

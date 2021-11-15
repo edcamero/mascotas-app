@@ -5,23 +5,20 @@
     style="transform: translateX(0%)"
   >
     <li>
-      <div class="user-view">
+      <div v-if="user" class="user-view">
         <div class="background">
           <img
             src="http://www.dauro.es/wp-content/uploads/2017/06/mobiliario-de-oficina-43.jpg"
           />
         </div>
         <a href="#user">
-          <img
-            class="circle"
-            src="https://i1.sndcdn.com/avatars-000587714706-vjdrog-t200x200.jpg"
-          />
+          <img class="circle" :src="user.imagePerfil" />
         </a>
         <a href="#name">
-          <span class="white-text name">John Doe</span>
+          <span class="white-text name">{{ user.fullname }}</span>
         </a>
         <a href="#email">
-          <span class="white-text email">jdandturk@gmail.com</span>
+          <span class="white-text email">{{ user.email }}</span>
         </a>
       </div>
     </li>
@@ -101,14 +98,17 @@
 </template>
 <script>
 import M from "materialize-css";
+import TokenService from "../../services/token.service";
 export default {
   data: () => ({
     isVisible: false,
     elemento: null,
     instances: null,
+    user: null,
   }),
   mounted() {
     M.AutoInit();
+    this.user = TokenService.getUser();
   },
   methods: {
     cambiar() {

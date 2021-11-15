@@ -2,17 +2,12 @@ package controllers
 
 import (
 	//"encoding/json"
-	"context"
-	"log"
-	"os"
 
-	"github.com/iris-contrib/middleware/jwt"
+	otroJwt "github.com/iris-contrib/middleware/jwt"
 	"github.com/kataras/iris/v12"
-	"go.mongodb.org/mongo-driver/bson"
 
-	"github.com/edcamero/api-go/db"
-	"github.com/edcamero/api-go/environment"
 	"github.com/edcamero/api-go/models"
+	"github.com/edcamero/api-go/services"
 	"github.com/edcamero/api-go/util"
 )
 
@@ -20,45 +15,58 @@ type Token struct {
 	TokenUser string `json:"tokenUser"`
 }
 
-func Login(ctx iris.Context) {
+type AuthService struct {
+	service services.AuthService
+}
 
-	user := models.UsuarioView{}
-	//err := json.NewDecoder(ctx.Request().Body).Decode(&filter)
+func NewAuthController(service services.AuthService) *AuthService {
+	return &AuthService{service: service}
+}
+
+func (handler *AuthService) Login(ctx iris.Context) {
 	email := ctx.FormValue("email")
 	password := util.Encrypt([]byte(ctx.FormValue("password")))
-	filter := bson.M{"email": email, "password": password}
-	userExists := bson.M{"email": email}
-	conexion := db.GetConnection()
-	collection := conexion.Database(os.Getenv("DATABASE")).Collection("usuarios")
-	err := collection.FindOne(context.TODO(), userExists).Decode(&user)
-
+	user, err := handler.service.Login(nil, email, password)
 	if err != nil {
-		ctx.StopWithStatus(iris.StatusNotFound)
-		return
-	}
-
-	err = collection.FindOne(context.TODO(), filter).Decode(&user)
-	if err != nil {
-		log.Println(email)
-		log.Println(err)
 		ctx.StopWithStatus(iris.StatusUnauthorized)
 		return
-	} else {
-		token := jwt.NewTokenWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-			"rol":      user.Rol.Nombre,
-			"username": user.UserName,
-		})
-		tokenString, _ := token.SignedString([]byte(environment.SECRETKEY))
-		ctx.JSON(iris.Map{"user": user, "token": tokenString})
-
 	}
+
+	ctx.JSON(user)
 
 }
 
+func (handler *AuthService) RefreshToken(ctx iris.Context) {
+
+	refreshToken := []byte(ctx.URLParam("refresh_token"))
+	var userClaims models.Claims
+	userClaims = GetClaims(ctx)
+	tokenPair, err := handler.service.RefreshToken(nil, userClaims, refreshToken)
+	if err != nil {
+		ctx.StopWithStatus(iris.StatusUnauthorized)
+		return
+	}
+	ctx.JSON(tokenPair)
+
+}
+
+func GetClaims(ctx iris.Context) models.Claims {
+
+	var claims models.Claims
+	tokenclaims := ctx.Values().Get("jwt").(*otroJwt.Token)
+	claimsMap := tokenclaims.Claims.(otroJwt.MapClaims)
+	claims.Id = claimsMap["id"].(string)
+	claims.Rol = claimsMap["rol"].(string)
+	claims.UserName = claimsMap["username"].(string)
+	claims.FullName = claimsMap["fullname"].(string)
+	claims.Email = claimsMap["email"].(string)
+	claims.ImagePerfil = claimsMap["imagePerfil"].(string)
+	return claims
+}
 func AuthenticatedAdoptante(ctx iris.Context) {
 
-	user := ctx.Values().Get("jwt").(*jwt.Token)
-	item := user.Claims.(jwt.MapClaims)
+	user := ctx.Values().Get("jwt").(*otroJwt.Token)
+	item := user.Claims.(otroJwt.MapClaims)
 	if item["rol"] == "adoptante" {
 		ctx.Next()
 	} else {
@@ -69,8 +77,8 @@ func AuthenticatedAdoptante(ctx iris.Context) {
 func AuthenticatedAdmin(ctx iris.Context) {
 	//ctx.StopWithStatus(iris.StatusUnauthorized)
 
-	user := ctx.Values().Get("jwt").(*jwt.Token)
-	item := user.Claims.(jwt.MapClaims)
+	user := ctx.Values().Get("jwt").(*otroJwt.Token)
+	item := user.Claims.(otroJwt.MapClaims)
 	if item["rol"] == "admin" {
 		ctx.Next()
 	} else {
@@ -81,8 +89,8 @@ func AuthenticatedAdmin(ctx iris.Context) {
 func AuthenticatedFundacion(ctx iris.Context) {
 	//ctx.StopWithStatus(iris.StatusUnauthorized)
 
-	user := ctx.Values().Get("jwt").(*jwt.Token)
-	item := user.Claims.(jwt.MapClaims)
+	user := ctx.Values().Get("jwt").(*otroJwt.Token)
+	item := user.Claims.(otroJwt.MapClaims)
 	if item["rol"] == "admin" {
 		ctx.Next()
 	} else {

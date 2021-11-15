@@ -16,6 +16,7 @@
     "@vue/eslint-config-typescript": "^7.0.0",
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "date-fns": "^2.25.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-node": "^11.1.0",
@@ -29,7 +30,9 @@
     "register-service-worker": "^1.7.1",
     "vue": "^3.0.0-0",
     "vue-loader-v16": "^16.0.0-beta.5.4",
-    "vue-router": "^4.0.0-0"
+    "vue-material": "^1.0.0-beta-15",
+    "vue-router": "^4.0.0-0",
+    "vue3-dropzone": "^0.0.7"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.5.13",
@@ -41,9 +44,9 @@
     "@vue/compiler-sfc": "^3.0.0-0",
     "@vue/test-utils": "^2.0.0-0",
     "babel-eslint": "^10.1.0",
-    "eslint": "^6.7.2",
+    "eslint": "^7.32.0",
     "eslint-plugin-vue": "^7.17.0",
-    "typescript": "~3.9.3",
+    "typescript": "~4.4.3",
     "vue-cli-plugin-vuetify": "^2.4.0",
     "vue-jest": "^5.0.0-0"
   },
