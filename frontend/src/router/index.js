@@ -12,8 +12,10 @@ import RegistrarMascotaFundacion from "../views/fundacion/RegistrarMascotaFundac
 import Adoptante from "../views/Adoptante.vue";
 import Login from "../views/Auth/Login.vue";
 import Register from "../views/Auth/Register.vue";
-import PetsDetails from "../components/PublicPets/PetsDetails.component.vue"
+import PetsDetails from "../components/PublicPets/PetsDetails.component.vue";
 import TokenService from "../services/token.service";
+import AdminPetsList from "../components/AdminPets/AdminPetsList/AdminPetsList.component.vue";
+
 const routes = [
   {
     path: "/",
@@ -40,6 +42,14 @@ const routes = [
       {
         path: "fundacion/lista",
         component: ListarFundacionesAdmin,
+      },
+      {
+        path: "pets",
+        component: AdminPetsList,
+      },
+      {
+        path: "pets/create",
+        component: RegistrarMascotaFundacion,
       },
     ],
   },
@@ -87,7 +97,6 @@ const routes = [
     name: "pet details",
     component: PetsDetails,
   },
-
 ];
 
 const router = createRouter({

@@ -78,5 +78,7 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 	api.Post("/user", Controllers.StoreUsers)
 	api.Put("/user/{id:uint64}", Controllers.UpdateUser)
 	api.Delete("/user/{id:uint64}", Controllers.DeleteUser)
+	// routes pets private
+	api.Get("/admin/pets", petsController.GetAllPrivate)
 
 }

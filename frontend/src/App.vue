@@ -4,7 +4,7 @@
       <nav class="teal lighten-2">
         <div class="nav-wrapper">
           <a href="#" data-target="mobile-demo" class="sidenav-trigger"
-            ><i class="material-icons">menu</i></a
+            ><i class="material-icons">menu1</i></a
           >
           <a
             href="#"
@@ -149,6 +149,11 @@ export default {
       } else {
         this.isPublic = true;
       }
+    },
+    hiddeMenu() {
+      var elems = document.querySelectorAll(".sidenav");
+      var instances = M.Sidenav.init(elems);
+      instances.close();
     },
   },
 };

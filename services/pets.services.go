@@ -13,6 +13,7 @@ import (
 
 type PetsService interface {
 	GetAll(ctx context.Context) ([]models.AnimalView, error)
+	GetAllPrivate(ctx context.Context) ([]models.Animal, error)
 	GetByID(ctx context.Context, id string) (models.AnimalDetail, error)
 }
 
@@ -89,4 +90,33 @@ func matchID(id string) (bson.D, error) {
 
 	filter := bson.D{{Key: "_id", Value: objectID}}
 	return filter, nil
+}
+
+func (service petsService) GetAllPrivate(ctx context.Context) ([]models.Animal, error) {
+
+	findOptions := options.Find()
+	cursor, err := service.animalCollection.Find(ctx, bson.D{}, findOptions)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	var results []models.Animal
+
+	for cursor.Next(ctx) {
+		if err = cursor.Err(); err != nil {
+			fmt.Println("este error cursor")
+			return nil, err
+		}
+		var elem models.Animal
+		err = cursor.Decode(&elem)
+		if err != nil {
+			fmt.Println(err)
+			return nil, err
+		}
+		results = append(results, elem)
+	}
+	return results, nil
+
 }
