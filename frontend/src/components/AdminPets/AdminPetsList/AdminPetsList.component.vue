@@ -23,7 +23,7 @@
           <td>{{ pet.especie }}</td>
           <td>{{ pet.color }}</td>
           <td>{{ getSexo(pet) }}</td>
-          <td>{{ getAge(pet.fecha_nacimiento) }} meses</td>
+          <td>{{ getAge(pet) }} meses</td>
           <td>{{ getEsterilizado(pet) }}</td>
           <td>
             <a class="waves-effect waves-light btn-small"
@@ -36,8 +36,10 @@
   </div>
 </template>
 <script>
-import axios from "axios";
-import { differenceInCalendarMonths } from "date-fns";
+import axios from "axios"
+import UsePets from "../Resources/UsePets.js"
+
+const { getSexo, getAge, getEsterilizado } = UsePets();
 
 export default {
   name: "AdminPetsList",
@@ -51,15 +53,9 @@ export default {
       .then((response) => (this.pets = response.data));
   },
   methods: {
-    getSexo(pet) {
-      return pet?.sexo === "F" ? "Hembra" : "macho";
-    },
-    getAge: (dateBegging) => {
-      return differenceInCalendarMonths(new Date(), new Date(dateBegging));
-    },
-    getEsterilizado(pet) {
-      return pet?.esterilizado ? "Si" : "No";
-    },
+    getSexo: getSexo,
+    getAge: getAge,
+    getEsterilizado: getEsterilizado,
   },
 };
 </script>
