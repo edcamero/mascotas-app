@@ -26,8 +26,8 @@
           <td>{{ getAge(pet) }} meses</td>
           <td>{{ getEsterilizado(pet) }}</td>
           <td>
-            <a class="waves-effect waves-light btn-small"
-              ><i class="material-icons left">visibility</i>ver</a
+            <router-link :to="`/admin/pets/view/${pet.ID}`"  class="waves-effect waves-light btn-small"
+              ><i class="material-icons left">visibility</i>ver</router-link
             >
           </td>
         </tr>
@@ -39,7 +39,7 @@
 import axios from "axios"
 import UsePets from "../Resources/UsePets.js"
 
-const { getSexo, getAge, getEsterilizado } = UsePets();
+const { getSexo, getAge, getEsterilizado } = UsePets()
 
 export default {
   name: "AdminPetsList",

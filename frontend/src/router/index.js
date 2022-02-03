@@ -6,15 +6,17 @@ import HomeAdmin from "../views/admin/HomeAdmin.vue";
 import RegistrarFundacion from "../views/admin/fundaciones/RegistrarFundacion.vue";
 import ListarFundacionesAdmin from "../views/admin/fundaciones/ListarFundaciones.vue";
 //rutas de Fundaciones
-import Fundacion from "../views/Fundacion.vue";
-import HomeFundacion from "../views/fundacion/HomeFundacion.vue";
-import RegistrarMascotaFundacion from "../views/fundacion/RegistrarMascotaFundacion.vue";
-import Adoptante from "../views/Adoptante.vue";
-import Login from "../views/Auth/Login.vue";
-import Register from "../views/Auth/Register.vue";
-import PetsDetails from "../components/PublicPets/PetsDetails.component.vue";
-import TokenService from "../services/token.service";
-import AdminPetsList from "../components/AdminPets/AdminPetsList/AdminPetsList.component.vue";
+import Fundacion from "../views/Fundacion.vue"
+import HomeFundacion from "../views/fundacion/HomeFundacion.vue"
+import RegistrarMascotaFundacion from "../views/fundacion/RegistrarMascotaFundacion.vue"
+import Adoptante from "../views/Adoptante.vue"
+import Login from "../views/Auth/Login.vue"
+import Register from "../views/Auth/Register.vue"
+import PetsDetails from "../components/PublicPets/PetsDetails.component.vue"
+import TokenService from "../services/token.service"
+import AdminPetsList from "../components/AdminPets/AdminPetsList/AdminPetsList.component.vue"
+import AdminPetsView from "../components/AdminPets/AdminPetsView/AdminPetsView.component.vue"
+import AdminPetsCreate from "../components/AdminPets/AdminPetsCreate/AdminPetsCreate.compornent.vue"
 
 const routes = [
   {
@@ -48,8 +50,12 @@ const routes = [
         component: AdminPetsList,
       },
       {
+        path: "pets/view/:id",
+        component: AdminPetsView,
+      },
+      {
         path: "pets/create",
-        component: RegistrarMascotaFundacion,
+        component: AdminPetsCreate,
       },
     ],
   },

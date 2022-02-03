@@ -1,12 +1,11 @@
 package models
 
-import "time"
+import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
-type Especie []struct {
-	Nombre string `json:"nombre"  bson:"nombre"`
-	Razas  []struct {
-		Nombre string `json:"nombre"  bson:"nombre"`
-	} `json:"razas"  bson:"razas"`
-	InsertedAt time.Time `json:"inserted_at" bson:"inserted_at"`
-	LastUpdate time.Time `json:"last_update" bson:"last_update"`
+type Especie struct {
+	ID     primitive.ObjectID `bson:"_id"`
+	Nombre string             `json:"nombre"  bson:"nombre"`
+	Razas  []Raza             `json:"razas"  bson:"razas"`
 }

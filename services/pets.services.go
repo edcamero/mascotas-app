@@ -15,6 +15,7 @@ type PetsService interface {
 	GetAll(ctx context.Context) ([]models.AnimalView, error)
 	GetAllPrivate(ctx context.Context) ([]models.Animal, error)
 	GetByID(ctx context.Context, id string) (models.AnimalDetail, error)
+	GetByIDPrivate(ctx context.Context, id string) (models.Animal, error)
 }
 
 type petsService struct {
@@ -111,6 +112,7 @@ func (service petsService) GetAllPrivate(ctx context.Context) ([]models.Animal, 
 		}
 		var elem models.Animal
 		err = cursor.Decode(&elem)
+		fmt.Println(cursor.Current)
 		if err != nil {
 			fmt.Println(err)
 			return nil, err
@@ -118,5 +120,19 @@ func (service petsService) GetAllPrivate(ctx context.Context) ([]models.Animal, 
 		results = append(results, elem)
 	}
 	return results, nil
+
+}
+
+func (service petsService) GetByIDPrivate(ctx context.Context, id string) (models.Animal, error) {
+	var petValue models.Animal
+	filter, err := matchID(id)
+	if err != nil {
+		return petValue, err
+	}
+	err = service.animalCollection.FindOne(ctx, filter).Decode(&petValue)
+	if err == mongo.ErrNoDocuments {
+		return petValue, err
+	}
+	return petValue, err
 
 }

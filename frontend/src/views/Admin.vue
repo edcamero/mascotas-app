@@ -28,3 +28,10 @@ export default {
   },
 };
 </script>
+<style scoped>
+@media only screen and (min-width: 993px) {
+  .container {
+     width: 85%;
+  }
+}
+</style>

@@ -57,3 +57,14 @@ func (handler *PetsService) GetByID(ctx iris.Context) {
 	ctx.JSON(pet)
 
 }
+func (handler *PetsService) GetByIDPrivate(ctx iris.Context) {
+	id := ctx.Params().Get("id")
+	pet, err := handler.service.GetByIDPrivate(nil, id)
+	if err != nil {
+		ctx.StopWithStatus(iris.StatusNotFound)
+		return
+	}
+
+	ctx.JSON(pet)
+
+}
