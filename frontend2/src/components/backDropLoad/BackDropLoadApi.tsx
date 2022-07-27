@@ -1,23 +1,23 @@
-import { Backdrop, CircularProgress } from '@mui/material';
-import React from 'react';
+import { Backdrop, CircularProgress } from '@mui/material'
+import React from 'react'
 
 interface IBackDropLoadApiProps {
-    open: boolean
-  }
+  open: boolean
+}
 
-const BackDropLoadApi:React.FC<IBackDropLoadApiProps> = ({open}) => {
+const BackDropLoadApi: React.FC<IBackDropLoadApiProps> = ({ open }) => {
   return (
     <Backdrop
-    sx={{
-        zIndex: (theme) => theme.zIndex.drawer + 1 ,
+      sx={{
+        zIndex: (theme) => theme.zIndex.drawer + 1,
         color: '#fff',
       }}
       open={open}
-      data-testid='backdrop'
+      data-testid="backdrop"
     >
-      <CircularProgress color='inherit' />
+      <CircularProgress color="inherit" />
     </Backdrop>
-  );
-};
+  )
+}
 
-export default BackDropLoadApi;
+export default BackDropLoadApi

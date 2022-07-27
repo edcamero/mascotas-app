@@ -11,35 +11,34 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-} from '@mui/material';
-import React from 'react';
-import MenuIcon from '@mui/icons-material/Menu';
-import { Link } from 'react-router-dom';
+} from '@mui/material'
+import React from 'react'
+import MenuIcon from '@mui/icons-material/Menu'
+import { Link } from 'react-router-dom'
 
 interface IMenuComponentProps {
-  window?: () => Window;
+  window?: () => Window
 }
 
 const navItems = [
   { name: 'Home', link: 'home' },
   { name: 'Login', link: 'login' },
-];
-const drawerWidth = 240;
+]
+const drawerWidth = 240
 const MenuComponent: React.FC = (props: IMenuComponentProps) => {
-  const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const { window } = props
+  const [mobileOpen, setMobileOpen] = React.useState(false)
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+    setMobileOpen(!mobileOpen)
+  }
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const container = window !== undefined ? () => window().document.body : undefined
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant='h6' sx={{ my: 2 }}>
-        Paticas App
+      <Typography variant="h6" sx={{ my: 2 }}>
+        {`${process.env.REACT_APP_NAME}`}
       </Typography>
       <Divider />
       <List>
@@ -47,50 +46,48 @@ const MenuComponent: React.FC = (props: IMenuComponentProps) => {
           <ListItem key={item.name} disablePadding>
             <ListItemButton sx={{ textAlign: 'center' }}>
               <Link to={item.link} style={{ textDecoration: 'none !important;' }}>
-                <ListItemText
-                  primary={item.name}
-                />
+                <ListItemText primary={item.name} />
               </Link>
             </ListItemButton>
           </ListItem>
         ))}
       </List>
     </Box>
-  );
+  )
   return (
     <>
       <Box sx={{ display: 'flex' }}>
-        <AppBar component='nav'>
+        <AppBar component="nav">
           <Toolbar>
             <IconButton
-              color='inherit'
-              aria-label='open drawer'
-              edge='start'
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
               onClick={handleDrawerToggle}
               sx={{ mr: 2, display: { sm: 'none' } }}
             >
               <MenuIcon />
             </IconButton>
             <Typography
-              variant='h6'
-              component='div'
+              variant="h6"
+              component="div"
               sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
             >
-              PATICAS APP
+              {`${process.env.REACT_APP_NAME}`}
             </Typography>
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
               {navItems.map((item) => (
-                <Link to={item.link} style={{ textDecoration: 'none' }}>
+                <Link key={item.name} to={item.link} style={{ textDecoration: 'none' }}>
                   <Button key={item.name} sx={{ color: '#fff' }}>
                     {item.name}
                   </Button>
                 </Link>
               ))}
             </Box>
-            <Box component='nav'>
+            <Box component="nav">
               <Drawer
                 container={container}
-                variant='temporary'
+                variant="temporary"
                 open={mobileOpen}
                 onClose={handleDrawerToggle}
                 ModalProps={{
@@ -98,6 +95,7 @@ const MenuComponent: React.FC = (props: IMenuComponentProps) => {
                 }}
                 sx={{
                   display: { xs: 'block', sm: 'none' },
+                  // eslint-disable-next-line @typescript-eslint/naming-convention
                   '& .MuiDrawer-paper': {
                     boxSizing: 'border-box',
                     width: drawerWidth,
@@ -111,7 +109,7 @@ const MenuComponent: React.FC = (props: IMenuComponentProps) => {
         </AppBar>
       </Box>
     </>
-  );
-};
+  )
+}
 
-export default MenuComponent;
+export default MenuComponent
