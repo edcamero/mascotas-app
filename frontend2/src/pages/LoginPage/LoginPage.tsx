@@ -13,17 +13,43 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { Paper } from '@mui/material'
+import axios from 'axios'
+import { IUserPerfil, useAuthSecurity } from './AuthProvider'
 
 const theme = createTheme()
+
 const LoginPage: React.FC = () => {
+  const { setSecurityTokens, setIsAuthenticated, setUser } = useAuthSecurity()
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    const data = new FormData(event.currentTarget)
+    const formData = new FormData(event.currentTarget)
     // eslint-disable-next-line no-console
     console.log({
-      email: data.get('email'),
-      password: data.get('password'),
+      email: formData.get('email'),
+      password: formData.get('password'),
     })
+
+    axios
+      .post(process.env.REACT_APP_API_URL + 'login', formData)
+      .then(
+        (response) => (
+          // eslint-disable-next-line no-console
+          console.log(response.data.user),
+          setUser(response.data.user as IUserPerfil),
+          setSecurityTokens({
+            accessToken: response.data.token.access_token,
+            refreshToken: response.data.token.refresh_token,
+          }),
+          setIsAuthenticated(true)
+        )
+      )
+      .catch((error) => {
+        /* this.error.status = error.response.status
+        this.error.message =
+          error.response.status === statusNotfound
+            ? 'Correo no registrado'
+            : 'Error en la contraseña'*/
+      })
   }
 
   return (
@@ -79,8 +105,7 @@ const LoginPage: React.FC = () => {
                     ¿Se te olvidó tu contraseña?
                   </Link>
                 </Grid>
-                <Grid item>
-                </Grid>
+                <Grid item></Grid>
               </Grid>
             </Box>
           </Box>

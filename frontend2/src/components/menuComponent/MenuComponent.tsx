@@ -15,22 +15,28 @@ import {
 import React from 'react'
 import MenuIcon from '@mui/icons-material/Menu'
 import { Link } from 'react-router-dom'
+import { useAuthSecurity } from '../../pages/LoginPage/AuthProvider'
 
 interface IMenuComponentProps {
   window?: () => Window
 }
 
-const navItems = [
-  { name: 'Home', link: 'home' },
-  { name: 'Login', link: 'login' },
-]
+const navHome = { name: 'Inicio', link: 'home' }
+const navLogin = { name: 'Login', link: 'login' }
+const navLogout = { name: 'Cerrar' }
+
 const drawerWidth = 240
 const MenuComponent: React.FC = (props: IMenuComponentProps) => {
   const { window } = props
   const [mobileOpen, setMobileOpen] = React.useState(false)
+  const { isAuthenticated, setIsAuthenticated } = useAuthSecurity()
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
+  }
+
+  const closedSesion = () => {
+    setIsAuthenticated(false)
   }
 
   const container = window !== undefined ? () => window().document.body : undefined
@@ -42,15 +48,28 @@ const MenuComponent: React.FC = (props: IMenuComponentProps) => {
       </Typography>
       <Divider />
       <List>
-        {navItems.map((item) => (
-          <ListItem key={item.name} disablePadding>
+        <ListItem key={navHome.name} disablePadding>
+          <ListItemButton sx={{ textAlign: 'center' }}>
+            <Link to={navHome.link} style={{ textDecoration: 'none' }}>
+              <ListItemText primary={navHome.name} />
+            </Link>
+          </ListItemButton>
+        </ListItem>
+        {!isAuthenticated ? (
+          <ListItem key={navLogin.name} disablePadding>
             <ListItemButton sx={{ textAlign: 'center' }}>
-              <Link to={item.link} style={{ textDecoration: 'none !important;' }}>
-                <ListItemText primary={item.name} />
+              <Link to={navLogin.link} style={{ textDecoration: 'none' }}>
+                <ListItemText primary={navLogin.name} />
               </Link>
             </ListItemButton>
           </ListItem>
-        ))}
+        ) : (
+          <ListItem key={navLogout.name} disablePadding>
+            <ListItemButton sx={{ textAlign: 'center' }} onClick={() => closedSesion()}>
+              <ListItemText primary={navLogout.name} />
+            </ListItemButton>
+          </ListItem>
+        )}
       </List>
     </Box>
   )
@@ -76,13 +95,22 @@ const MenuComponent: React.FC = (props: IMenuComponentProps) => {
               {`${process.env.REACT_APP_NAME}`}
             </Typography>
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              {navItems.map((item) => (
-                <Link key={item.name} to={item.link} style={{ textDecoration: 'none' }}>
-                  <Button key={item.name} sx={{ color: '#fff' }}>
-                    {item.name}
+              <Link key={navHome.name} to={navHome.link} style={{ textDecoration: 'none' }}>
+                <Button key={navHome.name} sx={{ color: '#fff' }}>
+                  {navHome.name}
+                </Button>
+              </Link>
+              {!isAuthenticated ? (
+                <Link key={navLogin.name} to={navLogin.link} style={{ textDecoration: 'none' }}>
+                  <Button key={navLogin.name} sx={{ color: '#fff' }}>
+                    {navLogin.name}
                   </Button>
                 </Link>
-              ))}
+              ) : (
+                <Button key={navLogout.name} sx={{ color: '#fff' }} onClick={() => closedSesion()}>
+                  {navLogout.name}
+                </Button>
+              )}
             </Box>
             <Box component="nav">
               <Drawer
