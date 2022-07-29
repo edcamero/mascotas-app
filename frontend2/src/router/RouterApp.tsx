@@ -19,7 +19,7 @@ const RouterApp: React.FC<IRouterProps> = (props) => {
             <Route path="/home" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route
-              path="/ingreso"
+              path="/dashboard"
               element={
                 <RequireAuth>
                   <Dashboard />

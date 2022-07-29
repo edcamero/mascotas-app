@@ -15,20 +15,35 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { Paper } from '@mui/material'
 import axios from 'axios'
 import { IUserPerfil, useAuthSecurity } from './AuthProvider'
+import BackDropLoadApi from '../../components/backDropLoad/BackDropLoadApi'
+import { useNavigate } from 'react-router-dom'
 
 const theme = createTheme()
+interface ITextFieldError {
+  helperText: string
+  error: boolean
+}
+const StatusNotfound = 404
+const StatusUnAuthorized = 401
+const InitialError = { helperText: '', error: false }
 
 const LoginPage: React.FC = () => {
-  const { setSecurityTokens, setIsAuthenticated, setUser } = useAuthSecurity()
+  let navigate = useNavigate()
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [userError, setUserError] = React.useState<ITextFieldError>(InitialError)
+  const [passwordError, setPasswordError] = React.useState<ITextFieldError>(InitialError)
+  const { setSecurityTokens, setIsAuthenticated, setUser, isAuthenticated } = useAuthSecurity()
+
+  React.useEffect(() => {
+    if (isAuthenticated) {
+      navigate(`/dashboard`)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isAuthenticated])
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
-    // eslint-disable-next-line no-console
-    console.log({
-      email: formData.get('email'),
-      password: formData.get('password'),
-    })
-
+    setIsLoading(true)
     axios
       .post(process.env.REACT_APP_API_URL + 'login', formData)
       .then(
@@ -44,16 +59,19 @@ const LoginPage: React.FC = () => {
         )
       )
       .catch((error) => {
-        /* this.error.status = error.response.status
-        this.error.message =
-          error.response.status === statusNotfound
-            ? 'Correo no registrado'
-            : 'Error en la contraseña'*/
+        if (error.response.status === StatusNotfound) {
+          setUserError({ helperText: 'Correo invalido', error: true })
+        }
+        if (error.response.status === StatusUnAuthorized) {
+          setPasswordError({ helperText: 'Contraseña invalida', error: true })
+        }
       })
+      .finally(() => setIsLoading(false))
   }
 
   return (
     <ThemeProvider theme={theme}>
+      <BackDropLoadApi open={isLoading} />
       <Paper elevation={3} sx={{ marginTop: '5rem' }}>
         <Container component="main" maxWidth="xs">
           <CssBaseline />
@@ -81,6 +99,7 @@ const LoginPage: React.FC = () => {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                {...userError}
               />
               <TextField
                 margin="normal"
@@ -91,6 +110,7 @@ const LoginPage: React.FC = () => {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                {...passwordError}
               />
               <FormControlLabel
                 control={<Checkbox value="remember" color="primary" />}
