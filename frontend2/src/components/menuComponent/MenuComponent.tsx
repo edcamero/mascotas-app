@@ -11,11 +11,13 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
+  Grid,
 } from '@mui/material'
 import React from 'react'
 import MenuIcon from '@mui/icons-material/Menu'
 import { Link } from 'react-router-dom'
 import { useAuthSecurity } from '../../pages/LoginPage/AuthProvider'
+import MenuPrivateComponent from './MenuPrivateComponent'
 
 interface IMenuComponentProps {
   window?: () => Window
@@ -29,10 +31,14 @@ const drawerWidth = 240
 const MenuComponent: React.FC = (props: IMenuComponentProps) => {
   const { window } = props
   const [mobileOpen, setMobileOpen] = React.useState(false)
+  const [privateMenuOpen, setPrivateMenuOpen] = React.useState(false)
   const { isAuthenticated, setIsAuthenticated } = useAuthSecurity()
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
+  }
+  const handleDrawerPrivateMenuToggle = () => {
+    setPrivateMenuOpen(!privateMenuOpen)
   }
 
   const closedSesion = () => {
@@ -57,7 +63,7 @@ const MenuComponent: React.FC = (props: IMenuComponentProps) => {
         </ListItem>
         {!isAuthenticated ? (
           <ListItem key={navLogin.name} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }}>
+            <ListItemButton>
               <Link to={navLogin.link} style={{ textDecoration: 'none' }}>
                 <ListItemText primary={navLogin.name} />
               </Link>
@@ -65,7 +71,7 @@ const MenuComponent: React.FC = (props: IMenuComponentProps) => {
           </ListItem>
         ) : (
           <ListItem key={navLogout.name} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }} onClick={() => closedSesion()}>
+            <ListItemButton onClick={() => closedSesion()}>
               <ListItemText primary={navLogout.name} />
             </ListItemButton>
           </ListItem>
@@ -75,18 +81,38 @@ const MenuComponent: React.FC = (props: IMenuComponentProps) => {
   )
   return (
     <>
+      <MenuPrivateComponent {...{privateMenuOpen, handleDrawerPrivateMenuToggle}} />
       <Box sx={{ display: 'flex' }}>
         <AppBar component="nav">
           <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              sx={{ mr: 2, display: { sm: 'none' } }}
+            {isAuthenticated && (
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="start"
+                onClick={handleDrawerPrivateMenuToggle}
+                sx={{ mr: 2 }}
+              >
+                <MenuIcon />
+              </IconButton>
+            )}
+            <Grid
+              container
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+              sx={{ display: { sm: 'none' } }}
             >
-              <MenuIcon />
-            </IconButton>
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                edge="end"
+                onClick={handleDrawerToggle}
+                sx={{ ml: 2, display: { sm: 'none' } }}
+              >
+                <MenuIcon />
+              </IconButton>
+            </Grid>
             <Typography
               variant="h6"
               component="div"
@@ -118,6 +144,7 @@ const MenuComponent: React.FC = (props: IMenuComponentProps) => {
                 variant="temporary"
                 open={mobileOpen}
                 onClose={handleDrawerToggle}
+                anchor="right"
                 ModalProps={{
                   keepMounted: true, // Better open performance on mobile.
                 }}
