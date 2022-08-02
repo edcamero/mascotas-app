@@ -4,20 +4,29 @@ import EmojiNatureIcon from '@mui/icons-material/EmojiNature'
 import { useNavigate } from 'react-router-dom'
 
 interface IMenuPrivateComponentProps {
-    privateMenuOpen: boolean
+  privateMenuOpen: boolean
   handleDrawerPrivateMenuToggle: () => void
 }
-const MenuPrivateComponent: React.FC<IMenuPrivateComponentProps> = ({ privateMenuOpen, handleDrawerPrivateMenuToggle }) => {
+const MenuPrivateComponent: React.FC<IMenuPrivateComponentProps> = ({
+  privateMenuOpen,
+  handleDrawerPrivateMenuToggle,
+}) => {
   let navigate = useNavigate()
 
   const handleOnClick = React.useCallback(
     (url: string) => {
-      navigate(`/dashboard`)
+      navigate(url)
     },
     [navigate]
   )
   return (
-    <Drawer variant="temporary" open={privateMenuOpen} anchor="left" data-testid="menu-drawerRight" onClose={handleDrawerPrivateMenuToggle}>
+    <Drawer
+      variant="temporary"
+      open={privateMenuOpen}
+      anchor="left"
+      data-testid="menu-drawerRight"
+      onClose={handleDrawerPrivateMenuToggle}
+    >
       <List>
         <ListItem
           key={13}
@@ -32,6 +41,21 @@ const MenuPrivateComponent: React.FC<IMenuPrivateComponentProps> = ({ privateMen
           </ListItemIcon>
           <ListItemText>
             <Typography variant="body1">Página principal</Typography>
+          </ListItemText>
+        </ListItem>
+        <ListItem
+          key={13}
+          button
+          onClick={() => {
+            handleOnClick('/species')
+          }}
+          data-testid={'menu-itemLeft-' + 13}
+        >
+          <ListItemIcon>
+            <EmojiNatureIcon />
+          </ListItemIcon>
+          <ListItemText>
+            <Typography variant="body1">Mis Especies</Typography>
           </ListItemText>
         </ListItem>
       </List>

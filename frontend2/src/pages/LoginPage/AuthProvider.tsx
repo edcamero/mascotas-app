@@ -23,7 +23,7 @@ export interface IUserPerfil {
   imagePerfil: string
 }
 
-const initialSecurityTokens: ISecurityTokens = { accessToken: '', refreshToken: '' }
+export const initialSecurityTokens: ISecurityTokens = { accessToken: '', refreshToken: '' }
 const initialUser: IUserPerfil = {
   id: '',
   username: '',
