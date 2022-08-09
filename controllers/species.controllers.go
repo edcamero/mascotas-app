@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/edcamero/api-go/models"
 	"github.com/edcamero/api-go/services"
+	"github.com/edcamero/api-go/util"
 	"github.com/kataras/iris/v12"
 )
 
@@ -26,5 +27,28 @@ func (handler *SpeciesService) GetAllPrivate(ctx iris.Context) {
 	}
 
 	ctx.JSON(species)
+
+}
+
+func (handler *SpeciesService) SavePrivate(ctx iris.Context) {
+
+	newSpecie := new(models.NewEspecie)
+
+	err := ctx.ReadJSON(newSpecie)
+
+	if err != nil {
+		util.FailJSON(ctx, iris.StatusBadRequest, err, "Malformed request payload")
+		return
+	}
+
+	_, err = handler.service.Save(nil, newSpecie)
+
+	if err != nil {
+		util.InternalServerErrorJSON(ctx, err, "Server was unable to create a specie")
+		return
+	}
+
+	ctx.StatusCode(iris.StatusCreated)
+	ctx.JSON(newSpecie)
 
 }

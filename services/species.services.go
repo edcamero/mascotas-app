@@ -3,15 +3,18 @@ package services
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/edcamero/api-go/models"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type SpeciesService interface {
 	GetAll(ctx context.Context) ([]models.Especie, error)
+	Save(ctx context.Context, newSpecie *models.NewEspecie) (bool, error)
 }
 
 type speciesService struct {
@@ -49,4 +52,18 @@ func (service speciesService) GetAll(ctx context.Context) ([]models.Especie, err
 		results = append(results, elem)
 	}
 	return results, nil
+}
+
+func (service speciesService) Save(ctx context.Context, newSpecie *models.NewEspecie) (bool, error) {
+	if newSpecie.ID.IsZero() {
+		newSpecie.ID = primitive.NewObjectID()
+	}
+
+	newSpecie.CreatedAt = time.Now()
+	newSpecie.UpdatedAt = time.Now()
+	_, err := service.speciesCollection.InsertOne(ctx, newSpecie)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }
