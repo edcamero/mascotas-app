@@ -10,6 +10,7 @@ import {
 } from '@mui/material'
 import { format } from 'date-fns'
 import React from 'react'
+import BackDropLoadApi from '../../../../../components/backDropLoad/BackDropLoadApi'
 import EnhancedTableToolbar from '../../../../../components/tableComponent/EnhancedTableToolbar'
 import { getComparator, Order, stableSort } from '../../../../../components/tableComponent/resource'
 import useAxios from '../../../../../services/axios.services'
@@ -73,94 +74,92 @@ const SpecieTableComponent: React.FC<ISpecieTableComponentProp> = () => {
   React.useEffect(() => {
     if (isLoading) {
       axios
-      .get(process.env.REACT_APP_API_URL + 'admin/species')
-      .then(
-        (response) => (
-          setSpecies(response.data as ISpecie[])
+        .get(process.env.REACT_APP_API_URL + 'admin/species')
+        .then((response) => setSpecies(response.data as ISpecie[]))
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        .catch((error) => {})
+        .finally(() => setIsLoading(false))
+    }
 
-        )
-      )
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .catch((error) => {})
-      .finally(() => setIsLoading(false))
-  }
-    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoading])
 
   return (
-    <Box sx={{ width: '80%' }}>
-      <Paper sx={{ width: '100%', mb: 2 }}>
-        <EnhancedTableToolbar numSelected={selected.length} {...propsTableToolbar} />
-        <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size={dense ? 'small' : 'medium'}
-          >
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onRequestSort={handleRequestSort}
-              rowCount={species.length}
-            />
-            <TableBody>
-              {stableSort(
-                species.map((specie) => ({
-                  // eslint-disable-next-line @typescript-eslint/naming-convention
-                  _id: specie._id,
-                  nombre: specie.nombre,
-                  createdAt: specie.createdAt,
-                  updatedAt: specie.updatedAt,
-                })),
-                getComparator(order, orderBy)
-              )
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  return (
-                    <TableRow
-                      hover
-                      onClick={(event) => handleClick(event, row.nombre)}
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.nombre}
-                    >
-                      <TableCell id={row._id} align="right">
-                        {row.nombre}
-                      </TableCell>
-                      <TableCell align="right">
-                        {format(new Date(row.createdAt ?? 0), 'dd/MM/yyyy')}
-                      </TableCell>
-                      <TableCell align="right">
-                        {format(new Date(row.updatedAt ?? 0), 'dd/MM/yyyy')}
-                      </TableCell>
-                    </TableRow>
-                  )
-                })}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 20, 30]}
-          component="div"
-          count={species.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </Box>
+    <>
+      <BackDropLoadApi open={isLoading} />
+      <Box sx={{ width: '80%' }}>
+        <Paper sx={{ width: '100%', mb: 2 }}>
+          <EnhancedTableToolbar numSelected={selected.length} {...propsTableToolbar} />
+          <TableContainer>
+            <Table
+              sx={{ minWidth: 750 }}
+              aria-labelledby="tableTitle"
+              size={dense ? 'small' : 'medium'}
+            >
+              <EnhancedTableHead
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onRequestSort={handleRequestSort}
+                rowCount={species.length}
+              />
+              <TableBody>
+                {stableSort(
+                  species.map((specie) => ({
+                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                    _id: specie._id,
+                    nombre: specie.nombre,
+                    createdAt: specie.createdAt,
+                    updatedAt: specie.updatedAt,
+                  })),
+                  getComparator(order, orderBy)
+                )
+                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  .map((row, index) => {
+                    return (
+                      <TableRow
+                        hover
+                        onClick={(event) => handleClick(event, row.nombre)}
+                        role="checkbox"
+                        tabIndex={-1}
+                        key={row.nombre}
+                      >
+                        <TableCell id={row._id} align="right">
+                          {row.nombre}
+                        </TableCell>
+                        <TableCell align="right">
+                          {format(new Date(row.createdAt ?? 0), 'dd/MM/yyyy')}
+                        </TableCell>
+                        <TableCell align="right">
+                          {format(new Date(row.updatedAt ?? 0), 'dd/MM/yyyy')}
+                        </TableCell>
+                      </TableRow>
+                    )
+                  })}
+                {emptyRows > 0 && (
+                  <TableRow
+                    style={{
+                      height: (dense ? 33 : 53) * emptyRows,
+                    }}
+                  >
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <TablePagination
+            rowsPerPageOptions={[10, 20, 30]}
+            component="div"
+            count={species.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </Paper>
+      </Box>
+    </>
   )
 }
 

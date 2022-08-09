@@ -1,12 +1,12 @@
-import useLocalStorage from "@rehooks/local-storage"
-import axios, { AxiosError, AxiosRequestConfig } from "axios"
-import { initialSecurityTokens, securityTokensLocalStorageKey } from "../pages/LoginPage/AuthProvider"
+import useLocalStorage from '@rehooks/local-storage'
+import axios, { AxiosError, AxiosRequestConfig } from 'axios'
+import {
+  initialSecurityTokens,
+  securityTokensLocalStorageKey,
+} from '../pages/LoginPage/AuthProvider'
 
 const useAxios = () => {
-  const [securityTokens] = useLocalStorage(
-    securityTokensLocalStorageKey,
-    initialSecurityTokens
-  )
+  const [securityTokens] = useLocalStorage(securityTokensLocalStorageKey, initialSecurityTokens)
 
   const onRequest = (config: AxiosRequestConfig): AxiosRequestConfig => {
     config.headers = { Authorization: `Bearer ${securityTokens.accessToken}` }
@@ -17,8 +17,7 @@ const useAxios = () => {
     return Promise.reject(error)
   }
 
-  axios.interceptors.request.use(onRequest, onRequestError
-  )
+  axios.interceptors.request.use(onRequest, onRequestError)
 
   return { axios }
 }

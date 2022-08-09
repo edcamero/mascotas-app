@@ -4,7 +4,8 @@ import Dashboard from '../pages/Dashboard/Dashboard'
 import HomePage from '../pages/HomePage/HomePage'
 import LoginPage from '../pages/LoginPage/LoginPage'
 import RequireAuth from '../pages/LoginPage/RequireAuth'
-import SpeciesPage from '../pages/Private/SpeciesPage/SpeciesPage'
+import SpecieCreateComponent from '../pages/Private/SpeciesPage/components/SpecieCreate/SpecieCreateComponent'
+import SpecieTableComponent from '../pages/Private/SpeciesPage/components/SpecieTable/SpecieTableComponent'
 
 interface IRouterProps {
   children: JSX.Element | JSX.Element[]
@@ -27,14 +28,24 @@ const RouterApp: React.FC<IRouterProps> = (props) => {
                 </RequireAuth>
               }
             />
-            <Route
-              path="/species"
-              element={
-                <RequireAuth>
-                  <SpeciesPage />
-                </RequireAuth>
-              }
-            />
+            <Route path="/species">
+              <Route
+                path=""
+                element={
+                  <RequireAuth>
+                    <SpecieTableComponent />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="create"
+                element={
+                  <RequireAuth>
+                    <SpecieCreateComponent />
+                  </RequireAuth>
+                }
+              />
+            </Route>
           </Routes>
         </BrowserRouter>
       </header>

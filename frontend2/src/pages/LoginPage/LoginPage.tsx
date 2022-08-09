@@ -38,7 +38,7 @@ const LoginPage: React.FC = () => {
     if (isAuthenticated) {
       navigate(`/dashboard`)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated])
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()

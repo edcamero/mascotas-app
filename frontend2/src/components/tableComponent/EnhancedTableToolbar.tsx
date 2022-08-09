@@ -33,10 +33,7 @@ const EnhancedTableToolbar: React.FC<IEnhancedTableToolbarProps> = (props) => {
           {title}
         </Typography>
       )}
-      <Tooltip
-        title={messageAdd}
-        onClick={() =>  navigate(urlCreate)}
-      >
+      <Tooltip title={messageAdd} onClick={() => navigate(urlCreate)}>
         <IconButton aria-label="Agregar Noticia">
           <AddIcon />
           <Typography> Agregar</Typography>

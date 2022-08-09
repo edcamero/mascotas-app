@@ -81,7 +81,7 @@ const MenuComponent: React.FC = (props: IMenuComponentProps) => {
   )
   return (
     <>
-      <MenuPrivateComponent {...{privateMenuOpen, handleDrawerPrivateMenuToggle}} />
+      <MenuPrivateComponent {...{ privateMenuOpen, handleDrawerPrivateMenuToggle }} />
       <Box sx={{ display: 'flex' }}>
         <AppBar component="nav">
           <Toolbar>
