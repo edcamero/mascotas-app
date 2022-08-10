@@ -128,3 +128,5 @@ func InternalServerErrorJSON(ctx iris.Context, err error, format string, args ..
 func UnauthorizedJSON(ctx iris.Context, err error, format string, args ...interface{}) HTTPError {
 	return FailJSON(ctx, iris.StatusUnauthorized, err, format, args...)
 }
+
+var ErrNotFound = errors.New("not found")

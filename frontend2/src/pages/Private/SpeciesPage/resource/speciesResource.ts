@@ -6,7 +6,7 @@ export interface IRazas {
 
 export interface ISpecie {
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  _id: string
+  ID: string
   nombre: string
   razas?: IRazas[]
   createdAt: Date
@@ -14,12 +14,13 @@ export interface ISpecie {
 }
 
 export interface INewSpecie {
+  ID: string
   nombre: string
-  razas?: IRazas[]
+  razas: IRazas[]
 }
 export interface ISpecieTable {
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  _id: string
+  ID: string
   nombre: string
   createdAt: Date
   updatedAt: Date
@@ -35,7 +36,9 @@ export interface ISpecieFormAttributesErrors {
   nombre: string
 }
 export const specieInitial = {
-  nombre: ''
+  ID:'',
+  nombre: '',  
+  razas: []
 }
 export const subSpecieInitial = {
   id: 0,

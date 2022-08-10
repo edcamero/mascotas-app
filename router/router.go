@@ -89,4 +89,6 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 	//species
 	adminApi.Get("/species", speciesController.GetAllPrivate)
 	adminApi.Post("/species", speciesController.SavePrivate)
+	adminApi.Get("/species/{id:string}", speciesController.GetByID)
+	adminApi.Put("/species/{id:string}", speciesController.UpdatedPrivate)
 }

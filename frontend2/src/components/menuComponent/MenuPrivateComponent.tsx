@@ -19,6 +19,7 @@ const MenuPrivateComponent: React.FC<IMenuPrivateComponentProps> = ({
     },
     [navigate]
   )
+  
   return (
     <Drawer
       variant="temporary"

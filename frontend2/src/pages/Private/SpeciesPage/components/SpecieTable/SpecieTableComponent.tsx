@@ -7,6 +7,7 @@ import {
   TableRow,
   TableCell,
   TablePagination,
+  Button,
 } from '@mui/material'
 import { format } from 'date-fns'
 import React from 'react'
@@ -16,6 +17,8 @@ import { getComparator, Order, stableSort } from '../../../../../components/tabl
 import useAxios from '../../../../../services/axios.services'
 import { ISpecie, ISpecieTable } from '../../resource/speciesResource'
 import EnhancedTableHead from './EnhancedTableHead'
+import EditIcon from '@mui/icons-material/Edit'
+import { useNavigate } from 'react-router-dom'
 
 interface ISpecieTableComponentProp {}
 const SpecieTableComponent: React.FC<ISpecieTableComponentProp> = () => {
@@ -28,6 +31,14 @@ const SpecieTableComponent: React.FC<ISpecieTableComponentProp> = () => {
   const [page, setPage] = React.useState(0)
   const [dense] = React.useState(true)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  let navigate = useNavigate()
+
+  const handleOnClickButtonEdit = React.useCallback(
+    (id: string) => {
+      navigate(`/species/edit/${id}`)
+    },
+    [navigate]
+  )
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof ISpecieTable) => {
     const isAsc = orderBy === property && order === 'asc'
@@ -107,7 +118,7 @@ const SpecieTableComponent: React.FC<ISpecieTableComponentProp> = () => {
                 {stableSort(
                   species.map((specie) => ({
                     // eslint-disable-next-line @typescript-eslint/naming-convention
-                    _id: specie._id,
+                    ID: specie.ID,
                     nombre: specie.nombre,
                     createdAt: specie.createdAt,
                     updatedAt: specie.updatedAt,
@@ -124,7 +135,7 @@ const SpecieTableComponent: React.FC<ISpecieTableComponentProp> = () => {
                         tabIndex={-1}
                         key={row.nombre}
                       >
-                        <TableCell id={row._id} align="right">
+                        <TableCell id={row.ID} align="right">
                           {row.nombre}
                         </TableCell>
                         <TableCell align="right">
@@ -132,6 +143,19 @@ const SpecieTableComponent: React.FC<ISpecieTableComponentProp> = () => {
                         </TableCell>
                         <TableCell align="right">
                           {format(new Date(row.updatedAt ?? 0), 'dd/MM/yyyy')}
+                        </TableCell>
+                        <TableCell align="right">
+                          <Button
+                            color="primary"
+                            size="small"
+                            variant="text"
+                            startIcon={<EditIcon />}
+                            onClick={() => {
+                              handleOnClickButtonEdit(row.ID)
+                            }}
+                          >
+                            Editar
+                          </Button>
                         </TableCell>
                       </TableRow>
                     )

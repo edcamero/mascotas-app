@@ -6,6 +6,7 @@ import LoginPage from '../pages/LoginPage/LoginPage'
 import RequireAuth from '../pages/LoginPage/RequireAuth'
 import SpecieCreateComponent from '../pages/Private/SpeciesPage/components/SpecieCreate/SpecieCreateComponent'
 import SpecieTableComponent from '../pages/Private/SpeciesPage/components/SpecieTable/SpecieTableComponent'
+import SpecieUpdateComponent from '../pages/Private/SpeciesPage/components/SpecieUpdate/SpecieUpdateComponent'
 
 interface IRouterProps {
   children: JSX.Element | JSX.Element[]
@@ -42,6 +43,14 @@ const RouterApp: React.FC<IRouterProps> = (props) => {
                 element={
                   <RequireAuth>
                     <SpecieCreateComponent />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="edit/:id"
+                element={
+                  <RequireAuth>
+                    <SpecieUpdateComponent />
                   </RequireAuth>
                 }
               />
