@@ -95,6 +95,10 @@ const SpecieTableComponent: React.FC<ISpecieTableComponentProp> = () => {
     if (alertMessage.message !== '') {
       setOpenMessage(true)
     }
+
+    if (alertMessage.message !== messagesList.INTERNAL_ERROR.message) {
+      setIsLoading(true)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [alertMessage.message])
 
@@ -163,19 +167,19 @@ const SpecieTableComponent: React.FC<ISpecieTableComponentProp> = () => {
                           {format(new Date(row.updatedAt ?? 0), 'dd/MM/yyyy')}
                         </TableCell>
                         <TableCell align="right">
-                        <ButtonGroup disableElevation variant="contained">
-                          <Button
-                            color="secondary"
-                            size="small"
-                            variant="contained"
-                            startIcon={<EditIcon />}
-                            onClick={() => {
-                              handleOnClickButtonEdit(row.ID)
-                            }}
-                          >
-                            Editar
-                          </Button>
-                          <SpecieDelete specieId={row.ID} setAlertMessage={setAlertMessage} />
+                          <ButtonGroup disableElevation variant="contained">
+                            <Button
+                              color="secondary"
+                              size="small"
+                              variant="contained"
+                              startIcon={<EditIcon />}
+                              onClick={() => {
+                                handleOnClickButtonEdit(row.ID)
+                              }}
+                            >
+                              Editar
+                            </Button>
+                            <SpecieDelete specieId={row.ID} setAlertMessage={setAlertMessage} />
                           </ButtonGroup>
                         </TableCell>
                       </TableRow>

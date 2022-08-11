@@ -18,6 +18,7 @@ type SpeciesService interface {
 	Save(ctx context.Context, newSpecie *models.NewEspecie) (bool, error)
 	GetByID(ctx context.Context, id string) (models.Especie, error)
 	Update(ctx context.Context, id string, specie models.Especie) error
+	Delete(ctx context.Context, id string) error
 }
 
 type speciesService struct {
@@ -107,6 +108,22 @@ func (service speciesService) Update(ctx context.Context, id string, specie mode
 	}
 
 	_, err = service.speciesCollection.UpdateOne(ctx, filter, updateSpecie)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return util.ErrNotFound
+		}
+		return err
+	}
+
+	return nil
+}
+
+func (service speciesService) Delete(ctx context.Context, id string) error {
+	filter, err := matchID(id)
+	if err != nil {
+		return err
+	}
+	_, err = service.speciesCollection.DeleteOne(ctx, filter)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			return util.ErrNotFound

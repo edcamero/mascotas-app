@@ -92,3 +92,17 @@ func (handler *SpeciesService) UpdatedPrivate(ctx iris.Context) {
 	}
 	ctx.StatusCode(iris.StatusOK)
 }
+
+func (handler *SpeciesService) DeletePrivate(ctx iris.Context) {
+	id := ctx.Params().Get("id")
+
+	err := handler.service.Delete(nil, id)
+	if err != nil {
+		if err == util.ErrNotFound {
+			ctx.NotFound()
+			return
+		}
+		util.InternalServerErrorJSON(ctx, err, "Server was unable to delete specie [%s]", id)
+		return
+	}
+}
