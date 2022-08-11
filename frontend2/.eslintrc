@@ -1,0 +1,95 @@
+{
+    "env": {
+        "browser": true,
+        "es2021": true,
+        "node": true
+    },
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": "latest",
+        "sourceType": "module"
+    },
+    "plugins": ["react-hooks", "react"],
+    "rules": {
+        "camelcase": "off",
+        "@typescript-eslint/camelcase": "off",
+        "@typescript-eslint/no-empty-interface": "off",
+        "no-use-before-define": "off",
+        "@typescript-eslint/no-use-before-define": [
+          "warn",
+          {
+            "functions": false,
+            "variables": false,
+            "classes": false,
+            "typedefs": false
+          }
+        ],
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            "selector": "default",
+            "format": ["camelCase"]
+          },
+          {
+            "selector": "variable",
+            "format": ["camelCase", "PascalCase", "UPPER_CASE"]
+          },
+          {
+            "selector": "interface",
+            "format": ["PascalCase"],
+            "prefix": ["I"]
+          },
+          {
+            "selector": "function",
+            "format": ["camelCase", "PascalCase"]
+          },
+          {
+            "selector": "parameter",
+            "format": ["camelCase", "PascalCase"]
+          },
+          {
+            "selector": "method",
+            "format": ["camelCase", "PascalCase"]
+          },
+          {
+            "selector": "property",
+            "format": ["camelCase", "PascalCase", "UPPER_CASE"]
+          }
+        ],
+        "@typescript-eslint/explicit-function-return-type": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "react-hooks/rules-of-hooks": "error",
+        "react-hooks/exhaustive-deps": "warn",
+        "@typescript-eslint/no-unused-vars": ["error", { "argsIgnorePattern": "^[a-z]" }],
+        "semi": "off",
+        "react/prop-types": [0, {
+          "ignore": ["children", "params", "history"]
+        }],
+        "@typescript-eslint/interface-name-prefix": "off",
+        "no-alert": "error",
+        "no-console": "error",
+        "prefer-const": [0, {
+          "ignore": ["history"]
+        }] }
+        ,"overrides": [
+            {
+              "files": ["*.ts", "*.tsx"],
+              "rules": {
+                "@typescript-eslint/explicit-function-return-type": "off",
+                "no-use-before-define": "error",
+                "semi": ["error", "never"],
+                "@typescript-eslint/no-explicit-any": "off",
+                "react-hooks/rules-of-hooks": "error",
+                "react-hooks/exhaustive-deps": "warn"
+              }
+            }
+          ]
+}

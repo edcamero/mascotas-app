@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"errors"
 
 	"github.com/edcamero/api-go/models"
 	"github.com/edcamero/api-go/util"
@@ -34,11 +35,11 @@ func (service *authService) Login(ctx context.Context, email string, password st
 	err := service.userCollection.FindOne(context.TODO(), userExists).Decode(&userData)
 
 	if err != nil {
-		return userLoginResponse, err
+		return userLoginResponse, errors.New("404")
 	}
 	err = service.userCollection.FindOne(context.TODO(), userCredentials).Decode(&userData)
 	if err != nil {
-		return userLoginResponse, err
+		return userLoginResponse, errors.New("401")
 	}
 	claims := models.Claims{Id: userData.ID.Hex(), Rol: userData.Rol.Nombre, UserName: userData.UserName, FullName: userData.FullName, Email: userData.Email, ImagePerfil: userData.ImagePerfil}
 	token, err := util.GenerateToken(claims)

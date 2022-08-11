@@ -3,6 +3,8 @@ package controllers
 import (
 	//"encoding/json"
 
+	"errors"
+
 	otroJwt "github.com/iris-contrib/middleware/jwt"
 	"github.com/kataras/iris/v12"
 
@@ -28,7 +30,16 @@ func (handler *AuthService) Login(ctx iris.Context) {
 	password := util.Encrypt([]byte(ctx.FormValue("password")))
 	user, err := handler.service.Login(nil, email, password)
 	if err != nil {
-		ctx.StopWithStatus(iris.StatusUnauthorized)
+		if err.Error() == "404" {
+			ctx.StopWithError(iris.StatusNotFound, errors.New("user not found"))
+			return
+		}
+		if err.Error() == "401" {
+			ctx.StopWithError(iris.StatusUnauthorized, errors.New("user not authorized"))
+			return
+		}
+
+		ctx.StopWithStatus(iris.StatusBadRequest)
 		return
 	}
 
