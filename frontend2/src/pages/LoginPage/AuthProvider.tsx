@@ -1,4 +1,4 @@
-import useLocalStorage from '@rehooks/local-storage'
+import useLocalStorage, { deleteFromStorage } from '@rehooks/local-storage'
 import React, { createContext, ReactNode, useContext } from 'react'
 
 export const securityTokensLocalStorageKey = 'securityTokens'
@@ -67,6 +67,11 @@ export const AuthProvider: React.FC<IAuthProviderProps> = ({ children }) => {
 
   const setIsAuthenticatedCustom = (value: boolean) => {
     setIsAuthenticated(value)
+    if (!value) {
+      deleteFromStorage(securityTokensLocalStorageKey)
+      deleteFromStorage(userLocalStorageKey)
+      deleteFromStorage(loginLocalStorageKey)
+    }
   }
 
   const ctxValue: IAuthContextProps = {

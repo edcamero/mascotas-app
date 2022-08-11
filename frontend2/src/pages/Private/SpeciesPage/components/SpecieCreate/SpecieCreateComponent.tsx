@@ -20,8 +20,9 @@ const SpecieCreateComponent: React.FC = () => {
     setIsLoading(true)
     axios
       .post(process.env.REACT_APP_API_URL + 'admin/species', specieFormAttributes)
-      // eslint-disable-next-line @typescript-eslint/no-empty-function
-      .then((response) => {})
+      .then((response) => {
+        setAlertMessage(messagesList.SUCCESS_CREATED)
+      })
       .catch((error) => {
         setAlertMessage(messagesList.INTERNAL_ERROR)
       })

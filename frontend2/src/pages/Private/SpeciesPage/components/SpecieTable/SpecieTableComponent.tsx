@@ -8,6 +8,7 @@ import {
   TableCell,
   TablePagination,
   Button,
+  ButtonGroup,
 } from '@mui/material'
 import { format } from 'date-fns'
 import React from 'react'
@@ -19,6 +20,11 @@ import { ISpecie, ISpecieTable } from '../../resource/speciesResource'
 import EnhancedTableHead from './EnhancedTableHead'
 import EditIcon from '@mui/icons-material/Edit'
 import { useNavigate } from 'react-router-dom'
+import MessagesComponent from '../../../../../components/MessagesComponent/MessagesComponent'
+import IMessageAttributes from '../../../../../components/MessagesComponent/Resources/IMessageAttributes'
+import messageAttributes from '../../../../../components/MessagesComponent/Resources/MessageAttributes'
+import messagesList from '../../../../../components/MessagesComponent/Resources/MessagesList'
+import SpecieDelete from '../SpecieDelete/SpecieDelete.component'
 
 interface ISpecieTableComponentProp {}
 const SpecieTableComponent: React.FC<ISpecieTableComponentProp> = () => {
@@ -31,6 +37,9 @@ const SpecieTableComponent: React.FC<ISpecieTableComponentProp> = () => {
   const [page, setPage] = React.useState(0)
   const [dense] = React.useState(true)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
+  const [openMessage, setOpenMessage] = React.useState<boolean>(false)
+  const [alertMessage, setAlertMessage] = React.useState<IMessageAttributes>(messageAttributes)
+
   let navigate = useNavigate()
 
   const handleOnClickButtonEdit = React.useCallback(
@@ -83,12 +92,20 @@ const SpecieTableComponent: React.FC<ISpecieTableComponentProp> = () => {
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - species.length) : 0
 
   React.useEffect(() => {
+    if (alertMessage.message !== '') {
+      setOpenMessage(true)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [alertMessage.message])
+
+  React.useEffect(() => {
     if (isLoading) {
       axios
         .get(process.env.REACT_APP_API_URL + 'admin/species')
         .then((response) => setSpecies(response.data as ISpecie[]))
-        // eslint-disable-next-line @typescript-eslint/no-empty-function
-        .catch((error) => {})
+        .catch((error) => {
+          setAlertMessage(messagesList.INTERNAL_ERROR)
+        })
         .finally(() => setIsLoading(false))
     }
 
@@ -98,6 +115,7 @@ const SpecieTableComponent: React.FC<ISpecieTableComponentProp> = () => {
   return (
     <>
       <BackDropLoadApi open={isLoading} />
+      <MessagesComponent open={openMessage} setOpen={setOpenMessage} {...alertMessage} />
       <Box sx={{ width: '80%' }}>
         <Paper sx={{ width: '100%', mb: 2 }}>
           <EnhancedTableToolbar numSelected={selected.length} {...propsTableToolbar} />
@@ -145,10 +163,11 @@ const SpecieTableComponent: React.FC<ISpecieTableComponentProp> = () => {
                           {format(new Date(row.updatedAt ?? 0), 'dd/MM/yyyy')}
                         </TableCell>
                         <TableCell align="right">
+                        <ButtonGroup disableElevation variant="contained">
                           <Button
-                            color="primary"
+                            color="secondary"
                             size="small"
-                            variant="text"
+                            variant="contained"
                             startIcon={<EditIcon />}
                             onClick={() => {
                               handleOnClickButtonEdit(row.ID)
@@ -156,6 +175,8 @@ const SpecieTableComponent: React.FC<ISpecieTableComponentProp> = () => {
                           >
                             Editar
                           </Button>
+                          <SpecieDelete specieId={row.ID} setAlertMessage={setAlertMessage} />
+                          </ButtonGroup>
                         </TableCell>
                       </TableRow>
                     )
