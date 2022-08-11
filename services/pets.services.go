@@ -13,7 +13,9 @@ import (
 
 type PetsService interface {
 	GetAll(ctx context.Context) ([]models.AnimalView, error)
+	GetAllPrivate(ctx context.Context) ([]models.Animal, error)
 	GetByID(ctx context.Context, id string) (models.AnimalDetail, error)
+	GetByIDPrivate(ctx context.Context, id string) (models.Animal, error)
 }
 
 type petsService struct {
@@ -89,4 +91,48 @@ func matchID(id string) (bson.D, error) {
 
 	filter := bson.D{{Key: "_id", Value: objectID}}
 	return filter, nil
+}
+
+func (service petsService) GetAllPrivate(ctx context.Context) ([]models.Animal, error) {
+
+	findOptions := options.Find()
+	cursor, err := service.animalCollection.Find(ctx, bson.D{}, findOptions)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	var results []models.Animal
+
+	for cursor.Next(ctx) {
+		if err = cursor.Err(); err != nil {
+			fmt.Println("este error cursor")
+			return nil, err
+		}
+		var elem models.Animal
+		err = cursor.Decode(&elem)
+		fmt.Println(cursor.Current)
+		if err != nil {
+			fmt.Println(err)
+			return nil, err
+		}
+		results = append(results, elem)
+	}
+	return results, nil
+
+}
+
+func (service petsService) GetByIDPrivate(ctx context.Context, id string) (models.Animal, error) {
+	var petValue models.Animal
+	filter, err := matchID(id)
+	if err != nil {
+		return petValue, err
+	}
+	err = service.animalCollection.FindOne(ctx, filter).Decode(&petValue)
+	if err == mongo.ErrNoDocuments {
+		return petValue, err
+	}
+	return petValue, err
+
 }

@@ -1,5 +1,6 @@
 <template>
   <ul
+    v-if="menuVisible"
     id="slide-in"
     class="sidenav sidenav-fixed"
     style="transform: translateX(0%)"
@@ -66,13 +67,16 @@
               <li>
                 <router-link
                   class="waves-effect waves-light"
-                  to="/fundacion/mascota/registrar"
+                  to="/admin/pets/create"
                 >
                   Agregar
                 </router-link>
               </li>
-
-              <li><a href="#!">Listar</a></li>
+              <li>
+                <router-link class="waves-effect waves-light" to="/admin/pets">
+                  Listar
+                </router-link>
+              </li>
             </ul>
           </div>
         </li>
@@ -100,8 +104,15 @@
 import M from "materialize-css";
 import TokenService from "../../services/token.service";
 export default {
+  props: {
+    menuVisible: {
+      type: Boolean,
+      default: () => {
+        return false;
+      },
+    },
+  },
   data: () => ({
-    isVisible: false,
     elemento: null,
     instances: null,
     user: null,
@@ -109,6 +120,9 @@ export default {
   mounted() {
     M.AutoInit();
     this.user = TokenService.getUser();
+  },
+  updated() {
+    M.AutoInit();
   },
   methods: {
     cambiar() {

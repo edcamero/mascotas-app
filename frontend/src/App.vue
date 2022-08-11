@@ -3,13 +3,14 @@
     <div class="navbar-fixed">
       <nav class="teal lighten-2">
         <div class="nav-wrapper">
-          <a href="#" data-target="mobile-demo" class="sidenav-trigger"
+          <a href="#" data-target="mobile-demo" class="sidenav-trigger left"
             ><i class="material-icons">menu</i></a
           >
           <a
+            v-if="user?.rol?.name == 'admin' && !isPublic"
             href="#"
             data-target="slide-in"
-            class="top-nav sidenav-trigger full hide-on-large-only"
+            class="sidenav-trigger  right"
             ><i class="material-icons">menu</i></a
           >
           <ul id="nav-mobile" class="right hide-on-med-and-down">
@@ -68,13 +69,15 @@
     </div>
     <router-view class="row" />
     <ul id="mobile-demo" class="sidenav">
-      <li>
+      <li @click="changeMenu()">
         <router-link class="waves-effect waves-light" to="/">
           Home
         </router-link>
       </li>
-      <li>
-        <router-link v-if="rol == 'admin'" to="/admin/"> Admin </router-link>
+      <li @click="changeMenu()">
+        <router-link v-if="user?.rol?.name == 'admin' && isPublic" to="/admin/">
+          Admin
+        </router-link>
       </li>
       <li>
         <router-link v-if="rol == 'fundacion'" to="/fundacion/">
@@ -149,6 +152,11 @@ export default {
       } else {
         this.isPublic = true;
       }
+    },
+    hiddeMenu() {
+      var elems = document.querySelectorAll(".sidenav");
+      var instances = M.Sidenav.init(elems);
+      instances.close();
     },
   },
 };

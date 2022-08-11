@@ -32,18 +32,21 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 
 	var (
 		// Collections.
-		usersCollection = database.Collection("usuarios")
-		petsCollection  = database.Collection("animal")
+		usersCollection  = database.Collection("usuarios")
+		petsCollection   = database.Collection("animal")
+		speciesCollectin = database.Collection("especies")
 
 		// Services.
 
-		authService = services.NewAuthService(usersCollection)
-		petsService = services.NewPetsService(petsCollection)
+		authService    = services.NewAuthService(usersCollection)
+		petsService    = services.NewPetsService(petsCollection)
+		speciesService = services.NewSpeciesService(speciesCollectin)
 
 		//Controllers
 
-		authController = controllers.NewAuthController(authService)
-		petsController = controllers.NewPetsController(petsService)
+		authController    = controllers.NewAuthController(authService)
+		petsController    = controllers.NewPetsController(petsService)
+		speciesController = controllers.NewSpeciesController(speciesService)
 	)
 
 	j := jwt.New(jwt.Config{
@@ -78,5 +81,15 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 	api.Post("/user", Controllers.StoreUsers)
 	api.Put("/user/{id:uint64}", Controllers.UpdateUser)
 	api.Delete("/user/{id:uint64}", Controllers.DeleteUser)
+	// routes pets private
 
+	//pets
+	adminApi.Get("/pets", petsController.GetAllPrivate)
+	adminApi.Get("/pets/{id:string}", petsController.GetByIDPrivate)
+	//species
+	adminApi.Get("/species", speciesController.GetAllPrivate)
+	adminApi.Post("/species", speciesController.SavePrivate)
+	adminApi.Get("/species/{id:string}", speciesController.GetByID)
+	adminApi.Put("/species/{id:string}", speciesController.UpdatedPrivate)
+	adminApi.Delete("/species/{id:string}", speciesController.DeletePrivate)
 }
