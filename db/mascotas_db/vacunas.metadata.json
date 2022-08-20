@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"}],"uuid":"d85b0c8919a14467af2c2ee4e0cb8592","collectionName":"vacunas","type":"collection"}
