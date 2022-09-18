@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mascotas-api
+  namespace: mascotas-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mascotas-api
+  template:
+    metadata:
+      labels:
+        app: mascotas-api
+    spec:
+      containers:
+      - name: mascotas-api
+        image: edcamero/mascotas-api:0.0.5
+        env:
+        - name: DATABASE
+          value: mascotas_db
+        - name: DATABASE_URL
+          value: <conecction-string>
+        - name: SECRETKEY
+          value: <key>
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
