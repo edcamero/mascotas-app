@@ -8,6 +8,7 @@ import (
 	Controllers "github.com/edcamero/api-go/controllers"
 	"github.com/edcamero/api-go/environment"
 	"github.com/edcamero/api-go/services"
+	"github.com/edcamero/api-go/util"
 	"github.com/iris-contrib/middleware/jwt"
 	"github.com/kataras/iris/v12"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -63,7 +64,7 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 	api.Post("/login", authController.Login)
 	api.Get("/pets", petsController.GetAll)
 	api.Get("/pets/{id:string}", petsController.GetByID)
-	//api.Use(util.Verify())
+	api.Use(util.Verify())
 	api.Use(j.Serve)
 	api.Get("/refresh", authController.RefreshToken)
 
