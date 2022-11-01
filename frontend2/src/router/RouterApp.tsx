@@ -90,6 +90,14 @@ const RouterApp: React.FC<IRouterProps> = (props) => {
                   </RequireAuth>
                 }
               />
+               <Route
+                path="view/:id/*"
+                element={
+                  <RequireAuth>
+                    <PetView />
+                  </RequireAuth>
+                }
+              />
             </Route>
           </Routes>
         </BrowserRouter>

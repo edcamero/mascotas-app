@@ -59,6 +59,7 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 		},
 		SigningMethod: jwt.SigningMethodHS256,
 	})
+	app.HandleDir("/public", iris.Dir("./public"))
 
 	api := app.Party("/api")
 	api.Post("/login", authController.Login)
@@ -94,4 +95,6 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 	adminApi.Get("/species/{id:string}", speciesController.GetByID)
 	adminApi.Put("/species/{id:string}", speciesController.UpdatedPrivate)
 	adminApi.Delete("/species/{id:string}", speciesController.DeletePrivate)
+	//pendiente para mejorar
+	adminApi.Post("/upload", iris.LimitRequestBodySize(10<<20), services.Udpload)
 }
