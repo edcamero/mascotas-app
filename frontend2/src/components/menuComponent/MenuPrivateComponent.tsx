@@ -59,6 +59,21 @@ const MenuPrivateComponent: React.FC<IMenuPrivateComponentProps> = ({
             <Typography variant="body1">Mis Especies</Typography>
           </ListItemText>
         </ListItem>
+        <ListItem
+          key={13}
+          button
+          onClick={() => {
+            handleOnClick('/pets')
+          }}
+          data-testid={'menu-itemLeft-' + 13}
+        >
+          <ListItemIcon>
+            <EmojiNatureIcon />
+          </ListItemIcon>
+          <ListItemText>
+            <Typography variant="body1">Mis Animales</Typography>
+          </ListItemText>
+        </ListItem>
       </List>
     </Drawer>
   )

@@ -19,6 +19,7 @@ import { Link } from 'react-router-dom'
 import { useAuthSecurity } from '../../pages/LoginPage/AuthProvider'
 import MenuPrivateComponent from './MenuPrivateComponent'
 
+
 interface IMenuComponentProps {
   window?: () => Window
 }

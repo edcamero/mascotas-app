@@ -14,11 +14,14 @@ type Animal struct {
 	Esterilizado     bool               `json:"esterilizado" bson:"esterilizado"`
 	En_adopcion      bool               `json:"en_adopcion" bson:"en_adopcion"`
 	Descripcion      string             `json:"descripcion" bson:"descripcion"`
-	Fecha_nacimiento time.Time          `json:"fecha_nacimiento" bson:"fecha_nacimiento"`
+	Fecha_nacimiento time.Time          `json:"fechaNacimiento" bson:"fecha_nacimiento"`
 	Especie          string             `json:"especie" bson:"especie"`
 	Fotos            []Foto             `json:"fotos" bson:"fotos"`
 	Sexo             string             `json:"sexo" bson:"sexo"`
 	Vacunas          []VacunaMascota    `json:"vacunas" bson:"vacunas"`
+	Score            int                `json:"score" bson:"score"`
+	CreatedAt        time.Time          `json:"createdAt" bson:"createdAt"`
+	UpdatedAt        time.Time          `json:"updatedAt" bson:"updatedAt" `
 }
 
 type AnimalView struct {
@@ -29,10 +32,12 @@ type AnimalView struct {
 	Tamaño           string    `json:"tamaño" bson:"tamaño"`
 	Esterilizado     bool      `json:"esterilizado" bson:"esterilizado"`
 	Descripcion      string    `json:"descripcion" bson:"descripcion"`
-	Fecha_nacimiento time.Time `json:"fecha_nacimiento" bson:"fecha_nacimiento"`
+	Fecha_nacimiento time.Time `json:"fechaNacimiento" bson:"fecha_nacimiento"`
 	Especie          string    `json:"especie" bson:"especie"`
 	Sexo             string    `json:"sexo" bson:"sexo"`
 	Foto             []Foto    `json:"fotos" bson:"fotos"`
+	CreatedAt        time.Time `json:"createdAt" bson:"createdAt"`
+	UpdatedAt        time.Time `json:"updatedAt" bson:"updatedAt" `
 }
 
 type AnimalDetail struct {
@@ -43,8 +48,10 @@ type AnimalDetail struct {
 	Tamaño           string    `json:"tamaño" bson:"tamaño"`
 	Esterilizado     bool      `json:"esterilizado" bson:"esterilizado"`
 	Descripcion      string    `json:"descripcion" bson:"descripcion"`
-	Fecha_nacimiento time.Time `json:"fecha_nacimiento" bson:"fecha_nacimiento"`
+	Fecha_nacimiento time.Time `json:"fechaNacimiento" bson:"fecha_nacimiento"`
 	Especie          string    `json:"especie" bson:"especie"`
 	Sexo             string    `json:"sexo" bson:"sexo"`
 	Fotos            []Foto    `json:"fotos" bson:"fotos"`
+	CreatedAt        time.Time `json:"createdAt" bson:"createdAt"`
+	UpdatedAt        time.Time `json:"updatedAt" bson:"updatedAt" `
 }

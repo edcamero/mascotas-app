@@ -3,6 +3,7 @@ package controllers
 import (
 	"github.com/edcamero/api-go/models"
 	"github.com/edcamero/api-go/services"
+	"github.com/edcamero/api-go/util"
 	"github.com/kataras/iris/v12"
 )
 
@@ -66,5 +67,27 @@ func (handler *PetsService) GetByIDPrivate(ctx iris.Context) {
 	}
 
 	ctx.JSON(pet)
+}
+
+func (handler *PetsService) SavePrivate(ctx iris.Context) {
+
+	newPet := new(models.Animal)
+
+	err := ctx.ReadJSON(newPet)
+
+	if err != nil {
+		util.FailJSON(ctx, iris.StatusBadRequest, err, "Malformed request payload")
+		return
+	}
+
+	_, err = handler.service.Save(nil, newPet)
+
+	if err != nil {
+		util.InternalServerErrorJSON(ctx, err, "Server was unable to create a pet")
+		return
+	}
+
+	ctx.StatusCode(iris.StatusCreated)
+	ctx.JSON(newPet)
 
 }

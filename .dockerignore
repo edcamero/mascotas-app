@@ -1,0 +1,10 @@
+.git
+.github
+.idea
+.vscode
+frontend
+frontend2
+
+*.md
+
+db/mascotas_db
