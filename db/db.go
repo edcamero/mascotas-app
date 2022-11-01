@@ -14,7 +14,7 @@ import (
 // GetConnection obtiene una conexión a la base de datos
 func GetConnection() *mongo.Client {
 
-	clientOpts := options.Client().ApplyURI("mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb")
+	clientOpts := options.Client().ApplyURI(os.Getenv("DATABASE_URL"))
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()

@@ -38,7 +38,9 @@ export interface ISpecieFormAttributesErrors {
 export const specieInitial = {
   ID:'',
   nombre: '',  
-  razas: []
+  razas: [],
+  createdAt: new Date(),
+  updatedAt: new Date()
 }
 export const subSpecieInitial = {
   id: 0,
