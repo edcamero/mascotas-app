@@ -7,7 +7,9 @@ import RequireAuth from '../pages/LoginPage/RequireAuth'
 import SpecieCreateComponent from '../pages/Private/SpeciesPage/components/SpecieCreate/SpecieCreateComponent'
 import SpecieTableComponent from '../pages/Private/SpeciesPage/components/SpecieTable/SpecieTableComponent'
 import SpecieUpdateComponent from '../pages/Private/SpeciesPage/components/SpecieUpdate/SpecieUpdateComponent'
-
+import PetsList from '../pages/Private/PetsPage/components/PetsList/PetsList.component'
+import PestCreate from '../pages/Private/PetsPage/components/PetCreate/PestCreate.component'
+import PetView from '../pages/Private/PetsPage/components/PetView/PetView.component'
 interface IRouterProps {
   children: JSX.Element | JSX.Element[]
 }
@@ -51,6 +53,40 @@ const RouterApp: React.FC<IRouterProps> = (props) => {
                 element={
                   <RequireAuth>
                     <SpecieUpdateComponent />
+                  </RequireAuth>
+                }
+              />
+            </Route>
+            <Route path="/pets">
+              <Route
+                path=""
+                element={
+                  <RequireAuth>
+                    <PetsList />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="create"
+                element={
+                  <RequireAuth>
+                    <PestCreate />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="edit/:id"
+                element={
+                  <RequireAuth>
+                    <SpecieUpdateComponent />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="view/:id"
+                element={
+                  <RequireAuth>
+                    <PetView />
                   </RequireAuth>
                 }
               />

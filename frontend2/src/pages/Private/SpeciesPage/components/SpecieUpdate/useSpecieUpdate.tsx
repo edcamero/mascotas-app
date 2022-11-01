@@ -20,7 +20,9 @@ export const UseSpecieUpdate = (
         .get(process.env.REACT_APP_API_URL + 'admin/species/' + specieId)
         .then((response) => setSpecieFormAttributes(response.data as INewSpecie))
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        .catch((error) => {})
+        .catch((error) => {
+          setAlertMessage(messagesList.INTERNAL_ERROR)
+        })
         .finally(() => setIsLoading(false))
     }
 

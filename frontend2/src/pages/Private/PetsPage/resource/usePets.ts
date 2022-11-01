@@ -8,6 +8,76 @@ export interface IVacuna {
   fecha: Date
 }
 
+export interface IPetRegister {
+  ID: string
+  nombre: string
+  color: string
+  tamaño: string
+  esterilizado: boolean
+  descripcion: string
+  fechaNacimiento: Date | null
+  especie: string
+  raza: string
+  sexo: string
+}
+
+export const petInitial = {
+  ID: '',
+  nombre: '',
+  color: '',
+  tamaño: '',
+  esterilizado: false,
+  descripcion: '',
+  fechaNacimiento: new Date(),
+  especie: '',
+  raza: '',
+  sexo: ''
+}
+
+export const petDetailsInitial = {
+  ID: '',
+  nombre: '',
+  color: '',
+  tamaño: '',
+  esterilizado: false,
+  descripcion: '',
+  fechaNacimiento: new Date(),
+  especie: '',
+  raza: '',
+  sexo: '',
+  enAdopcion: false,
+  fotos: [],
+  vacunas: [],
+  createdAt: new Date(),
+  updatedAt: new Date()
+}
+
+export const animalSizes = [
+  {
+    value: 'pequeño',
+    label: 'pequeño',
+  },
+  {
+    value: 'mediano',
+    label: 'mediano',
+  },
+  {
+    value: 'grande',
+    label: 'grande',
+  },
+]
+export interface IPetFormAttributesErrors {
+  nombre: string
+  color: string
+  tamaño: string
+  esterilizado: string
+  descripcion: string
+  fechaNacimiento: string
+  especie: string
+  sexo: string
+}
+
+
 export interface IPets {
   ID: string
   nombre: string
@@ -38,6 +108,7 @@ export interface IPetsLits {
   createdAt: Date
   updatedAt: Date
 }
+
 
 export interface IHeadCellPets {
   disablePadding: boolean
@@ -108,3 +179,4 @@ export const headCellsPets: readonly IHeadCellPets[] = [
     label: 'Fecha de actualización',
   },
 ]
+

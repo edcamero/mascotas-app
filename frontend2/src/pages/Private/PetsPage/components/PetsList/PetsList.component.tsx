@@ -1,4 +1,15 @@
-import { Box, Button, ButtonGroup, Paper, Table, TableBody, TableCell, TableContainer, TablePagination, TableRow } from '@mui/material'
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TablePagination,
+  TableRow,
+} from '@mui/material'
 import { format } from 'date-fns'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -10,9 +21,8 @@ import messagesList from '../../../../../components/MessagesComponent/Resources/
 import EnhancedTableToolbar from '../../../../../components/tableComponent/EnhancedTableToolbar'
 import { stableSort, getComparator, Order } from '../../../../../components/tableComponent/resource'
 import useAxios from '../../../../../services/axios.services'
-import SpecieDelete from '../../../SpeciesPage/components/SpecieDelete/SpecieDelete.component'
 import { IPetsLits } from '../../resource/usePets'
-import EditIcon from '@mui/icons-material/Edit'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 import EnhancedTableHead from './EnhancedTableHead.component'
 
 const propsTableToolbar = {
@@ -37,9 +47,9 @@ const PetsList = () => {
   let navigate = useNavigate()
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - pets.length) : 0
 
-  const handleOnClickButtonEdit = React.useCallback(
+  const handleOnClickButtonView = React.useCallback(
     (id: string) => {
-      navigate(`/pets/edit/${id}`)
+      navigate(`/pets/view/${id}`)
     },
     [navigate]
   )
@@ -49,7 +59,7 @@ const PetsList = () => {
     setOrder(isAsc ? 'desc' : 'asc')
     setOrderBy(property)
   }
-  
+
   const handleClick = (event: React.MouseEvent<unknown>, name: string) => {
     const selectedIndex = selected.indexOf(name)
     let newSelected: readonly string[] = []
@@ -79,7 +89,6 @@ const PetsList = () => {
     setPage(newPage)
   }
 
-
   React.useEffect(() => {
     if (isLoading) {
       axios
@@ -104,7 +113,7 @@ const PetsList = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [alertMessage.message])
-  
+
   return (
     <>
       <BackDropLoadApi open={isLoading} />
@@ -163,10 +172,10 @@ const PetsList = () => {
                           {row.tamaño}
                         </TableCell>
                         <TableCell id={row.ID} align="right">
-                          {(row.esterilizado?'Esterilizado':'sin Esterilizar')}
+                          {row.esterilizado ? 'Esterilizado' : 'sin Esterilizar'}
                         </TableCell>
                         <TableCell id={row.ID} align="right">
-                          {(row.enAdopcion?'SI':'NO')}
+                          {row.enAdopcion ? 'SI' : 'NO'}
                         </TableCell>
                         <TableCell align="right">
                           {format(new Date(row.fechaNacimiento ?? 0), 'dd/MM/yyyy')}
@@ -189,14 +198,13 @@ const PetsList = () => {
                               color="secondary"
                               size="small"
                               variant="contained"
-                              startIcon={<EditIcon />}
+                              startIcon={<VisibilityIcon />}
                               onClick={() => {
-                                handleOnClickButtonEdit(row.ID)
+                                handleOnClickButtonView(row.ID)
                               }}
                             >
-                              Editar
+                              Ver
                             </Button>
-                            <SpecieDelete specieId={row.ID} setAlertMessage={setAlertMessage} />
                           </ButtonGroup>
                         </TableCell>
                       </TableRow>
