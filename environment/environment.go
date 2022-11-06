@@ -42,7 +42,8 @@ func Getenv(key string) string {
 }
 
 var (
-	DATABASE     string = Getenv("DATABASE")
-	SECRETKEY    string = Getenv("SECRETKEY")
-	DATABASE_URL string = Getenv("DATABASE_URL")
+	DATABASE         string = Getenv("DATABASE")
+	SECRETKEY        string = Getenv("SECRETKEY")
+	DATABASE_URL     string = Getenv("DATABASE_URL")
+	ENVIRONMENT_TYPE string = Getenv("ENVIRONMENT_TYPE")
 )

@@ -8,9 +8,10 @@ import MessagesComponent from '../../../../../../../components/MessagesComponent
 import IMessageAttributes from '../../../../../../../components/MessagesComponent/Resources/IMessageAttributes'
 import messageAttributes from '../../../../../../../components/MessagesComponent/Resources/MessageAttributes'
 import messagesList from '../../../../../../../components/MessagesComponent/Resources/MessagesList'
+import { useParams } from 'react-router-dom'
 
 const ImageUdpload: React.FC = () => {
-  //let { id } = useParams()
+  let { id } = useParams()
   const { axios } = useAxios()
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
   const [file, setFile] = React.useState<File | null>(null)
@@ -32,7 +33,7 @@ const ImageUdpload: React.FC = () => {
     formData.append('file', file ?? '', 'stickers.jpg')
 
     axios
-      .post(process.env.REACT_APP_API_URL + `admin/upload`, formData, {
+      .post(process.env.REACT_APP_API_URL + `admin/pets/${id}/photo/upload`, formData, {
         headers: {
           // eslint-disable-next-line @typescript-eslint/naming-convention
           'Content-Type': 'multipart/form-data',

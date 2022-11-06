@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/Joker/hpp v1.0.0 // indirect
+	github.com/google/uuid v1.3.0
 	github.com/iris-contrib/middleware/cors v0.0.0-20210110101738-6d0a4d799b5d
 	github.com/iris-contrib/middleware/jwt v0.0.0-20210110101738-6d0a4d799b5d
 	github.com/joho/godotenv v1.3.0

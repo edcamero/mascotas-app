@@ -87,7 +87,7 @@ func (handler *SpeciesService) UpdatedPrivate(ctx iris.Context) {
 			ctx.NotFound()
 			return
 		}
-		util.InternalServerErrorJSON(ctx, err, "Server was unable to update movie [%s]", id)
+		util.InternalServerErrorJSON(ctx, err, "Server was unable to update specie [%s]", id)
 		return
 	}
 	ctx.StatusCode(iris.StatusOK)

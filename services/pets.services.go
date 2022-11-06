@@ -3,9 +3,11 @@ package services
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/edcamero/api-go/models"
+	"github.com/edcamero/api-go/util"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -18,6 +20,8 @@ type PetsService interface {
 	GetAllPrivate(ctx context.Context) ([]models.Animal, error)
 	GetByID(ctx context.Context, id string) (models.AnimalDetail, error)
 	GetByIDPrivate(ctx context.Context, id string) (models.Animal, error)
+	AddPhoto(ctx context.Context, id string, photo models.Foto) error
+	GetPhotosByIDPrivate(ctx context.Context, id string) ([]models.Foto, error)
 }
 
 type petsService struct {
@@ -78,6 +82,7 @@ func (service petsService) Save(ctx context.Context, newAnimal *models.Animal) (
 
 	newAnimal.CreatedAt = time.Now()
 	newAnimal.UpdatedAt = time.Now()
+	newAnimal.Fotos = []models.Foto{}
 	newAnimal.Score = 0
 
 	_, err := service.animalCollection.InsertOne(ctx, newAnimal)
@@ -153,4 +158,55 @@ func (service petsService) GetByIDPrivate(ctx context.Context, id string) (model
 	}
 	return petValue, err
 
+}
+
+func (service petsService) AddPhoto(ctx context.Context, id string, photo models.Foto) error {
+
+	filter, err := matchID(id)
+	if err != nil {
+		return err
+	}
+	elem := bson.D{}
+
+	if photo.Id != "" {
+		elem = append(elem, bson.E{Key: "fotos", Value: photo})
+	}
+
+	updatePetPhotos := bson.D{
+		{Key: "$push", Value: elem},
+	}
+
+	_, err = service.animalCollection.UpdateOne(ctx, filter, updatePetPhotos)
+
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return util.ErrNotFound
+		}
+		return err
+	}
+
+	return nil
+}
+
+func (service petsService) GetPhotosByIDPrivate(ctx context.Context, id string) ([]models.Foto, error) {
+
+	result := struct {
+		Fotos []models.Foto `json:"fotos"`
+	}{}
+	projection := bson.D{
+		primitive.E{Key: "fotos", Value: 1},
+	}
+
+	filter, err := matchID(id)
+	findOptions := options.FindOne().SetProjection(projection)
+	singleResult := service.animalCollection.FindOne(ctx, filter, findOptions)
+
+	if singleResult.Err() != nil {
+		log.Println("Find error: ", singleResult.Err())
+		return result.Fotos, err
+	}
+
+	err = singleResult.Decode(&result)
+
+	return result.Fotos, err
 }
