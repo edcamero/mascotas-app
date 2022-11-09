@@ -3,6 +3,7 @@ package controllers
 import (
 	//"encoding/json"
 
+	"encoding/json"
 	"errors"
 	"log"
 
@@ -94,7 +95,8 @@ func AuthenticatedAdmin(ctx iris.Context) {
 	if item["rol"] == "admin" {
 		ctx.Next()
 	} else {
-		log.Fatal(user)
+		userJson, _ := json.Marshal(user)
+		log.Println(string(userJson))
 		ctx.StopWithStatus(iris.StatusUnauthorized)
 	}
 }
