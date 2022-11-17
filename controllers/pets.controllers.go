@@ -19,8 +19,24 @@ func NewPetsController(service services.PetsService, serviceUpload services.Uplo
 	return &PetsService{service: service, serviceUpload: serviceUpload}
 }
 
+func (handler *PetsService) Count(ctx iris.Context) {
+	count, err := handler.service.Count(nil)
+	if err != nil {
+		ctx.StopWithStatus(iris.StatusInternalServerError)
+		return
+	}
+	ctx.JSON(count)
+}
+
 func (handler *PetsService) GetAll(ctx iris.Context) {
-	pets, err := handler.service.GetAll(nil)
+	page, err := ctx.Params().GetInt64("page")
+	base, err := ctx.Params().GetInt64("base")
+	if err != nil {
+		log.Print(err)
+		ctx.StopWithStatus(iris.StatusBadRequest)
+		return
+	}
+	pets, err := handler.service.GetAll(nil, page, base)
 	if err != nil {
 		ctx.StopWithStatus(iris.StatusInternalServerError)
 		return
@@ -38,7 +54,7 @@ func (handler *PetsService) GetAll(ctx iris.Context) {
 func (handler *PetsService) GetAllPrivate(ctx iris.Context) {
 	pets, err := handler.service.GetAllPrivate(nil)
 	if err != nil {
-		log.Fatal(err)
+		log.Print(err)
 		ctx.StopWithStatus(iris.StatusInternalServerError)
 		return
 	}
@@ -49,7 +65,6 @@ func (handler *PetsService) GetAllPrivate(ctx iris.Context) {
 	}
 
 	ctx.JSON(pets)
-
 }
 
 func (handler *PetsService) GetByID(ctx iris.Context) {

@@ -64,7 +64,8 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 
 	api := app.Party("/api")
 	api.Post("/login", authController.Login)
-	api.Get("/pets", petsController.GetAll)
+	api.Get("/pets/page/{page:uint64}/base/{base:uint64}", petsController.GetAll)
+	api.Get("/pets/count", petsController.Count)
 	api.Get("/pets/{id:string}", petsController.GetByID)
 	api.Use(util.Verify())
 	api.Use(j.Serve)

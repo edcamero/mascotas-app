@@ -15,8 +15,9 @@ import (
 )
 
 type PetsService interface {
+	Count(ctx context.Context) (int64, error)
 	Save(ctx context.Context, newAnimal *models.Animal) (bool, error)
-	GetAll(ctx context.Context) ([]models.AnimalView, error)
+	GetAll(ctx context.Context, page int64, rango int64) ([]models.AnimalView, error)
 	GetAllPrivate(ctx context.Context) ([]models.Animal, error)
 	GetByID(ctx context.Context, id string) (models.AnimalDetail, error)
 	GetByIDPrivate(ctx context.Context, id string) (models.Animal, error)
@@ -33,8 +34,23 @@ var _ PetsService = (*petsService)(nil)
 func NewPetsService(collection *mongo.Collection) PetsService {
 	return &petsService{animalCollection: collection}
 }
+func (service petsService) Count(ctx context.Context) (int64, error) {
+	count, err := service.animalCollection.CountDocuments(ctx, bson.D{})
+	if err != nil {
+		fmt.Println(err)
+		return 0, err
+	}
 
-func (service petsService) GetAll(ctx context.Context) ([]models.AnimalView, error) {
+	return count, nil
+}
+
+func (service petsService) GetAll(ctx context.Context, page int64, rango int64) ([]models.AnimalView, error) {
+
+	var endItem int64 = page * rango
+	var startItem int64 = 0
+	if page > 0 {
+		startItem = (page - 1) * rango
+	}
 
 	projection := bson.D{
 		primitive.E{Key: "nombre", Value: 1},
@@ -44,11 +60,12 @@ func (service petsService) GetAll(ctx context.Context) ([]models.AnimalView, err
 		primitive.E{Key: "descripcion", Value: 1},
 		primitive.E{Key: "fecha_nacimiento", Value: 1},
 		primitive.E{Key: "especie", Value: 1},
+		primitive.E{Key: "raza", Value: 1},
 		primitive.E{Key: "fotos", Value: bson.D{primitive.E{Key: "$slice", Value: 1}}},
 		primitive.E{Key: "sexo", Value: 1},
 	}
 
-	findOptions := options.Find().SetProjection(projection)
+	findOptions := options.Find().SetProjection(projection).SetSkip(startItem).SetLimit(endItem).SetSort(bson.D{primitive.E{Key: "score", Value: -1}})
 	cursor, err := service.animalCollection.Find(ctx, bson.D{}, findOptions)
 	if err != nil {
 		fmt.Println(err)
@@ -89,6 +106,7 @@ func (service petsService) Save(ctx context.Context, newAnimal *models.Animal) (
 	if err != nil {
 		return false, err
 	}
+
 	return true, nil
 }
 
