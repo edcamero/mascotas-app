@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"fmt"
+	"time"
 
 	"github.com/edcamero/api-go/models"
 	"go.mongodb.org/mongo-driver/bson"
@@ -12,6 +13,7 @@ import (
 )
 
 type PetsService interface {
+	Save(ctx context.Context, newAnimal *models.Animal) (bool, error)
 	GetAll(ctx context.Context) ([]models.AnimalView, error)
 	GetAllPrivate(ctx context.Context) ([]models.Animal, error)
 	GetByID(ctx context.Context, id string) (models.AnimalDetail, error)
@@ -65,8 +67,24 @@ func (service petsService) GetAll(ctx context.Context) ([]models.AnimalView, err
 		}
 		results = append(results, elem)
 	}
-	return results, nil
 
+	return results, nil
+}
+
+func (service petsService) Save(ctx context.Context, newAnimal *models.Animal) (bool, error) {
+	if newAnimal.ID.IsZero() {
+		newAnimal.ID = primitive.NewObjectID()
+	}
+
+	newAnimal.CreatedAt = time.Now()
+	newAnimal.UpdatedAt = time.Now()
+	newAnimal.Score = 0
+
+	_, err := service.animalCollection.InsertOne(ctx, newAnimal)
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }
 
 func (service petsService) GetByID(ctx context.Context, id string) (models.AnimalDetail, error) {
