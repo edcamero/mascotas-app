@@ -11,7 +11,7 @@ const basePage = 6
 const PetPublic: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState<boolean>(true)
   const [pets, setPets] = React.useState<IPetsPublic[]>([])
-  const [page, setPage] = React.useState(1)
+  const [page, setPage] = React.useState(0)
   const [countPets, setCountPets] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(6)
 
