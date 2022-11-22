@@ -16,6 +16,7 @@ type Animal struct {
 	Descripcion      string             `json:"descripcion" bson:"descripcion"`
 	Fecha_nacimiento time.Time          `json:"fechaNacimiento" bson:"fecha_nacimiento"`
 	Especie          string             `json:"especie" bson:"especie"`
+	Raza             string             `json:"raza" bson:"raza"`
 	Fotos            []Foto             `json:"fotos" bson:"fotos"`
 	Sexo             string             `json:"sexo" bson:"sexo"`
 	Vacunas          []VacunaMascota    `json:"vacunas" bson:"vacunas"`
@@ -34,6 +35,7 @@ type AnimalView struct {
 	Descripcion      string    `json:"descripcion" bson:"descripcion"`
 	Fecha_nacimiento time.Time `json:"fechaNacimiento" bson:"fecha_nacimiento"`
 	Especie          string    `json:"especie" bson:"especie"`
+	Raza             string    `json:"raza" bson:"raza"`
 	Sexo             string    `json:"sexo" bson:"sexo"`
 	Foto             []Foto    `json:"fotos" bson:"fotos"`
 	CreatedAt        time.Time `json:"createdAt" bson:"createdAt"`
@@ -50,6 +52,7 @@ type AnimalDetail struct {
 	Descripcion      string    `json:"descripcion" bson:"descripcion"`
 	Fecha_nacimiento time.Time `json:"fechaNacimiento" bson:"fecha_nacimiento"`
 	Especie          string    `json:"especie" bson:"especie"`
+	Raza             string    `json:"raza" bson:"raza"`
 	Sexo             string    `json:"sexo" bson:"sexo"`
 	Fotos            []Foto    `json:"fotos" bson:"fotos"`
 	CreatedAt        time.Time `json:"createdAt" bson:"createdAt"`

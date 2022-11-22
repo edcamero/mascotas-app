@@ -10,6 +10,7 @@ import SpecieUpdateComponent from '../pages/Private/SpeciesPage/components/Speci
 import PetsList from '../pages/Private/PetsPage/components/PetsList/PetsList.component'
 import PestCreate from '../pages/Private/PetsPage/components/PetCreate/PestCreate.component'
 import PetView from '../pages/Private/PetsPage/components/PetView/PetView.component'
+import PetPublicDetails from '../pages/HomePage/conponents/PetPublicDetails/PetPublicDetails.component'
 interface IRouterProps {
   children: JSX.Element | JSX.Element[]
 }
@@ -23,6 +24,14 @@ const RouterApp: React.FC<IRouterProps> = (props) => {
             <Route path="/" element={<HomePage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/pets">
+              <Route
+                path=":id"
+                element={
+                    <PetPublicDetails />
+                }
+              />
+               </Route>
             <Route
               path="/dashboard"
               element={
@@ -84,6 +93,14 @@ const RouterApp: React.FC<IRouterProps> = (props) => {
               />
               <Route
                 path="view/:id"
+                element={
+                  <RequireAuth>
+                    <PetView />
+                  </RequireAuth>
+                }
+              />
+               <Route
+                path="view/:id/*"
                 element={
                   <RequireAuth>
                     <PetView />

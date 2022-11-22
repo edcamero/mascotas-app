@@ -33,20 +33,21 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 
 	var (
 		// Collections.
-		usersCollection  = database.Collection("usuarios")
-		petsCollection   = database.Collection("animal")
-		speciesCollectin = database.Collection("especies")
+		usersCollection   = database.Collection("usuarios")
+		petsCollection    = database.Collection("animal")
+		speciesCollection = database.Collection("especies")
 
 		// Services.
 
 		authService    = services.NewAuthService(usersCollection)
 		petsService    = services.NewPetsService(petsCollection)
-		speciesService = services.NewSpeciesService(speciesCollectin)
+		speciesService = services.NewSpeciesService(speciesCollection)
+		uploadService  = services.NewUploadservice()
 
 		//Controllers
 
 		authController    = controllers.NewAuthController(authService)
-		petsController    = controllers.NewPetsController(petsService)
+		petsController    = controllers.NewPetsController(petsService, uploadService)
 		speciesController = controllers.NewSpeciesController(speciesService)
 	)
 
@@ -59,10 +60,12 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 		},
 		SigningMethod: jwt.SigningMethodHS256,
 	})
+	app.HandleDir("/public", iris.Dir("./public"))
 
 	api := app.Party("/api")
 	api.Post("/login", authController.Login)
-	api.Get("/pets", petsController.GetAll)
+	api.Get("/pets/page/{page:uint64}/base/{base:uint64}", petsController.GetAll)
+	api.Get("/pets/count", petsController.Count)
 	api.Get("/pets/{id:string}", petsController.GetByID)
 	api.Use(util.Verify())
 	api.Use(j.Serve)
@@ -88,10 +91,14 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 	adminApi.Get("/pets", petsController.GetAllPrivate)
 	adminApi.Post("/pets", petsController.SavePrivate)
 	adminApi.Get("/pets/{id:string}", petsController.GetByIDPrivate)
+	adminApi.Get("/pets/{id:string}/photo", petsController.GetPhotosByID)
+	adminApi.Post("/pets/{id:string}/photo/upload", iris.LimitRequestBodySize(10<<20), petsController.UploadFile)
+
 	//species
 	adminApi.Get("/species", speciesController.GetAllPrivate)
 	adminApi.Post("/species", speciesController.SavePrivate)
 	adminApi.Get("/species/{id:string}", speciesController.GetByID)
 	adminApi.Put("/species/{id:string}", speciesController.UpdatedPrivate)
 	adminApi.Delete("/species/{id:string}", speciesController.DeletePrivate)
+
 }

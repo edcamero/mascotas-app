@@ -31,7 +31,7 @@ func main() {
 	app.UseRouter(crs)
 	app.AllowMethods(iris.MethodOptions) // <- permite el Cors
 
-	app.Logger().SetLevel("debug")
+	app.Logger().SetLevel("error")
 
 	app.Handle("GET", "/ping", func(ctx iris.Context) {
 		ctx.JSON(iris.Map{"message": "haciendo ping"})
