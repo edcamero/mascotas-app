@@ -4,6 +4,8 @@
 .vscode
 frontend
 frontend2
+public
+kubernetes
 
 *.md
 

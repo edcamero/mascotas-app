@@ -16,3 +16,13 @@ En la el directorio BD/mascotas_db se encuentra los archivos de respaldo para la
 ```sh
 ./mongorestore --db=mascotas_db --nsInclude="db1.*" mascotas_db/
 ```
+
+
+Para deplegar en kubernetes
+```sh
+docker build . -t edcamero/mascotas-api:<TAG>
+docker push edcamero/mascotas-api:<TAG>
+
+kubectl apply -f deployment.yaml
+```
+

@@ -1,7 +1,7 @@
 import { AppBar, Box, Tab, Tabs } from '@mui/material'
 import React from 'react'
-import { Route, Routes, useNavigate } from 'react-router-dom'
-import ImageView from './component/image/ImageView.component'
+import { useNavigate } from 'react-router-dom'
+import RouteViewPetPanel from '../../../../../router/RouteViewPetPanel'
 import TabPanel from './TabPanel.component'
 
 interface IPetViewTabProms {
@@ -12,8 +12,10 @@ const PetViewTab: React.FC<IPetViewTabProms> = ({ idPet }) => {
   const [value, setValue] = React.useState(0)
 
   const handleChange = (event: React.ChangeEvent<any>, newValue: number) => {
+    setValue(newValue)
+
     if (newValue === 0) {
-      navigate(`/pets/view/${idPet}`)
+      navigate(`/pets/view/${idPet}/`)
     }
     if (newValue === 1) {
       navigate(`/pets/view/${idPet}/vacune`)
@@ -24,7 +26,6 @@ const PetViewTab: React.FC<IPetViewTabProms> = ({ idPet }) => {
     if (newValue === 3) {
       navigate(`/pets/view/${idPet}/history`)
     }
-    setValue(newValue)
   }
 
   function a11yProps(index: number) {
@@ -49,19 +50,20 @@ const PetViewTab: React.FC<IPetViewTabProms> = ({ idPet }) => {
           <Tab label="Fotos" {...a11yProps(0)} />
           <Tab label="Vacunas" {...a11yProps(1)} />
           <Tab label="Peso" {...a11yProps(2)} />
-          <Tab label="Historial" {...a11yProps(2)} />
+          <Tab label="Historial" {...a11yProps(3)} />
         </Tabs>
       </AppBar>
       <TabPanel value={value} index={0}>
-        <Routes>
-          <Route path="/" element={<ImageView />} />
-        </Routes>
+        <RouteViewPetPanel />
       </TabPanel>
       <TabPanel value={value} index={1}>
-        Item Two
+        <RouteViewPetPanel />
       </TabPanel>
       <TabPanel value={value} index={2}>
-        Item Three
+        <RouteViewPetPanel />
+      </TabPanel>
+      <TabPanel value={value} index={3}>
+        <RouteViewPetPanel />
       </TabPanel>
     </Box>
   )

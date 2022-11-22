@@ -1,34 +1,21 @@
 import { Grid, Typography } from '@mui/material'
-import axios from 'axios'
-import React, { useState } from 'react'
+import React from 'react'
 import imagebackgraud from '../../images/background1.jpg'
-import BackDropLoadApi from '../../components/backDropLoad/BackDropLoadApi'
-import { ISummary } from './resource/HomeResource'
 import { useTheme } from '@mui/material/styles'
+import PetPublic from './conponents/PetsPublic/PetPublic.component'
 
 const HomePage: React.FC = () => {
-  const [summary, setSummary] = useState<ISummary | null>(null)
-  const [isLoading, setIsLoading] = React.useState<boolean>(true)
+ 
   const theme = useTheme()
-
-  React.useEffect(() => {
-    if (isLoading) {
-      axios
-        .get(`${process.env.REACT_APP_API_URL}summary`)
-        .then((response) => setSummary(response.data))
-        .finally(() => setIsLoading(false))
-    }
-  }, [isLoading])
-
+  
   return (
-    <>
-      <BackDropLoadApi open={isLoading} />
+    <>      
       <Grid
         container
         direction="row"
         justifyContent="top"
         alignItems="flex-start"
-        sx={{ marginTop: '-2rem'}}
+        sx={{ marginTop: '-2rem' }}
       >
         <div
           style={{
@@ -43,7 +30,7 @@ const HomePage: React.FC = () => {
             alt="imagen de inicio"
             data-testid="main-img"
             style={{
-              width: '100%',                           
+              width: '100%',
               position: 'relative',
             }}
           />
@@ -83,12 +70,7 @@ const HomePage: React.FC = () => {
             </Grid>
           </Grid>
         </div>
-        <Grid item xs={10} md={2} sx={{ marginTop: '4rem' }}>
-          {summary?.Global && <> data prueba</>}
-        </Grid>
-        <Grid item xs={10} md={6} sx={{ margin: '1rem' }}>
-          {summary?.Countries && <> data prueba</>}
-        </Grid>
+        <PetPublic />
       </Grid>
     </>
   )

@@ -7,6 +7,17 @@ export interface IVacuna {
   nombre: string
   fecha: Date
 }
+export interface IPetFilter {
+  sexo: string
+  tamaño: string
+  especie:string
+}
+
+export const petFilterInitial = {
+  sexo: '',
+  tamaño: '',
+  especie:''
+}
 
 export interface IPetRegister {
   ID: string
@@ -54,6 +65,10 @@ export const petDetailsInitial = {
 
 export const animalSizes = [
   {
+    value: '',
+    label: 'seleccionar',
+  },
+  {
     value: 'pequeño',
     label: 'pequeño',
   },
@@ -66,6 +81,35 @@ export const animalSizes = [
     label: 'grande',
   },
 ]
+
+export const animalGender = [
+  {
+    value: '',
+    label: 'seleccionar',
+  },
+  {
+    value: 'M',
+    label: 'Macho',
+  },
+  {
+    value: 'F',
+    label: 'Hembra',
+  }]
+
+  export const speciesDefault = [
+    {
+      value: '',
+      label: 'seleccionar',
+    },
+    {
+      value: 'Perro',
+      label: 'Perro',
+    },
+    {
+      value: 'Gato',
+      label: 'Gato',
+    }]
+
 export interface IPetFormAttributesErrors {
   nombre: string
   color: string
@@ -90,6 +134,7 @@ export interface IPets {
   especie: string
   fotos: IFoto[]
   sexo: string
+  raza: string
   vacunas: IVacuna[]
   createdAt: Date
   updatedAt: Date
