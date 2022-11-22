@@ -32,6 +32,10 @@ import IMessageAttributes from '../../../../components/MessagesComponent/Resourc
 import messageAttributes from '../../../../components/MessagesComponent/Resources/MessageAttributes'
 import { UsePetPublicDetails } from './usePetPublicDetails'
 
+import { Carousel } from 'react-responsive-carousel'
+import 'react-responsive-carousel/lib/styles/carousel.min.css'
+import './PetPublicDetails.css'
+
 const PetPublicDetails: React.FC = () => {
   let { id } = useParams()
   const [alertMessage, setAlertMessage] = React.useState<IMessageAttributes>(messageAttributes)
@@ -125,7 +129,10 @@ const PetPublicDetails: React.FC = () => {
                     <ListItemAvatar>
                       <InfoIcon color={'secondary'} />
                     </ListItemAvatar>
-                    <ListItemText primary="Especie" secondary={`${petDetails.especie} - ${petDetails.raza} `} />
+                    <ListItemText
+                      primary="Especie"
+                      secondary={`${petDetails.especie} - ${petDetails.raza} `}
+                    />
                   </ListItem>
                 </List>
               </Grid>
@@ -135,7 +142,7 @@ const PetPublicDetails: React.FC = () => {
                     color="secondary"
                     size="small"
                     variant="contained"
-                    startIcon={< PetsIcon/>}
+                    startIcon={<PetsIcon />}
                     onClick={() => {
                       handleOnClickButtonAdot(petDetails.ID)
                     }}
@@ -150,8 +157,18 @@ const PetPublicDetails: React.FC = () => {
                 justifyContent="center"
                 alignItems="center"
                 spacing={2}
+                className="carousel-wrapper"
+                sx={{ marginTop: '2rem' }}
               >
-                galeria de fotos
+                <Carousel>
+                  {petDetails.fotos.map((photo, index) => {
+                    return (
+                      <div key={index}>
+                        <img src={`${photo.url}`} />
+                      </div>
+                    )
+                  })}
+                </Carousel>
               </Grid>
             </Grid>
           </Box>
