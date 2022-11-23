@@ -34,6 +34,7 @@ var _ PetsService = (*petsService)(nil)
 func NewPetsService(collection *mongo.Collection) PetsService {
 	return &petsService{animalCollection: collection}
 }
+
 func (service petsService) Count(ctx context.Context) (int64, error) {
 	count, err := service.animalCollection.CountDocuments(ctx, bson.D{})
 	if err != nil {

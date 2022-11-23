@@ -44,7 +44,7 @@ const PetPublicDetails: React.FC = () => {
   let navigate = useNavigate()
   const handleOnClickButtonAdot = React.useCallback(
     (id: string) => {
-      navigate(`/pets/adoctar/${id}`)
+      navigate(`/pets/${id}/adopt`)
     },
     [navigate]
   )
