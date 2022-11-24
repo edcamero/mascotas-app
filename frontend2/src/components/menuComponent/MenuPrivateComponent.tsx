@@ -35,7 +35,7 @@ const MenuPrivateComponent: React.FC<IMenuPrivateComponentProps> = ({
           onClick={() => {
             handleOnClick('/')
           }}
-          data-testid={'menu-itemLeft-' + 13}
+          data-testid={'menu-itemLeft-species'}
         >
           <ListItemIcon>
             <EmojiNatureIcon />
@@ -65,13 +65,28 @@ const MenuPrivateComponent: React.FC<IMenuPrivateComponentProps> = ({
           onClick={() => {
             handleOnClick('/pets')
           }}
-          data-testid={'menu-itemLeft-' + 13}
+          data-testid={'menu-itemLeft-pets'}
         >
           <ListItemIcon>
             <EmojiNatureIcon />
           </ListItemIcon>
           <ListItemText>
             <Typography variant="body1">Mis Animales</Typography>
+          </ListItemText>
+        </ListItem>
+        <ListItem
+          key={13}
+          button
+          onClick={() => {
+            handleOnClick('/adopt')
+          }}
+          data-testid={'menu-itemLeft-adopt'}
+        >
+          <ListItemIcon>
+            <EmojiNatureIcon />
+          </ListItemIcon>
+          <ListItemText>
+            <Typography variant="body1">Adopciones</Typography>
           </ListItemText>
         </ListItem>
       </List>

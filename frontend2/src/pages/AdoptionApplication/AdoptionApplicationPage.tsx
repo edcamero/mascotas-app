@@ -10,6 +10,7 @@ const AdoptionApplicationPage = () => {
   let { id } = useParams()
   const { adopter, setAdopter, errorsAdopter, handleOnClickButton, alertMessage } = useAdopter(id ?? '')
   
+
   React.useEffect(() => {
     if (alertMessage.message !== '') {
       setOpenMessage(true)

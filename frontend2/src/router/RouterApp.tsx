@@ -12,6 +12,7 @@ import PestCreate from '../pages/Private/PetsPage/components/PetCreate/PestCreat
 import PetView from '../pages/Private/PetsPage/components/PetView/PetView.component'
 import PetPublicDetails from '../pages/HomePage/conponents/PetPublicDetails/PetPublicDetails.component'
 import AdoptionApplicationPage from '../pages/AdoptionApplication/AdoptionApplicationPage'
+import AdoptList from '../pages/Private/AdoptPage/components/AdoptList/AdoptList.component'
 interface IRouterProps {
   children: JSX.Element | JSX.Element[]
 }
@@ -26,19 +27,9 @@ const RouterApp: React.FC<IRouterProps> = (props) => {
             <Route path="/home" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/pets">
-              <Route
-                path=":id"
-                element={
-                    <PetPublicDetails />
-                }
-              />
-              <Route
-                path=":id/adopt"
-                element={
-                    <AdoptionApplicationPage />
-                }
-              />
-               </Route>
+              <Route path=":id" element={<PetPublicDetails />} />
+              <Route path=":id/adopt" element={<AdoptionApplicationPage />} />
+            </Route>
             <Route
               path="/dashboard"
               element={
@@ -106,7 +97,7 @@ const RouterApp: React.FC<IRouterProps> = (props) => {
                   </RequireAuth>
                 }
               />
-               <Route
+              <Route
                 path="view/:id/*"
                 element={
                   <RequireAuth>
@@ -115,6 +106,14 @@ const RouterApp: React.FC<IRouterProps> = (props) => {
                 }
               />
             </Route>
+            <Route
+              path="adopt"
+              element={
+                <RequireAuth>
+                  <AdoptList />
+                </RequireAuth>
+              }
+            />
           </Routes>
         </BrowserRouter>
       </header>

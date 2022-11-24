@@ -276,7 +276,13 @@ const FormAdoptionApplication: React.FC<IFormAdoptionApplicationProps> = ({
                   disabled={
                     adopter.nombres === '' ||
                     adopter.apellidos === '' ||
-                    adopter.documento.numero === ''
+                    adopter.documento.numero === '' ||
+                    adopter.direccion.ciudad === '' ||
+                    adopter.direccion.barrio === '' ||
+                    adopter.direccion.direccion === '' ||
+                    adopter.telefono === '' ||
+                    adopter.email === '' ||
+                    errorsAdopter.email !== ''
                   }
                   onClick={() => {
                     handleOnClickButton()

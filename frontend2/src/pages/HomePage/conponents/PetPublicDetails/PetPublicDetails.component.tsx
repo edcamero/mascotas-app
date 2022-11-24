@@ -42,12 +42,14 @@ const PetPublicDetails: React.FC = () => {
   const { isLoading, petDetails } = UsePetPublicDetails(id ?? '', setAlertMessage)
   const [openMessage, setOpenMessage] = React.useState<boolean>(false)
   let navigate = useNavigate()
+
   const handleOnClickButtonAdot = React.useCallback(
     (id: string) => {
       navigate(`/pets/${id}/adopt`)
     },
     [navigate]
   )
+
 
   return (
     <>

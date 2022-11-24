@@ -42,6 +42,7 @@ func (service adoptService) Save(ctx context.Context, id string, newAdopt *model
 
 	elem := bson.D{}
 
+	newAdopt.Estado = "inicial"
 	if newAdopt.Documento.Numero != "" {
 		elem = append(elem, bson.E{Key: "adoptante", Value: newAdopt})
 	}
