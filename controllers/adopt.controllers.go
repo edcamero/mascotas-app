@@ -43,3 +43,20 @@ func (handler *AdoptController) Save(ctx iris.Context) {
 	}
 
 }
+
+func (handler *AdoptController) GetAllPrivate(ctx iris.Context) {
+
+	adopts, err := handler.Adoptservice.GetAllPrivate(nil)
+
+	if err != nil {
+		util.InternalServerErrorJSON(ctx, err, "Server was unable to create a adoption application")
+		return
+	}
+
+	if adopts == nil {
+		adopts = make([]models.AdopcionList, 0)
+	}
+
+	ctx.JSON(adopts)
+
+}

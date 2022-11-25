@@ -27,7 +27,7 @@ import EnhancedTableHead from './EnhancedTableHead.component'
 
 const propsTableToolbar = {
   title: 'Animales',
-  messageAdd: 'Agregar nueva animal',
+  messageAdd: 'Agregar nuevo animal',
   urlCreate: '/pets/create',
 }
 

@@ -15,14 +15,16 @@ spec:
     spec:
       containers:
       - name: mascotas-api
-        image: edcamero/mascotas-api:0.0.5
+        image: edcamero/mascotas-api:0.0.6
         env:
         - name: DATABASE
           value: mascotas_db
         - name: DATABASE_URL
-          value: <conecction-string>
+          value: mongodb+srv://user_db:Mascota12345@mascota.sdg9g.mongodb.net/?retryWrites=true&w=majority
         - name: SECRETKEY
-          value: <key>
+          value: Unipamplona
+        - name: ENVIRONMENT_TYPE
+          value: P
         imagePullPolicy: Always
         ports:
         - containerPort: 8080

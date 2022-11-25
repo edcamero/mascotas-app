@@ -58,3 +58,16 @@ type AnimalDetail struct {
 	CreatedAt        time.Time `json:"createdAt" bson:"createdAt"`
 	UpdatedAt        time.Time `json:"updatedAt" bson:"updatedAt" `
 }
+
+type AnimalAdopt struct {
+	ID              primitive.ObjectID `bson:"_id"`
+	Nombre          string             `json:"nombre" bson:"nombre"`
+	Color           string             `json:"color" bson:"color"`
+	Tamaño          string             `json:"tamaño" bson:"tamaño"`
+	Esterilizado    bool               `json:"esterilizado" bson:"esterilizado"`
+	FechaNacimiento time.Time          `json:"fechaNacimiento" bson:"fecha_nacimiento"`
+	EnAdopcion      bool               `json:"enAdopcion" bson:"en_adopcion"`
+	Especie         string             `json:"especie" bson:"especie"`
+	Raza            string             `json:"raza" bson:"raza"`
+	Sexo            string             `json:"sexo" bson:"sexo"`
+}

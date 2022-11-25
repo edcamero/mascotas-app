@@ -93,6 +93,7 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 
 	//pets
 	adminApi.Get("/pets", petsController.GetAllPrivate)
+
 	adminApi.Post("/pets", petsController.SavePrivate)
 	adminApi.Get("/pets/{id:string}", petsController.GetByIDPrivate)
 	adminApi.Get("/pets/{id:string}/photo", petsController.GetPhotosByID)
@@ -104,5 +105,8 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 	adminApi.Get("/species/{id:string}", speciesController.GetByID)
 	adminApi.Put("/species/{id:string}", speciesController.UpdatedPrivate)
 	adminApi.Delete("/species/{id:string}", speciesController.DeletePrivate)
+
+	//adopts
+	adminApi.Get("/adopts", adoptController.GetAllPrivate)
 
 }

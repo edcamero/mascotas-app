@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"log"
+	"time"
 
 	otroJwt "github.com/iris-contrib/middleware/jwt"
 	"github.com/kataras/iris/v12"
@@ -92,7 +93,7 @@ func AuthenticatedAdmin(ctx iris.Context) {
 
 	user := ctx.Values().Get("jwt").(*otroJwt.Token)
 	item := user.Claims.(otroJwt.MapClaims)
-	if item["rol"] == "admin" {
+	if item["rol"] == "admin" || float64(time.Now().Unix()) < item["exp"].(float64) {
 		ctx.Next()
 	} else {
 		userJson, _ := json.Marshal(user)
