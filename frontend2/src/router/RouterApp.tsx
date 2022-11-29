@@ -13,6 +13,7 @@ import PetView from '../pages/Private/PetsPage/components/PetView/PetView.compon
 import PetPublicDetails from '../pages/HomePage/conponents/PetPublicDetails/PetPublicDetails.component'
 import AdoptionApplicationPage from '../pages/AdoptionApplication/AdoptionApplicationPage'
 import AdoptList from '../pages/Private/AdoptPage/components/AdoptList/AdoptList.component'
+import UserList from '../pages/Private/UserPage/components/UserList/UserList.component'
 interface IRouterProps {
   children: JSX.Element | JSX.Element[]
 }
@@ -111,6 +112,14 @@ const RouterApp: React.FC<IRouterProps> = (props) => {
               element={
                 <RequireAuth>
                   <AdoptList />
+                </RequireAuth>
+              }
+            />
+            <Route
+              path="users"
+              element={
+                <RequireAuth>
+                  <UserList />
                 </RequireAuth>
               }
             />

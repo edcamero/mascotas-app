@@ -1,6 +1,7 @@
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material'
 import React from 'react'
 import EmojiNatureIcon from '@mui/icons-material/EmojiNature'
+import PeopleIcon from '@mui/icons-material/People'
 import { useNavigate } from 'react-router-dom'
 
 interface IMenuPrivateComponentProps {
@@ -45,7 +46,22 @@ const MenuPrivateComponent: React.FC<IMenuPrivateComponentProps> = ({
           </ListItemText>
         </ListItem>
         <ListItem
-          key={13}
+          key={1}
+          button
+          onClick={() => {
+            handleOnClick('/users')
+          }}
+          data-testid={'menu-itemLeft-' + 13}
+        >
+          <ListItemIcon>
+            <PeopleIcon />
+          </ListItemIcon>
+          <ListItemText>
+            <Typography variant="body1">Usuarios</Typography>
+          </ListItemText>
+        </ListItem>
+        <ListItem
+          key={2}
           button
           onClick={() => {
             handleOnClick('/species')
