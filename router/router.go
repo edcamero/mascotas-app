@@ -45,6 +45,7 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 		speciesService = services.NewSpeciesService(speciesCollection)
 		adoptService   = services.NewAdoptService(adoptCollection)
 		uploadService  = services.NewUploadservice()
+		usersServices  = services.NewUserService(usersCollection)
 
 		//Controllers
 
@@ -52,6 +53,7 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 		petsController    = controllers.NewPetsController(petsService, uploadService)
 		speciesController = controllers.NewSpeciesController(speciesService)
 		adoptController   = controllers.NewAdoptControllerr(adoptService, petsService)
+		usersController   = controllers.NewUserController(usersServices)
 	)
 
 	j := jwt.New(jwt.Config{
@@ -108,5 +110,8 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 
 	//adopts
 	adminApi.Get("/adopts", adoptController.GetAllPrivate)
+
+	//users
+	adminApi.Get("/users", usersController.GetAllPrivate)
 
 }
