@@ -3,10 +3,18 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import PasswordIcon from '@mui/icons-material/Password'
 import { Collapse, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const MenuItemPerfil: React.FC = () => {
   const [open, setOpen] = React.useState(false)
+  let navigate = useNavigate()
 
+  const handleOnClick = React.useCallback(
+    (url: string) => {
+      navigate(url)
+    },
+    [navigate]
+  )
   const handleClick = () => {
     setOpen(!open)
   }
@@ -27,7 +35,9 @@ const MenuItemPerfil: React.FC = () => {
             </ListItemIcon>
             <ListItemText primary="Editar mi perfil" />
           </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }}>
+          <ListItemButton sx={{ pl: 4 }} onClick={() => {
+            handleOnClick('users/password')
+          }}>
             <ListItemIcon>
               <PasswordIcon />
             </ListItemIcon>

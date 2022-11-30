@@ -22,6 +22,7 @@ import { stableSort, getComparator, Order } from '../../../../../components/tabl
 import useAxios from '../../../../../services/axios.services'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import EnhancedTableHead from './EnhancedTableHead.component'
+import DeleteIcon from '@mui/icons-material/Delete'
 import { IUsertLits, IUsertLitsApi } from '../../resources/userData'
 
 const propsTableToolbar = {
@@ -99,7 +100,7 @@ const UserList: React.FC = () => {
             email: elem.email,
             fullname: elem.fullname,
             rol: elem.rol.name,
-            state: elem.state
+            state: elem.state,
           }))
           setUsers(usersResponse)
         })
@@ -179,6 +180,17 @@ const UserList: React.FC = () => {
                               }}
                             >
                               Ver
+                            </Button>
+                            <Button
+                              color="error"
+                              size="small"
+                              variant="contained"
+                              startIcon={<DeleteIcon />}
+                              onClick={() => {
+                                handleOnClickButtonView(row.id)
+                              }}
+                            >
+                              Eliminar
                             </Button>
                           </ButtonGroup>
                         </TableCell>
