@@ -14,6 +14,7 @@ import PetPublicDetails from '../pages/HomePage/conponents/PetPublicDetails/PetP
 import AdoptionApplicationPage from '../pages/AdoptionApplication/AdoptionApplicationPage'
 import AdoptList from '../pages/Private/AdoptPage/components/AdoptList/AdoptList.component'
 import UserList from '../pages/Private/UserPage/components/UserList/UserList.component'
+import UserEdit from '../pages/Private/UserPage/components/UsersEdit/UserEdit.component'
 interface IRouterProps {
   children: JSX.Element | JSX.Element[]
 }
@@ -115,14 +116,24 @@ const RouterApp: React.FC<IRouterProps> = (props) => {
                 </RequireAuth>
               }
             />
-            <Route
-              path="users"
-              element={
-                <RequireAuth>
-                  <UserList />
-                </RequireAuth>
-              }
-            />
+            <Route path="users">
+              <Route
+                path=""
+                element={
+                  <RequireAuth>
+                    <UserList />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="edit/:id"
+                element={
+                  <RequireAuth>
+                    <UserEdit />
+                  </RequireAuth>
+                }
+              />
+            </Route>
           </Routes>
         </BrowserRouter>
       </header>

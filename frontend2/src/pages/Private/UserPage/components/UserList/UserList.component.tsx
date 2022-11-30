@@ -48,7 +48,7 @@ const UserList: React.FC = () => {
 
   const handleOnClickButtonView = React.useCallback(
     (id: string) => {
-      navigate(`/users/${id}`)
+      navigate(`/users/edit/${id}`)
     },
     [navigate]
   )
@@ -94,7 +94,7 @@ const UserList: React.FC = () => {
         .get(process.env.REACT_APP_API_URL + 'admin/users')
         .then((response) => {
           const usersResponse = (response.data as IUsertLitsApi[]).map((elem) => ({
-            ID: elem.ID,
+            id: elem.id,
             username: elem.username,
             email: elem.email,
             fullname: elem.fullname,
@@ -150,21 +150,21 @@ const UserList: React.FC = () => {
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleClick(event, row.ID)}
+                        onClick={(event) => handleClick(event, row.id)}
                         role="checkbox"
                         tabIndex={-1}
-                        key={row.ID}
+                        key={row.id}
                       >
-                        <TableCell id={row.ID} align="right">
+                        <TableCell id={row.id} align="right">
                           {row.username}
                         </TableCell>
-                        <TableCell id={row.ID} align="right">
+                        <TableCell id={row.id} align="right">
                           {row.email}
                         </TableCell>
-                        <TableCell id={row.ID} align="right">
+                        <TableCell id={row.id} align="right">
                           {row.fullname}
                         </TableCell>
-                        <TableCell id={row.ID} align="right">
+                        <TableCell id={row.id} align="right">
                           {row.rol}
                         </TableCell>
                         <TableCell align="right">
@@ -175,7 +175,7 @@ const UserList: React.FC = () => {
                               variant="contained"
                               startIcon={<VisibilityIcon />}
                               onClick={() => {
-                                handleOnClickButtonView(row.ID)
+                                handleOnClickButtonView(row.id)
                               }}
                             >
                               Ver

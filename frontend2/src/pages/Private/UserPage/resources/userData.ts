@@ -1,5 +1,5 @@
 export interface IUsertLits {
-    ID: string
+    id: string
     username: string
     email: string
     fullname: string
@@ -9,7 +9,7 @@ export interface IUsertLits {
 interface IRol { name: string }
 
 export interface IUsertLitsApi {
-    ID: string
+    id: string
     username: string
     email: string
     fullname: string
@@ -23,6 +23,33 @@ export interface IHeadCellUser {
     id: keyof IUsertLits
     label: string
     numeric: boolean
+}
+
+export interface INewUser {
+    id: string
+    username: string
+    email: string
+    fullname: string
+    password: string
+    rol: IRol
+}
+
+export const userDefault: INewUser = {
+    id: "",
+    username: "",
+    email: "",
+    fullname: "",
+    password: "",
+    rol: { name: "" }
+}
+
+export interface IFormUserError {
+    id: string
+    username: string
+    email: string
+    fullname: string
+    password: string
+    rol: string
 }
 
 export const headCellsUser: readonly IHeadCellUser[] = [
