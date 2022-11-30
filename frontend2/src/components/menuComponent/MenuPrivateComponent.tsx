@@ -1,8 +1,20 @@
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material'
+import {
+  Avatar,
+  Card,
+  CardContent,
+  CardHeader,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from '@mui/material'
 import React from 'react'
 import EmojiNatureIcon from '@mui/icons-material/EmojiNature'
 import PeopleIcon from '@mui/icons-material/People'
 import { useNavigate } from 'react-router-dom'
+import MenuItemPerfil from './MenuItemPerfil.component'
 
 interface IMenuPrivateComponentProps {
   privateMenuOpen: boolean
@@ -20,7 +32,7 @@ const MenuPrivateComponent: React.FC<IMenuPrivateComponentProps> = ({
     },
     [navigate]
   )
-  
+
   return (
     <Drawer
       variant="temporary"
@@ -29,6 +41,40 @@ const MenuPrivateComponent: React.FC<IMenuPrivateComponentProps> = ({
       data-testid="menu-drawerRight"
       onClose={handleDrawerPrivateMenuToggle}
     >
+      <Card
+        sx={{
+          backgroundColor: (theme) => theme.palette.primary.main,
+          color: (theme) => theme.palette.primary.contrastText,
+          borderRadius: 0,
+        }}
+      >
+        <CardHeader
+          sx={{
+            backgroundColor: (theme) => theme.palette.primary.main,
+            color: (theme) => theme.palette.primary.contrastText,
+            borderRadius: 0,
+            textDecorationColor: (theme) => theme.palette.primary.contrastText,
+            textEmphasisColor: (theme) => theme.palette.primary.contrastText,
+          }}
+          avatar={
+            <Avatar
+              aria-label="recipe"
+              src={'https://randomuser.me/api/portraits/men/26.jpg'}
+              sx={{}}
+            />
+          }
+          title={
+            <Typography noWrap={false}>
+              <b>{'Administrador'}</b>
+            </Typography>
+          }
+        />
+        <CardContent>
+          <Typography noWrap={true} variant="subtitle1" gutterBottom={true}>
+            {'administradorpatitas@gmail.com'}
+          </Typography>
+        </CardContent>
+      </Card>
       <List>
         <ListItem
           key={13}
@@ -45,6 +91,7 @@ const MenuPrivateComponent: React.FC<IMenuPrivateComponentProps> = ({
             <Typography variant="body1">Página principal</Typography>
           </ListItemText>
         </ListItem>
+        <MenuItemPerfil />
         <ListItem
           key={1}
           button

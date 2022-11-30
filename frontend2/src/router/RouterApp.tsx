@@ -15,6 +15,7 @@ import AdoptionApplicationPage from '../pages/AdoptionApplication/AdoptionApplic
 import AdoptList from '../pages/Private/AdoptPage/components/AdoptList/AdoptList.component'
 import UserList from '../pages/Private/UserPage/components/UserList/UserList.component'
 import UserEdit from '../pages/Private/UserPage/components/UsersEdit/UserEdit.component'
+import UserCreate from '../pages/Private/UserPage/components/UserCreate/UserCreate.component'
 interface IRouterProps {
   children: JSX.Element | JSX.Element[]
 }
@@ -122,6 +123,14 @@ const RouterApp: React.FC<IRouterProps> = (props) => {
                 element={
                   <RequireAuth>
                     <UserList />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path="create"
+                element={
+                  <RequireAuth>
+                    <UserCreate />
                   </RequireAuth>
                 }
               />

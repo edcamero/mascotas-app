@@ -27,7 +27,7 @@ import { IUsertLits, IUsertLitsApi } from '../../resources/userData'
 const propsTableToolbar = {
   title: 'Lista de usuarios',
   messageAdd: 'Agregar usuario',
-  urlCreate: 'users/create',
+  urlCreate: 'create',
 }
 
 const UserList: React.FC = () => {

@@ -45,3 +45,27 @@ export const UseUserUpdate = (
   const isLoadingAll = isLoading || isLoadingUpdate
   return { isLoadingAll, clickFormUser, userFormAttributes, setUserFormAttributes }
 }
+
+export const UseUserCreate = (
+    setAlertMessage: (value: IMessageAttributes) => void
+  ) => {
+    const [isLoadingCreated, setIsLoadingCreate] = React.useState(false)
+    const [userFormAttributes, setUserFormAttributes] = React.useState<INewUser>(userDefault)
+    const { axios } = useAxios()
+    
+    const clickFormUser = () => {
+        setIsLoadingCreate(true)
+      setAlertMessage(messageAttributes)
+      axios
+        .post(process.env.REACT_APP_API_URL + 'admin/species/', userFormAttributes)
+        .then((response) => {
+          setAlertMessage(messagesList.SUCCESS_UPDATED)
+        })
+        .catch((error) => {
+          setAlertMessage(messagesList.INTERNAL_ERROR)
+        })
+        .finally(() => setIsLoadingCreate(false))
+    }
+   
+    return { isLoadingCreated, clickFormUser, userFormAttributes, setUserFormAttributes }
+  }
