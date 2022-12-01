@@ -1,10 +1,10 @@
-import { IAdopter } from "../../../AdoptionApplication/resources/adopter"
+import { IAdopterResponseApi, IAdopterList } from "../../../AdoptionApplication/resources/adopter"
 import { IPetsLits, petDetailsInitial } from "../../PetsPage/resource/usePets"
 
 export interface IAdoptViewsApi {
     ID: string
     pet: IPetsLits
-    adopters: IAdopter[]
+    adopters: IAdopterResponseApi[]
 }
 
 export const adoptViewDefault: IAdoptViewsApi = {
@@ -34,7 +34,57 @@ export interface IHeadCellAdopts {
     label: string
     numeric: boolean
 }
+export interface IHeadCellAdopters {
+    disablePadding: boolean
+    id: keyof IAdopterList
+    label: string
+    numeric: boolean
+}
 
+export const headCellsAdopters: readonly IHeadCellAdopters[] = [
+    {
+        id: 'nombres',
+        numeric: true,
+        disablePadding: false,
+        label: 'Nombres',
+    },
+    {
+        id: 'apellidos',
+        numeric: true,
+        disablePadding: false,
+        label: 'Apellidos',
+    },
+    {
+        id: 'documento',
+        numeric: true,
+        disablePadding: false,
+        label: 'Documento',
+    },
+    {
+        id: 'direccion',
+        numeric: true,
+        disablePadding: false,
+        label: 'Dirección',
+    },
+    {
+        id: 'telefono',
+        numeric: true,
+        disablePadding: false,
+        label: 'Teléfono',
+    },
+    {
+        id: 'email',
+        numeric: true,
+        disablePadding: false,
+        label: 'Email',
+    },
+    {
+        id: 'estado',
+        numeric: true,
+        disablePadding: false,
+        label: 'Estado',
+    },
+]
 export const headCellsAdopts: readonly IHeadCellAdopts[] = [
     {
         id: 'nombre',

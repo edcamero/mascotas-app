@@ -12,7 +12,7 @@ export const UseAdopt = (petId: string, setAlertMessage: (value: IMessageAttribu
   React.useEffect(() => {
     if (isLoading) {
       axios
-        .get(process.env.REACT_APP_API_URL + 'admin/adopt/' + petId)
+        .get(process.env.REACT_APP_API_URL + 'admin/adopts/' + petId)
         .then((response) => setAdoptDetails(response.data as IAdoptViewsApi))
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         .catch((error) => {

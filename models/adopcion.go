@@ -11,3 +11,9 @@ type AdopcionList struct {
 	ID  primitive.ObjectID `json:"id" bson:"_id"`
 	Pet AnimalAdopt        `json:"pet" bson:"pet"`
 }
+
+type AdopcionView struct {
+	ID         primitive.ObjectID `json:"id" bson:"_id"`
+	Adoptantes []Adoptante        `json:"adopters" bson:"adoptante"`
+	Pet        AnimalAdopt        `json:"pet" bson:"pet"`
+}

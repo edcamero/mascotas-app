@@ -60,3 +60,16 @@ func (handler *AdoptController) GetAllPrivate(ctx iris.Context) {
 	ctx.JSON(adopts)
 
 }
+
+func (handler *AdoptController) GetByIDPrivate(ctx iris.Context) {
+	id := ctx.Params().Get("id")
+	adopt, err := handler.Adoptservice.GetByIDPrivate(nil, id)
+
+	if err != nil {
+		ctx.StopWithStatus(iris.StatusNotFound)
+		return
+	}
+
+	ctx.JSON(adopt)
+
+}

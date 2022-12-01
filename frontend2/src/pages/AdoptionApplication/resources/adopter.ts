@@ -22,6 +22,30 @@ export interface IAdopter {
     email: string;
 }
 
+export interface IAdopterResponseApi {
+    id: string
+    documento: IDocumento
+    nombres: string
+    apellidos: string
+    direccion: IDireccion
+    telefono: string
+    email: string
+    estado: string
+    createdAt: Date
+}
+
+export interface IAdopterList {
+    id: string
+    documento: string
+    nombres: string
+    apellidos: string
+    direccion: string
+    telefono: string
+    email: string
+    estado: string
+    createdAt: Date
+}
+
 export const adopterDefault: IAdopter = {
     documento: {
         tipo: '',
@@ -48,12 +72,12 @@ export interface IAdopterErrors {
     email: string;
 }
 
-export const errorAdopterDefault:IAdopterErrors ={
+export const errorAdopterDefault: IAdopterErrors = {
     tipoDocumento: '',
     documento: '',
     nombres: '',
-    apellidos:'',
+    apellidos: '',
     direccion: '',
-    telefono:'',
+    telefono: '',
     email: ''
 }

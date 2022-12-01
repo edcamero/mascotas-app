@@ -32,6 +32,7 @@ import InfoIcon from '@mui/icons-material/Info'
 import EditIcon from '@mui/icons-material/Edit'
 import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 import HourglassTopIcon from '@mui/icons-material/HourglassTop'
+import AdopterList from './components/AdopterList/AdopterList.component'
 
 const AdoptView: React.FC = () => {
   let { id } = useParams()
@@ -45,7 +46,7 @@ const AdoptView: React.FC = () => {
       <MessagesComponent open={openMessage} setOpen={setOpenMessage} {...alertMessage} />
       <Paper elevation={3} sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
         <BackButtonComponent />
-        <Container component="main" maxWidth="md">
+        <Container component="main" maxWidth="lg">
           <CssBaseline />
           <Box
             sx={{
@@ -142,7 +143,11 @@ const AdoptView: React.FC = () => {
                 justifyContent="center"
                 alignItems="center"
                 spacing={2}
-              ></Grid>
+              >
+                {adoptDetails.adopters.length > 0 && (
+                  <AdopterList adopters={adoptDetails.adopters} />
+                )}
+              </Grid>
             </Grid>
           </Box>
         </Container>

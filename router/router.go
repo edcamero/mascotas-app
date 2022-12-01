@@ -110,6 +110,7 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 
 	//adopts
 	adminApi.Get("/adopts", adoptController.GetAllPrivate)
+	adminApi.Get("/adopts/{id:string}", adoptController.GetByIDPrivate)
 
 	//users
 	adminApi.Get("/users", usersController.GetAllPrivate)
