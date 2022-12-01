@@ -42,7 +42,7 @@ const FormAdoptionApplication: React.FC<IFormAdoptionApplicationProps> = ({
             }}
           >
             <Typography component="h2" variant="h5" align="center">
-              Formulario de adopción
+              Formulario de solicitud adopción
             </Typography>
             <Divider />
             <Grid

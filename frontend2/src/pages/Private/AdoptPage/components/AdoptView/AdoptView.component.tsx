@@ -22,14 +22,13 @@ import BackDropLoadApi from '../../../../../components/backDropLoad/BackDropLoad
 import MessagesComponent from '../../../../../components/MessagesComponent/MessagesComponent'
 import IMessageAttributes from '../../../../../components/MessagesComponent/Resources/IMessageAttributes'
 import messageAttributes from '../../../../../components/MessagesComponent/Resources/MessageAttributes'
-import SpecieDelete from '../../../SpeciesPage/components/SpecieDelete/SpecieDelete.component'
 import { UseAdopt } from '../../resources/useAdopt'
 import ContentCutIcon from '@mui/icons-material/ContentCut'
 import FemaleIcon from '@mui/icons-material/Female'
 import MaleIcon from '@mui/icons-material/Male'
 import ColorLensIcon from '@mui/icons-material/ColorLens'
 import InfoIcon from '@mui/icons-material/Info'
-import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
 import TrendingUpIcon from '@mui/icons-material/TrendingUp'
 import HourglassTopIcon from '@mui/icons-material/HourglassTop'
 import AdopterList from './components/AdopterList/AdopterList.component'
@@ -126,15 +125,9 @@ const AdoptView: React.FC = () => {
               </Grid>
               <Grid container justifyContent="flex-end">
                 <ButtonGroup disableElevation variant="contained">
-                  <Button
-                    color="secondary"
-                    size="small"
-                    variant="contained"
-                    startIcon={<EditIcon />}
-                  >
-                    Editar
+                  <Button color="error" size="small" variant="contained" startIcon={<DeleteIcon />}>
+                    Eliminar Solicitudes
                   </Button>
-                  <SpecieDelete specieId={adoptDetails.pet.ID} setAlertMessage={setAlertMessage} />
                 </ButtonGroup>
               </Grid>
               <Grid

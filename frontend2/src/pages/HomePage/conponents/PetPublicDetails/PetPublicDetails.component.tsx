@@ -149,7 +149,18 @@ const PetPublicDetails: React.FC = () => {
                       handleOnClickButtonAdot(petDetails.ID)
                     }}
                   >
-                    Adoctar
+                    Adoptar
+                  </Button>
+                  <Button
+                    color="success"
+                    size="small"
+                    variant="contained"
+                    startIcon={<PetsIcon />}
+                    onClick={() => {
+                      handleOnClickButtonAdot(petDetails.ID)
+                    }}
+                  >
+                    Apadrinar
                   </Button>
                 </ButtonGroup>
               </Grid>
