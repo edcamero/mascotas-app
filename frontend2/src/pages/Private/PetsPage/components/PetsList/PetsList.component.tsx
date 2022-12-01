@@ -146,6 +146,7 @@ const PetsList = () => {
                     enAdopcion: pet.enAdopcion,
                     fechaNacimiento: pet.fechaNacimiento,
                     especie: pet.especie,
+                    descripcion: pet.descripcion,
                     sexo: pet.sexo,
                     createdAt: pet.createdAt,
                     updatedAt: pet.updatedAt,

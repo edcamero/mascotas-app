@@ -2,7 +2,7 @@ import { TableHead, TableRow, TableCell, TableSortLabel, Box } from '@mui/materi
 import { visuallyHidden } from '@mui/utils'
 import React from 'react'
 import { Order } from '../../../../../components/tableComponent/resource'
-import { headCellsAdopts, IAdoptLits } from '../../resources/useAdopt'
+import { headCellsAdopts, IAdoptLits } from '../../resources/adoptData'
 
 interface IEnhancedTableHeadProps {
   numSelected: number

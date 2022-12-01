@@ -23,7 +23,7 @@ import { stableSort, getComparator, Order } from '../../../../../components/tabl
 import useAxios from '../../../../../services/axios.services'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import EnhancedTableHead from './EnhancedTableHead.component'
-import { IAdoptLits, IAdoptLitsResponse } from '../../resources/useAdopt'
+import { IAdoptLits, IAdoptLitsResponse } from '../../resources/adoptData'
 
 const propsTableToolbar = {
   title: 'Solicitudes de adopción',

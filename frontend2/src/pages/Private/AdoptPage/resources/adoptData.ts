@@ -1,13 +1,17 @@
 import { IAdopter } from "../../../AdoptionApplication/resources/adopter"
-import { IPetsLits } from "../../PetsPage/resource/usePets"
+import { IPetsLits, petDetailsInitial } from "../../PetsPage/resource/usePets"
 
-export interface IAdoptLitsApi {
+export interface IAdoptViewsApi {
     ID: string
     pet: IPetsLits
-    adopter: IAdopter
+    adopters: IAdopter[]
 }
 
-
+export const adoptViewDefault: IAdoptViewsApi = {
+    ID: '',
+    pet: petDetailsInitial,
+    adopters: []
+}
 export interface IAdoptLits {
     ID: string
     nombre: string
