@@ -50,6 +50,13 @@ const PetPublicDetails: React.FC = () => {
     [navigate]
   )
 
+  const handleOnClickButtonSponsor= React.useCallback(
+    (id: string) => {
+      navigate(`/pets/${id}/sponsor`)
+    },
+    [navigate]
+  )
+
 
   return (
     <>
@@ -157,7 +164,7 @@ const PetPublicDetails: React.FC = () => {
                     variant="contained"
                     startIcon={<PetsIcon />}
                     onClick={() => {
-                      handleOnClickButtonAdot(petDetails.ID)
+                      handleOnClickButtonSponsor(petDetails.ID)
                     }}
                   >
                     Apadrinar

@@ -18,6 +18,7 @@ import UserEdit from '../pages/Private/UserPage/components/UsersEdit/UserEdit.co
 import UserCreate from '../pages/Private/UserPage/components/UserCreate/UserCreate.component'
 import UserPasswordEdit from '../pages/Private/UserPage/components/UserPasswordEdit/UserPasswordEdit.component'
 import AdoptView from '../pages/Private/AdoptPage/components/AdoptView/AdoptView.component'
+import SponsorPet from '../pages/SponsorPet/SponsorPet.component'
 interface IRouterProps {
   children: JSX.Element | JSX.Element[]
 }
@@ -34,6 +35,7 @@ const RouterApp: React.FC<IRouterProps> = (props) => {
             <Route path="/pets">
               <Route path=":id" element={<PetPublicDetails />} />
               <Route path=":id/adopt" element={<AdoptionApplicationPage />} />
+              <Route path=":id/sponsor" element={<SponsorPet />} />
             </Route>
             <Route
               path="/dashboard"
