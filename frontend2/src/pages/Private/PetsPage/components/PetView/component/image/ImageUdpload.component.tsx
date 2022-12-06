@@ -69,7 +69,7 @@ const ImageUdpload: React.FC = () => {
             handleOnSubmit()
           }}
         >
-          Subir iamgenes
+          Subir imagen
         </Button>
       </Grid>
     </>

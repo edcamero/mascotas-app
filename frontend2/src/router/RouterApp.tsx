@@ -20,6 +20,7 @@ import UserPasswordEdit from '../pages/Private/UserPage/components/UserPasswordE
 import AdoptView from '../pages/Private/AdoptPage/components/AdoptView/AdoptView.component'
 import SponsorPet from '../pages/SponsorPet/SponsorPet.component'
 import PeyPet from '../pages/PayPet/PayPet.component'
+import PetEdit from '../pages/Private/PetsPage/components/PetEdit/PetEdit.component'
 interface IRouterProps {
   children: JSX.Element | JSX.Element[]
 }
@@ -94,7 +95,7 @@ const RouterApp: React.FC<IRouterProps> = (props) => {
                 path="edit/:id"
                 element={
                   <RequireAuth>
-                    <SpecieUpdateComponent />
+                    <PetEdit />
                   </RequireAuth>
                 }
               />
