@@ -40,6 +40,7 @@ const LoginPage: React.FC = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated])
+  
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const formData = new FormData(event.currentTarget)
@@ -121,7 +122,7 @@ const LoginPage: React.FC = () => {
               </Button>
               <Grid container>
                 <Grid item xs>
-                  <Link href="#" variant="body2">
+                  <Link href="/resetpassword" variant="body2">
                     ¿Se te olvidó tu contraseña?
                   </Link>
                 </Grid>

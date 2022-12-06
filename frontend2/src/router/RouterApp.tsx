@@ -21,6 +21,8 @@ import AdoptView from '../pages/Private/AdoptPage/components/AdoptView/AdoptView
 import SponsorPet from '../pages/SponsorPet/SponsorPet.component'
 import PeyPet from '../pages/PayPet/PayPet.component'
 import PetEdit from '../pages/Private/PetsPage/components/PetEdit/PetEdit.component'
+import RecoverPassword from '../pages/LoginPage/RecoverPassword.component'
+import ResetPassword from '../pages/LoginPage/ResetPassword.component'
 interface IRouterProps {
   children: JSX.Element | JSX.Element[]
 }
@@ -35,6 +37,8 @@ const RouterApp: React.FC<IRouterProps> = (props) => {
             <Route path="/home" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/donation" element={<PeyPet />} />
+            <Route path="/resetpassword" element={<RecoverPassword />} />
+            <Route path="/resetpassword/:token" element={<ResetPassword />} />
             <Route path="/pets">
               <Route path=":id" element={<PetPublicDetails />} />
               <Route path=":id/adopt" element={<AdoptionApplicationPage />} />
