@@ -1,4 +1,4 @@
-import { Grid, Card, CardMedia} from '@mui/material'
+import { Grid, Card, CardMedia } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 
@@ -17,12 +17,7 @@ const PayPetCard: React.FC<IPayPetCardProps> = ({ text, image, link }) => {
   return (
     <Grid item xs={4} container direction="row" justifyContent="center" alignItems="center">
       <Card sx={{ width: 250, marginTop: '2rem' }} onClick={handlingClick}>
-        <CardMedia
-          component="img"
-          height="350"
-          image={`${process.env.REACT_APP_API_URL?.slice(0, -4)}${image}`}
-          alt="img-card-pay"
-        />
+        <CardMedia component="img" height="350" image={image} alt="img-card-pay" />
       </Card>
     </Grid>
   )
