@@ -49,7 +49,7 @@ const RecoverPassword: React.FC = () => {
     const formData = new FormData(event.currentTarget)
     setIsLoading(true)
     axios
-      .post(process.env.REACT_APP_API_URL + 'login', formData)
+      .post(process.env.REACT_APP_API_URL + 'forgotpassword', formData)
       .then((response) => {
           setAlertMessage(messagesList.SUCCESS_CREATED)
       })

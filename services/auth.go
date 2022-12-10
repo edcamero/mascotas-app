@@ -3,6 +3,7 @@ package services
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/edcamero/api-go/models"
 	"github.com/edcamero/api-go/util"
@@ -14,6 +15,7 @@ import (
 type AuthService interface {
 	Login(ctx context.Context, email string, password string) (models.UsuarioLoginResponse, error)
 	RefreshToken(ctx context.Context, user models.Claims, refreshToken []byte) (jwt.TokenPair, error)
+	Forgotpassword(ctx context.Context, email string) (bool, error)
 }
 
 type authService struct {
@@ -37,6 +39,7 @@ func (service *authService) Login(ctx context.Context, email string, password st
 	if err != nil {
 		return userLoginResponse, errors.New("404")
 	}
+
 	err = service.userCollection.FindOne(context.TODO(), userCredentials).Decode(&userData)
 	if err != nil {
 		return userLoginResponse, errors.New("401")
@@ -58,4 +61,27 @@ func (service *authService) RefreshToken(ctx context.Context, user models.Claims
 	token, err := util.RefreshToken(user, refreshToken)
 	return token, err
 
+}
+
+func (service *authService) Forgotpassword(ctx context.Context, email string) (bool, error) {
+	userExists := bson.M{"email": email}
+	userData := models.UsuarioView{}
+	err := service.userCollection.FindOne(context.TODO(), userExists).Decode(&userData)
+
+	if err != nil {
+		return false, errors.New("404")
+	}
+
+	claims := models.Claims{Id: userData.ID.Hex(), Rol: userData.Rol.Nombre, UserName: userData.UserName, FullName: userData.FullName, Email: userData.Email}
+	_, err = util.GenerateToken(claims)
+
+	if err != nil {
+		return false, err
+	}
+
+	body := fmt.Sprintf("Hello geeks!!!")
+
+	util.SendMail([]string{userData.Email}, body)
+
+	return true, err
 }

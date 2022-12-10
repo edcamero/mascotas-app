@@ -47,7 +47,6 @@ func (handler *AuthService) Login(ctx iris.Context) {
 	}
 
 	ctx.JSON(user)
-
 }
 
 func (handler *AuthService) RefreshToken(ctx iris.Context) {
@@ -112,4 +111,20 @@ func AuthenticatedFundacion(ctx iris.Context) {
 	} else {
 		ctx.StopWithStatus(iris.StatusUnauthorized)
 	}
+}
+
+func (handler *AuthService) Forgotpassword(ctx iris.Context) {
+	email := ctx.FormValue("email")
+	_, err := handler.service.Forgotpassword(nil, email)
+	if err != nil {
+		if err.Error() == "404" {
+			ctx.StopWithError(iris.StatusNotFound, errors.New("email not found"))
+			return
+		}
+
+		ctx.StopWithStatus(iris.StatusBadRequest)
+		return
+	}
+
+	ctx.StopWithStatus(iris.StatusOK)
 }
