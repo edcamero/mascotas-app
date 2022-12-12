@@ -23,6 +23,7 @@ type PetsService interface {
 	GetByIDPrivate(ctx context.Context, id string) (models.Animal, error)
 	AddPhoto(ctx context.Context, id string, photo models.Foto) error
 	GetPhotosByIDPrivate(ctx context.Context, id string) ([]models.Foto, error)
+	GetClue(adopt *models.AdoptanteClue) (models.AnimalDetail, error)
 }
 
 type petsService struct {
@@ -102,6 +103,7 @@ func (service petsService) Save(ctx context.Context, newAnimal *models.Animal) (
 	newAnimal.UpdatedAt = time.Now()
 	newAnimal.Fotos = []models.Foto{}
 	newAnimal.Score = 0
+	newAnimal.Estado = true
 
 	_, err := service.animalCollection.InsertOne(ctx, newAnimal)
 	if err != nil {
@@ -228,4 +230,27 @@ func (service petsService) GetPhotosByIDPrivate(ctx context.Context, id string) 
 	err = singleResult.Decode(&result)
 
 	return result.Fotos, err
+}
+
+func (service petsService) GetClue(adopt *models.AdoptanteClue) (models.AnimalDetail, error) {
+	var petValue models.AnimalDetail
+
+	filterObject := GetClueIA(adopt)
+
+	fmt.Println(filterObject)
+
+	filter := bson.D{
+		//{Key: "color", Value: filterObject.Color},
+		//{Key: "raza", Value: filterObject.Raza},
+		{Key: "tamaño", Value: filterObject.Tamaño},
+		{Key: "especie", Value: filterObject.Especie},
+		{Key: "estado", Value: true},
+		{Key: "en_adopcion", Value: true},
+	}
+
+	err := service.animalCollection.FindOne(nil, filter).Decode(&petValue)
+	if err == mongo.ErrNoDocuments {
+		return petValue, err
+	}
+	return petValue, err
 }

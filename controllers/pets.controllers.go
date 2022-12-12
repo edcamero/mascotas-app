@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"log"
 	"path/filepath"
 
@@ -78,6 +79,7 @@ func (handler *PetsService) GetByID(ctx iris.Context) {
 	ctx.JSON(pet)
 
 }
+
 func (handler *PetsService) GetByIDPrivate(ctx iris.Context) {
 	id := ctx.Params().Get("id")
 	pet, err := handler.service.GetByIDPrivate(nil, id)
@@ -153,4 +155,26 @@ func (handler *PetsService) GetPhotosByID(ctx iris.Context) {
 	}
 
 	ctx.JSON(photos)
+}
+
+func (handler *PetsService) GetClue(ctx iris.Context) {
+
+	dataAdopt := new(models.AdoptanteClue)
+
+	err := ctx.ReadJSON(dataAdopt)
+
+	if err != nil {
+		util.FailJSON(ctx, iris.StatusBadRequest, err, "Malformed request payload")
+		return
+	}
+
+	pet, err := handler.service.GetClue(dataAdopt)
+	if err != nil {
+		fmt.Println(err)
+		ctx.StopWithStatus(iris.StatusNotFound)
+		return
+	}
+
+	ctx.JSON(pet)
+
 }

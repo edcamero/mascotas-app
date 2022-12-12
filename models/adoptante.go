@@ -13,3 +13,11 @@ type Adoptante struct {
 	CreatedAt time.Time `json:"createdAt" bson:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt" bson:"updatedAt" `
 }
+
+type AdoptanteClue struct {
+	Vivienda    string `json:"vivienda" bson:"vivienda"`
+	Sexo        string `json:"sexo" bson:"sexo"`
+	EstadoCivil string `json:"estadoCivil" bson:"estadoCivil"`
+	Edad        int16  `json:"edad" bson:"edad"`
+	Estrato     int16  `json:"estrato" bson:"estrato"`
+}

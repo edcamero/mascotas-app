@@ -13,6 +13,7 @@ type Animal struct {
 	Tamaño           string             `json:"tamaño" bson:"tamaño"`
 	Esterilizado     bool               `json:"esterilizado" bson:"esterilizado"`
 	En_adopcion      bool               `json:"en_adopcion" bson:"en_adopcion"`
+	Estado           bool               `json:"estado" bson:"estado"`
 	Descripcion      string             `json:"descripcion" bson:"descripcion"`
 	Fecha_nacimiento time.Time          `json:"fechaNacimiento" bson:"fecha_nacimiento"`
 	Especie          string             `json:"especie" bson:"especie"`
@@ -70,4 +71,11 @@ type AnimalAdopt struct {
 	Especie         string             `json:"especie" bson:"especie"`
 	Raza            string             `json:"raza" bson:"raza"`
 	Sexo            string             `json:"sexo" bson:"sexo"`
+}
+
+type AnimalResponseIA struct {
+	Color   string `json:"color" bson:"color"`
+	Tamaño  string `json:"tamaño" bson:"tamaño"`
+	Especie string `json:"especie" bson:"especie"`
+	Raza    string `json:"raza" bson:"raza"`
 }
