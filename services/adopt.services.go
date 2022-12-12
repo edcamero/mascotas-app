@@ -3,10 +3,16 @@ package services
 import (
 	"context"
 	"fmt"
+	"log"
+	"os"
 	"time"
 
 	"github.com/edcamero/api-go/models"
 	"github.com/edcamero/api-go/util"
+	"github.com/go-gota/gota/dataframe"
+	"github.com/go-gota/gota/series"
+	"github.com/sjwhitworth/golearn/base"
+	"github.com/sjwhitworth/golearn/knn"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -219,4 +225,49 @@ func (service adoptService) GetByIDPrivate(ctx context.Context, id string) (mode
 	}
 
 	return results[0], err
+}
+
+func GetClueIA(adopt *models.AdoptanteClue) models.AnimalResponseIA {
+
+	directory := "./data-mascotas2.csv"
+	filePathResponse := "./respuesta.csv"
+
+	if err := os.Truncate(filePathResponse, 0); err != nil {
+		log.Printf("Failed to truncate: %v", err)
+	}
+	rawData, err := base.ParseCSVToInstances(directory, true)
+	if err != nil {
+		panic(err)
+	}
+
+	// Print a pleasant summary of your data.
+
+	//Initialises a new KNN classifier
+	cls := knn.NewKnnClassifier("euclidean", "linear", 2)
+
+	//Do a training-test split
+	trainData, testData := base.InstancesTrainTestSplit(rawData, 0.50)
+	cls.Fit(trainData)
+
+	base.SerializeInstancesToCSV(testData, filePathResponse)
+	result, err := os.Open(filePathResponse)
+	df := dataframe.ReadCSV(result)
+	df = df.Filter(
+		dataframe.F{Colname: "tamaño-vivienda", Comparator: series.Eq, Comparando: adopt.Vivienda},
+		dataframe.F{Colname: "sexo-adoptante", Comparator: series.Eq, Comparando: adopt.Sexo},
+		dataframe.F{Colname: "estado-civil", Comparator: series.Eq, Comparando: adopt.EstadoCivil},
+		dataframe.F{Colname: "edad-adoptante", Comparator: series.Greater, Comparando: adopt.Edad + 5},
+		dataframe.F{Colname: "edad-adoptante", Comparator: series.LessEq, Comparando: adopt.Edad - 5},
+		dataframe.F{Colname: "estrato", Comparator: series.LessEq, Comparando: adopt.Estrato},
+	)
+	fmt.Println(testData)
+
+	var results models.AnimalResponseIA
+
+	results.Color = df.Col("color").Elem(0).String()
+	results.Tamaño = df.Col("tamaño").Elem(0).String()
+	results.Especie = df.Col("especie").Elem(0).String()
+	results.Raza = df.Col("raza").Elem(0).String()
+
+	return results
 }

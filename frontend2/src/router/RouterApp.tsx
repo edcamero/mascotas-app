@@ -23,6 +23,7 @@ import PeyPet from '../pages/PayPet/PayPet.component'
 import PetEdit from '../pages/Private/PetsPage/components/PetEdit/PetEdit.component'
 import RecoverPassword from '../pages/LoginPage/RecoverPassword.component'
 import ResetPassword from '../pages/LoginPage/ResetPassword.component'
+import SuggestPet from '../pages/SuggestPet/SuggestPet.component'
 interface IRouterProps {
   children: JSX.Element | JSX.Element[]
 }
@@ -40,6 +41,7 @@ const RouterApp: React.FC<IRouterProps> = (props) => {
             <Route path="/resetpassword" element={<RecoverPassword />} />
             <Route path="/resetpassword/:token" element={<ResetPassword />} />
             <Route path="/pets">
+              <Route path="suggest" element={<SuggestPet />} />
               <Route path=":id" element={<PetPublicDetails />} />
               <Route path=":id/adopt" element={<AdoptionApplicationPage />} />
               <Route path=":id/sponsor" element={<SponsorPet />} />
