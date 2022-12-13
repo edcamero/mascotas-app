@@ -240,8 +240,6 @@ func GetClueIA(adopt *models.AdoptanteClue) models.AnimalResponseIA {
 		panic(err)
 	}
 
-	// Print a pleasant summary of your data.
-
 	//Initialises a new KNN classifier
 	cls := knn.NewKnnClassifier("euclidean", "linear", 2)
 
@@ -250,6 +248,7 @@ func GetClueIA(adopt *models.AdoptanteClue) models.AnimalResponseIA {
 	cls.Fit(trainData)
 
 	base.SerializeInstancesToCSV(testData, filePathResponse)
+	
 	result, err := os.Open(filePathResponse)
 	df := dataframe.ReadCSV(result)
 	df = df.Filter(

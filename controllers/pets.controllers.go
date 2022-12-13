@@ -176,5 +176,4 @@ func (handler *PetsService) GetClue(ctx iris.Context) {
 	}
 
 	ctx.JSON(pet)
-
 }
