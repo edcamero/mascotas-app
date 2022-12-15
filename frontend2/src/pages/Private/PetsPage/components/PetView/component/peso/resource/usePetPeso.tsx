@@ -1,8 +1,30 @@
+import React from 'react'
+import IMessageAttributes from '../../../../../../../../components/MessagesComponent/Resources/IMessageAttributes'
+import messageAttributes from '../../../../../../../../components/MessagesComponent/Resources/MessageAttributes'
+import messagesList from '../../../../../../../../components/MessagesComponent/Resources/MessagesList'
+import useAxios from '../../../../../../../../services/axios.services'
+
 export interface IPetPesos {
   ID: string
   peso: number
   createdAt: Date
   updatedAt: Date
+}
+
+export interface IPetPesosForm {
+  peso: number
+}
+
+export interface IPetPesosError {
+  peso: string
+}
+
+export const defaultPesoForm = {
+  peso: 0,
+}
+
+export const defaultPesoFormError= {
+  peso: '',
 }
 
 export const dommiPeso = [
@@ -34,3 +56,27 @@ export const headCellsPetPesos: readonly IHeadCellPetPesos[] = [
     label: 'Fecha',
   },
 ]
+
+export const usePeso = (id:string) => {
+  const { axios } = useAxios()
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [petPeso, setPetPeso] = React.useState<IPetPesosForm>(defaultPesoForm)
+  const [petPesoError, setPetPesoError] = React.useState<IPetPesosError>(defaultPesoFormError)
+  const [alertMessage, setAlertMessage] = React.useState<IMessageAttributes>(messageAttributes)
+
+  const handleOnSubmit = () => {
+    setIsLoading(true)
+
+    axios
+      .post(process.env.REACT_APP_API_URL + `admin/pets/${id}/peso/save`, petPeso,)
+      .then((response) => {
+        setAlertMessage(messagesList.SUCCESS_CREATED)
+      })
+      .catch((error) => {
+        setAlertMessage(messagesList.INTERNAL_ERROR)
+      })
+      .finally(() => setIsLoading(false))
+  }
+
+  return {petPeso, setPetPeso, isLoading , alertMessage, petPesoError , setPetPesoError, handleOnSubmit}
+}

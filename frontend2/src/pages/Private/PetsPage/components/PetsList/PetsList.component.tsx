@@ -119,7 +119,7 @@ const PetsList = () => {
       <BackDropLoadApi open={isLoading} />
       <MessagesComponent open={openMessage} setOpen={setOpenMessage} {...alertMessage} />
       <Box sx={{ width: '100%' }}>
-        <Paper sx={{ width: '100%', mb: 2 }}>
+        <Paper sx={{ width: '100%', marginY: 6 }}>
           <EnhancedTableToolbar numSelected={selected.length} {...propsTableToolbar} />
           <TableContainer>
             <Table

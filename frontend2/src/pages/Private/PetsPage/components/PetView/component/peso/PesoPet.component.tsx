@@ -28,7 +28,7 @@ import { dommiPeso, IPetPesos } from './resource/usePetPeso'
 const propsTableToolbar = {
   title: 'Control De peso',
   messageAdd: 'Agregar nueva vacuna',
-  urlCreate: '/pets/create',
+  urlCreate: 'add',
 }
 
 const PesoPet: React.FC = () => {
