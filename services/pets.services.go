@@ -26,9 +26,11 @@ type PetsService interface {
 	GetByIDPrivate(ctx context.Context, id string) (models.Animal, error)
 	AddPhoto(ctx context.Context, id string, photo models.Foto) error
 	AddPeso(ctx context.Context, id string, newPeso *models.ControlPeso) error
+	AddVacuna(ctx context.Context, id string, newVacuna *models.ControlVacuna) error
 	GetPhotosByIDPrivate(ctx context.Context, id string) ([]models.Foto, error)
 	GetClue(adopt *models.AdoptanteClue) (models.AnimalDetail, error)
 	GetPesosByIDPrivate(ctx context.Context, id string) (models.ControlPesoAnimal, error)
+	GetVacuneByIDPrivate(ctx context.Context, id string) (models.ControlVacunaAnimal, error)
 }
 
 type petsService struct {
@@ -249,6 +251,20 @@ func (service petsService) GetPesosByIDPrivate(ctx context.Context, id string) (
 
 }
 
+func (service petsService) GetVacuneByIDPrivate(ctx context.Context, id string) (models.ControlVacunaAnimal, error) {
+	var controlVacuneAnimal models.ControlVacunaAnimal
+	filter, err := matchID(id)
+	if err != nil {
+		return controlVacuneAnimal, err
+	}
+	err = service.animalCollection.FindOne(ctx, filter).Decode(&controlVacuneAnimal)
+	if err == mongo.ErrNoDocuments {
+		return controlVacuneAnimal, err
+	}
+	return controlVacuneAnimal, err
+
+}
+
 func (service petsService) AddPhoto(ctx context.Context, id string, photo models.Foto) error {
 
 	filter, err := matchID(id)
@@ -290,6 +306,36 @@ func (service petsService) AddPeso(ctx context.Context, id string, newPeso *mode
 
 	if newPeso.Id != "" {
 		elem = append(elem, bson.E{Key: "control_peso", Value: newPeso})
+	}
+
+	updatePetPeso := bson.D{
+		{Key: "$push", Value: elem},
+	}
+
+	_, err = service.animalCollection.UpdateOne(ctx, filter, updatePetPeso)
+
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return util.ErrNotFound
+		}
+		return err
+	}
+
+	return nil
+}
+
+func (service petsService) AddVacuna(ctx context.Context, id string, newVacuna *models.ControlVacuna) error {
+
+	filter, err := matchID(id)
+	if err != nil {
+		return err
+	}
+	elem := bson.D{}
+
+	newVacuna.Id = strings.Replace(uuid.New().String(), "-", "", -1)
+
+	if newVacuna.Id != "" {
+		elem = append(elem, bson.E{Key: "control_vacuna", Value: newVacuna})
 	}
 
 	updatePetPeso := bson.D{

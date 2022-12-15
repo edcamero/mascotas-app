@@ -136,6 +136,16 @@ func (handler *PetsService) GetPesosByIDPrivate(ctx iris.Context) {
 
 	ctx.JSON(petPesos)
 }
+func (handler *PetsService) GetVacuneByIDPrivate(ctx iris.Context) {
+	id := ctx.Params().Get("id")
+	petPesos, err := handler.service.GetVacuneByIDPrivate(nil, id)
+	if err != nil {
+		ctx.StopWithStatus(iris.StatusNotFound)
+		return
+	}
+
+	ctx.JSON(petPesos)
+}
 
 func (handler *PetsService) SavePrivate(ctx iris.Context) {
 
@@ -214,6 +224,32 @@ func (handler *PetsService) AddPeso(ctx iris.Context) {
 	}
 	ctx.StatusCode(iris.StatusCreated)
 	ctx.JSON(newPeso)
+}
+
+func (handler *PetsService) AddVacuna(ctx iris.Context) {
+	id := ctx.Params().Get("id")
+	newVacune := new(models.ControlVacuna)
+
+	err := ctx.ReadJSON(newVacune)
+
+	log.Print(newVacune)
+
+	if err != nil {
+		ctx.StatusCode(iris.StatusInternalServerError)
+		log.Print(err)
+		ctx.Application().Logger().Warnf("Error while bad request Vacune: %v", err.Error())
+		return
+	}
+
+	err = handler.service.AddVacuna(nil, id, newVacune)
+
+	if err != nil {
+		ctx.StatusCode(iris.StatusConflict)
+		ctx.Application().Logger().Warnf("Error while add file in database: %v", err.Error())
+		return
+	}
+	ctx.StatusCode(iris.StatusCreated)
+	ctx.JSON(newVacune)
 }
 
 func (handler *PetsService) GetPhotosByID(ctx iris.Context) {

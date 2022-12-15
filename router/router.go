@@ -103,8 +103,10 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 	adminApi.Get("/pets/{id:string}", petsController.GetByIDPrivate)
 	adminApi.Get("/pets/{id:string}/photo", petsController.GetPhotosByID)
 	adminApi.Get("/pets/{id:string}/pesos", petsController.GetPesosByIDPrivate)
+	adminApi.Get("/pets/{id:string}/vacune", petsController.GetVacuneByIDPrivate)
 	adminApi.Post("/pets/{id:string}/photo/upload", iris.LimitRequestBodySize(10<<20), petsController.UploadFile)
 	adminApi.Post("/pets/{id:string}/peso/save", petsController.AddPeso)
+	adminApi.Post("/pets/{id:string}/vacune/save", petsController.AddVacuna)
 
 	//species
 	adminApi.Get("/species", speciesController.GetAllPrivate)
