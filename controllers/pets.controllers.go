@@ -126,6 +126,17 @@ func (handler *PetsService) GetByIDPrivate(ctx iris.Context) {
 	ctx.JSON(pet)
 }
 
+func (handler *PetsService) GetPesosByIDPrivate(ctx iris.Context) {
+	id := ctx.Params().Get("id")
+	petPesos, err := handler.service.GetPesosByIDPrivate(nil, id)
+	if err != nil {
+		ctx.StopWithStatus(iris.StatusNotFound)
+		return
+	}
+
+	ctx.JSON(petPesos)
+}
+
 func (handler *PetsService) SavePrivate(ctx iris.Context) {
 
 	newPet := new(models.Animal)

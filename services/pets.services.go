@@ -28,6 +28,7 @@ type PetsService interface {
 	AddPeso(ctx context.Context, id string, newPeso *models.ControlPeso) error
 	GetPhotosByIDPrivate(ctx context.Context, id string) ([]models.Foto, error)
 	GetClue(adopt *models.AdoptanteClue) (models.AnimalDetail, error)
+	GetPesosByIDPrivate(ctx context.Context, id string) (models.ControlPesoAnimal, error)
 }
 
 type petsService struct {
@@ -231,6 +232,20 @@ func (service petsService) GetByIDPrivate(ctx context.Context, id string) (model
 		return petValue, err
 	}
 	return petValue, err
+
+}
+
+func (service petsService) GetPesosByIDPrivate(ctx context.Context, id string) (models.ControlPesoAnimal, error) {
+	var controlPesoAnimal models.ControlPesoAnimal
+	filter, err := matchID(id)
+	if err != nil {
+		return controlPesoAnimal, err
+	}
+	err = service.animalCollection.FindOne(ctx, filter).Decode(&controlPesoAnimal)
+	if err == mongo.ErrNoDocuments {
+		return controlPesoAnimal, err
+	}
+	return controlPesoAnimal, err
 
 }
 

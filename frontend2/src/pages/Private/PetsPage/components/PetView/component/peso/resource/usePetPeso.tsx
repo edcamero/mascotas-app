@@ -5,11 +5,14 @@ import messageAttributes from '../../../../../../../../components/MessagesCompon
 import messagesList from '../../../../../../../../components/MessagesComponent/Resources/MessagesList'
 import useAxios from '../../../../../../../../services/axios.services'
 
-export interface IPetPesos {
-  ID: string
+export interface IPesos {
+  id: string
   peso: number
   createdAt: Date
-  updatedAt: Date
+}
+
+export interface IPetPesos {
+  controlPeso: IPesos[]
 }
 
 export interface IPetPesosForm {
@@ -33,12 +36,11 @@ export const dommiPeso = [
     ID: '56465',
     peso: 8.6,
     createdAt: new Date(),
-    updatedAt: new Date(),
   },
 ]
 export interface IHeadCellPetPesos {
   disablePadding: boolean
-  id: keyof IPetPesos
+  id: keyof IPesos
   label: string
   numeric: boolean
 }

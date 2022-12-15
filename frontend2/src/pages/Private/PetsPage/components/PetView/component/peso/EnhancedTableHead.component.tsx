@@ -2,11 +2,11 @@ import { TableHead, TableRow, TableCell, TableSortLabel, Box } from '@mui/materi
 import { visuallyHidden } from '@mui/utils'
 import React from 'react'
 import { Order } from '../../../../../../../components/tableComponent/resource'
-import { headCellsPetPesos, IPetPesos } from './resource/usePetPeso'
+import { headCellsPetPesos, IPesos } from './resource/usePetPeso'
 
 interface IEnhancedTableHeadProps {
   numSelected: number
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof IPetPesos) => void
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof IPesos) => void
   order: Order
   orderBy: string
   rowCount: number
@@ -15,7 +15,7 @@ interface IEnhancedTableHeadProps {
 const EnhancedTableHead: React.FC<IEnhancedTableHeadProps> = (props) => {
   const { order, orderBy, onRequestSort } = props
   const createSortHandler =
-    (property: keyof IPetPesos) => (event: React.MouseEvent<unknown>) => {
+    (property: keyof IPesos) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property)
     }
   return (

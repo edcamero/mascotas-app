@@ -10,6 +10,7 @@ import {
 } from '@mui/material'
 import { format } from 'date-fns'
 import React from 'react'
+import { useParams } from 'react-router-dom'
 import BackDropLoadApi from '../../../../../../../components/backDropLoad/BackDropLoadApi'
 import MessagesComponent from '../../../../../../../components/MessagesComponent/MessagesComponent'
 import IMessageAttributes from '../../../../../../../components/MessagesComponent/Resources/IMessageAttributes'
@@ -23,7 +24,7 @@ import {
 } from '../../../../../../../components/tableComponent/resource'
 import useAxios from '../../../../../../../services/axios.services'
 import EnhancedTableHead from './EnhancedTableHead.component'
-import { dommiPeso, IPetPesos } from './resource/usePetPeso'
+import {IPesos, IPetPesos } from './resource/usePetPeso'
 
 const propsTableToolbar = {
   title: 'Control De peso',
@@ -33,20 +34,21 @@ const propsTableToolbar = {
 
 const PesoPet: React.FC = () => {
   const { axios } = useAxios()
+  let { id } = useParams()
   const [isLoading, setIsLoading] = React.useState(true)
-  const [petPesos, setPetPesos] = React.useState<IPetPesos[]>([])
+  const [petPesos, setPetPesos] = React.useState<IPesos[]>([])
   const [alertMessage, setAlertMessage] = React.useState<IMessageAttributes>(messageAttributes)
   const [openMessage, setOpenMessage] = React.useState<boolean>(false)
   const [selected, setSelected] = React.useState<readonly string[]>([])
   const [order, setOrder] = React.useState<Order>('asc')
-  const [orderBy, setOrderBy] = React.useState<keyof IPetPesos>('createdAt')
+  const [orderBy, setOrderBy] = React.useState<keyof IPesos>('createdAt')
   const [dense] = React.useState(true)
   const [page, setPage] = React.useState(0)
   const [rowsPerPage, setRowsPerPage] = React.useState(10)
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - petPesos.length) : 0
 
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof IPetPesos) => {
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof IPesos) => {
     const isAsc = orderBy === property && order === 'asc'
     setOrder(isAsc ? 'desc' : 'asc')
     setOrderBy(property)
@@ -82,10 +84,14 @@ const PesoPet: React.FC = () => {
   }
 
   React.useEffect(() => {
-    if (isLoading) {
+    if (id !== undefined && isLoading) {
       axios
-        .get(process.env.REACT_APP_API_URL + 'admin/pets')
-        .then((response) => setPetPesos(dommiPeso as IPetPesos[]))
+        .get(process.env.REACT_APP_API_URL + `admin/pets/${id}/pesos`)
+        .then((response) => {
+
+          let peso = response.data as IPetPesos
+          setPetPesos(peso.controlPeso)
+        })
         .catch((error) => {
           setAlertMessage(messagesList.INTERNAL_ERROR)
         })
@@ -93,7 +99,7 @@ const PesoPet: React.FC = () => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading])
+  }, [isLoading, id])
 
   React.useEffect(() => {
     if (alertMessage.message !== '') {
@@ -130,10 +136,9 @@ const PesoPet: React.FC = () => {
                 {stableSort(
                   petPesos.map((petVacune) => ({
                     // eslint-disable-next-line @typescript-eslint/naming-convention
-                    ID: petVacune.ID,
+                    id: petVacune.id,
                     peso: petVacune.peso,
                     createdAt: petVacune.createdAt,
-                    updatedAt: petVacune.updatedAt,
                   })),
                   getComparator(order, orderBy)
                 )
@@ -142,15 +147,15 @@ const PesoPet: React.FC = () => {
                     return (
                       <TableRow
                         hover
-                        onClick={(event) => handleClick(event, row.ID)}
+                        onClick={(event) => handleClick(event, row.id)}
                         role="checkbox"
                         tabIndex={-1}
-                        key={row.ID}
+                        key={row.id}
                       >
-                        <TableCell id={row.ID} align="right">
+                        <TableCell id={row.id} align="right">
                           {`${row.peso} Kg`}
                         </TableCell>
-                        <TableCell id={row.ID} align="right">
+                        <TableCell id={row.id} align="right">
                           {format(new Date(row.createdAt ?? 0), 'dd/MM/yyyy')}
                         </TableCell>
                       </TableRow>
