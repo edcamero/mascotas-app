@@ -179,6 +179,32 @@ func (handler *PetsService) UploadFile(ctx iris.Context) {
 	ctx.JSON(photo)
 }
 
+func (handler *PetsService) AddPeso(ctx iris.Context) {
+	id := ctx.Params().Get("id")
+	newPeso := new(models.ControlPeso)
+
+	err := ctx.ReadJSON(newPeso)
+
+	log.Print(newPeso)
+
+	if err != nil {
+		ctx.StatusCode(iris.StatusInternalServerError)
+		log.Print(err)
+		ctx.Application().Logger().Warnf("Error while bad request Peso: %v", err.Error())
+		return
+	}
+
+	err = handler.service.AddPeso(nil, id, newPeso)
+
+	if err != nil {
+		ctx.StatusCode(iris.StatusConflict)
+		ctx.Application().Logger().Warnf("Error while add file in database: %v", err.Error())
+		return
+	}
+	ctx.StatusCode(iris.StatusCreated)
+	ctx.JSON(newPeso)
+}
+
 func (handler *PetsService) GetPhotosByID(ctx iris.Context) {
 	id := ctx.Params().Get("id")
 	photos, err := handler.service.GetPhotosByIDPrivate(nil, id)

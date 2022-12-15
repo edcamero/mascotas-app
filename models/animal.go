@@ -21,6 +21,7 @@ type Animal struct {
 	Fotos            []Foto             `json:"fotos" bson:"fotos"`
 	Sexo             string             `json:"sexo" bson:"sexo"`
 	Vacunas          []VacunaMascota    `json:"vacunas" bson:"vacunas"`
+	ControlPeso      []ControlPeso      `json:"controlPeso" bson:"control_peso"`
 	Score            int                `json:"score" bson:"score"`
 	CreatedAt        time.Time          `json:"createdAt" bson:"createdAt"`
 	UpdatedAt        time.Time          `json:"updatedAt" bson:"updatedAt" `

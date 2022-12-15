@@ -49,7 +49,7 @@ const AgregarPeso: React.FC = () => {
                 onChange={(e) =>
                   setPetPeso({
                     ...petPeso,
-                    peso: e.target.value as unknown as number,
+                    peso: Number(e.target.value as unknown as number),
                   })
                 }
                 value={petPeso.peso}

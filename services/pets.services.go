@@ -4,10 +4,12 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/edcamero/api-go/models"
 	"github.com/edcamero/api-go/util"
+	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -23,6 +25,7 @@ type PetsService interface {
 	GetByID(ctx context.Context, id string) (models.AnimalDetail, error)
 	GetByIDPrivate(ctx context.Context, id string) (models.Animal, error)
 	AddPhoto(ctx context.Context, id string, photo models.Foto) error
+	AddPeso(ctx context.Context, id string, newPeso *models.ControlPeso) error
 	GetPhotosByIDPrivate(ctx context.Context, id string) ([]models.Foto, error)
 	GetClue(adopt *models.AdoptanteClue) (models.AnimalDetail, error)
 }
@@ -248,6 +251,37 @@ func (service petsService) AddPhoto(ctx context.Context, id string, photo models
 	}
 
 	_, err = service.animalCollection.UpdateOne(ctx, filter, updatePetPhotos)
+
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return util.ErrNotFound
+		}
+		return err
+	}
+
+	return nil
+}
+
+func (service petsService) AddPeso(ctx context.Context, id string, newPeso *models.ControlPeso) error {
+
+	filter, err := matchID(id)
+	if err != nil {
+		return err
+	}
+	elem := bson.D{}
+
+	newPeso.Id = strings.Replace(uuid.New().String(), "-", "", -1)
+	newPeso.CreatedAt = time.Now()
+
+	if newPeso.Id != "" {
+		elem = append(elem, bson.E{Key: "control_peso", Value: newPeso})
+	}
+
+	updatePetPeso := bson.D{
+		{Key: "$push", Value: elem},
+	}
+
+	_, err = service.animalCollection.UpdateOne(ctx, filter, updatePetPeso)
 
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
