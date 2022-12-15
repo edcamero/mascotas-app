@@ -6,12 +6,15 @@ import messagesList from '../../../../../../../../components/MessagesComponent/R
 import useAxios from '../../../../../../../../services/axios.services'
 
 export interface IPetVacunes {
-  ID: string
+  id: string
   nombre: string
   peso: number
   createdAt: Date
   nextControlAt: Date
-  updatedAt: Date
+}
+
+export interface IPetVacunesControl {
+  controlVacunas: IPetVacunes[]
 }
 
 export interface IPetVacunesForm {

@@ -120,7 +120,7 @@ const VacuneAdd: React.FC = () => {
                 variant="contained"
                 sx={{ mt: 3, mb: 2 }}
                 disabled={
-                  vacunePet.nombre !== '' || vacunePet.peso <= 0 || vacunePet.nextControlAt !== null
+                  vacunePet.nombre === '' || vacunePet.peso <= 0 || vacunePet.nextControlAt === null || vacunePet.createdAt === null
                 }
                 onClick={() => {
                   handleOnSubmit()

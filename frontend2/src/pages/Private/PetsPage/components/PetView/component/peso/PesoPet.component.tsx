@@ -90,7 +90,7 @@ const PesoPet: React.FC = () => {
         .then((response) => {
 
           let peso = response.data as IPetPesos
-          setPetPesos(peso.controlPeso)
+          setPetPesos(peso.controlPeso ?? [])
         })
         .catch((error) => {
           setAlertMessage(messagesList.INTERNAL_ERROR)
