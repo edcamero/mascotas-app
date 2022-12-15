@@ -18,6 +18,7 @@ type PetsService interface {
 	Count(ctx context.Context) (int64, error)
 	Save(ctx context.Context, newAnimal *models.Animal) (bool, error)
 	GetAll(ctx context.Context, page int64, rango int64) ([]models.AnimalView, error)
+	GetAllFilter(ctx context.Context, filter *models.AnimaFilterPublic, page int64, rango int64) ([]models.AnimalView, error)
 	GetAllPrivate(ctx context.Context) ([]models.Animal, error)
 	GetByID(ctx context.Context, id string) (models.AnimalDetail, error)
 	GetByIDPrivate(ctx context.Context, id string) (models.Animal, error)
@@ -69,6 +70,55 @@ func (service petsService) GetAll(ctx context.Context, page int64, rango int64) 
 
 	findOptions := options.Find().SetProjection(projection).SetSkip(startItem).SetLimit(endItem).SetSort(bson.D{primitive.E{Key: "score", Value: -1}})
 	cursor, err := service.animalCollection.Find(ctx, bson.D{}, findOptions)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	var results []models.AnimalView
+
+	for cursor.Next(ctx) {
+		if err = cursor.Err(); err != nil {
+			fmt.Println("este error cursor")
+			return nil, err
+		}
+		var elem models.AnimalView
+		err = cursor.Decode(&elem)
+		if err != nil {
+			fmt.Println(err)
+			return nil, err
+		}
+		results = append(results, elem)
+	}
+
+	return results, nil
+}
+
+func (service petsService) GetAllFilter(ctx context.Context, filter *models.AnimaFilterPublic, page int64, rango int64) ([]models.AnimalView, error) {
+
+	var endItem int64 = page * rango
+	var startItem int64 = 0
+	if page > 0 {
+		startItem = (page - 1) * rango
+	}
+
+	projection := bson.D{
+		primitive.E{Key: "nombre", Value: 1},
+		primitive.E{Key: "color", Value: 1},
+		primitive.E{Key: "tamaño", Value: 1},
+		primitive.E{Key: "esterilizado", Value: 1},
+		primitive.E{Key: "descripcion", Value: 1},
+		primitive.E{Key: "fecha_nacimiento", Value: 1},
+		primitive.E{Key: "especie", Value: 1},
+		primitive.E{Key: "raza", Value: 1},
+		primitive.E{Key: "fotos", Value: bson.D{primitive.E{Key: "$slice", Value: 1}}},
+		primitive.E{Key: "sexo", Value: 1},
+	}
+
+	filterMongo := bson.D{primitive.E{Key: "sexo", Value: filter.Sexo}, primitive.E{Key: "especie", Value: filter.Especie}, primitive.E{Key: "tamaño", Value: filter.Tamaño}}
+	findOptions := options.Find().SetProjection(projection).SetSkip(startItem).SetLimit(endItem).SetSort(bson.D{primitive.E{Key: "score", Value: -1}})
+	cursor, err := service.animalCollection.Find(ctx, filterMongo, findOptions)
 	if err != nil {
 		fmt.Println(err)
 		return nil, err

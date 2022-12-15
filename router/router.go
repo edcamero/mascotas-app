@@ -71,6 +71,7 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 	api.Post("/login", authController.Login)
 	api.Post("/forgotpassword", authController.Forgotpassword)
 	api.Get("/pets/page/{page:uint64}/base/{base:uint64}", petsController.GetAll)
+	api.Post("/pets/page/{page:uint64}/base/{base:uint64}", petsController.GetAllFilter)
 	api.Get("/pets/count", petsController.Count)
 	api.Post("/pets/clue", petsController.GetClue)
 	api.Get("/pets/{id:string}", petsController.GetByID)

@@ -52,6 +52,41 @@ func (handler *PetsService) GetAll(ctx iris.Context) {
 
 }
 
+func (handler *PetsService) GetAllFilter(ctx iris.Context) {
+	page, err := ctx.Params().GetInt64("page")
+	base, err := ctx.Params().GetInt64("base")
+
+	if err != nil {
+		log.Print(err)
+		ctx.StopWithStatus(iris.StatusBadRequest)
+		return
+	}
+
+	petFilter := new(models.AnimaFilterPublic)
+
+	err = ctx.ReadJSON(petFilter)
+
+	if err != nil {
+		log.Print(err)
+		ctx.StopWithStatus(iris.StatusBadRequest)
+		return
+	}
+
+	pets, err := handler.service.GetAllFilter(nil, petFilter, page, base)
+	if err != nil {
+		ctx.StopWithStatus(iris.StatusInternalServerError)
+		return
+	}
+
+	if pets == nil {
+		// will return "null" if empty, with this "trick" we return "[]" json.
+		pets = make([]models.AnimalView, 0)
+	}
+
+	ctx.JSON(pets)
+
+}
+
 func (handler *PetsService) GetAllPrivate(ctx iris.Context) {
 	pets, err := handler.service.GetAllPrivate(nil)
 	if err != nil {

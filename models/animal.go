@@ -79,3 +79,9 @@ type AnimalResponseIA struct {
 	Especie string `json:"especie" bson:"especie"`
 	Raza    string `json:"raza" bson:"raza"`
 }
+
+type AnimaFilterPublic struct {
+	Tamaño  string `json:"tamaño" bson:"tamaño"`
+	Especie string `json:"especie" bson:"especie"`
+	Sexo    string `json:"sexo" bson:"sexo"`
+}
