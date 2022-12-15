@@ -28,7 +28,7 @@ import messagesList from '../../../../../../../components/MessagesComponent/Reso
 const propsTableToolbar = {
   title: 'Vacunas',
   messageAdd: 'Agregar nueva vacuna',
-  urlCreate: '/pets/create',
+  urlCreate: 'add',
 }
 
 const Vacune:React.FC = () => {
