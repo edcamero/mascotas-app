@@ -1,4 +1,5 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import IMessageAttributes from '../../../../../../../../components/MessagesComponent/Resources/IMessageAttributes'
 import messageAttributes from '../../../../../../../../components/MessagesComponent/Resources/MessageAttributes'
 import messagesList from '../../../../../../../../components/MessagesComponent/Resources/MessagesList'
@@ -59,6 +60,7 @@ export const headCellsPetPesos: readonly IHeadCellPetPesos[] = [
 
 export const usePeso = (id:string) => {
   const { axios } = useAxios()
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = React.useState(false)
   const [petPeso, setPetPeso] = React.useState<IPetPesosForm>(defaultPesoForm)
   const [petPesoError, setPetPesoError] = React.useState<IPetPesosError>(defaultPesoFormError)
@@ -71,6 +73,7 @@ export const usePeso = (id:string) => {
       .post(process.env.REACT_APP_API_URL + `admin/pets/${id}/peso/save`, petPeso,)
       .then((response) => {
         setAlertMessage(messagesList.SUCCESS_CREATED)
+        navigate(`/pets/view/${id}/peso/`)
       })
       .catch((error) => {
         setAlertMessage(messagesList.INTERNAL_ERROR)
