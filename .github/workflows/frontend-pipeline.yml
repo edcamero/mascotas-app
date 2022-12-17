@@ -3,10 +3,10 @@ name: Frontend CI
 on: 
     push:
         paths:
-            - 'frontend/**'
+            - 'frontend2/**'
     pull_request:
         paths:
-             - 'frontend/**'
+             - 'frontend2/**'
 
 jobs:
   frontend:
@@ -16,15 +16,15 @@ jobs:
     -   name: Run a one-line script
         uses: actions/checkout@v2
 
-    -   name: Install Vue Dependencias
-        run: cd frontend && yarn install
+    -   name: Install React Dependencias
+        run: cd frontend2 && yarn install
         
     -   name: Check code with EsLint 
-        run: cd frontend && yarn lint
+        run: cd frontend2 && yarn lint
     
     -   name: Check code with Prettier
-        run: cd frontend && yarn prettier
+        run: cd frontend2 && yarn prettier
         
-    -   name: Build Vue APP
+    -   name: Build React APP
         run: cd frontend && yarn build
 
