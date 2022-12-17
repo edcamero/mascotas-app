@@ -1,6 +1,5 @@
 import { Button, Grid, ImageList, ImageListItem } from '@mui/material'
 import React from 'react'
-import EditIcon from '@mui/icons-material/Edit'
 import { useNavigate, useParams } from 'react-router-dom'
 import useAxios from '../../../../../../../services/axios.services'
 import { IImage } from './resource/image'
@@ -8,6 +7,7 @@ import IMessageAttributes from '../../../../../../../components/MessagesComponen
 import messagesList from '../../../../../../../components/MessagesComponent/Resources/MessagesList'
 import messageAttributes from '../../../../../../../components/MessagesComponent/Resources/MessageAttributes'
 import MessagesComponent from '../../../../../../../components/MessagesComponent/MessagesComponent'
+import CloudUploadRoundedIcon from '@mui/icons-material/CloudUploadRounded'
 
 const ImageView: React.FC = () => {
   const navigate = useNavigate()
@@ -33,7 +33,20 @@ const ImageView: React.FC = () => {
   }, [isLoading])
   return (
     <>
-     <MessagesComponent open={openMessage} setOpen={setOpenMessage} {...alertMessage} />
+      <MessagesComponent open={openMessage} setOpen={setOpenMessage} {...alertMessage} />
+      <Grid container justifyContent="flex-end">
+        <Button
+          color="secondary"
+          size="small"
+          variant="contained"
+          startIcon={<CloudUploadRoundedIcon />}
+          onClick={() => {
+            navigate(`/pets/view/${id}/image/udpload`)
+          }}
+        >
+          Subir imagenes
+        </Button>
+      </Grid>
       <ImageList sx={{ width: '100%', height: 450 }} cols={3} rowHeight={164}>
         {images.map((item) => (
           <ImageListItem key={item.id}>
@@ -46,19 +59,6 @@ const ImageView: React.FC = () => {
           </ImageListItem>
         ))}
       </ImageList>
-      <Grid container justifyContent="flex-end">
-        <Button
-          color="secondary"
-          size="small"
-          variant="contained"
-          startIcon={<EditIcon />}
-          onClick={() => {
-            navigate(`/pets/view/${id}/image/udpload`)
-          }}
-        >
-          Subir imagenes
-        </Button>
-      </Grid>
     </>
   )
 }

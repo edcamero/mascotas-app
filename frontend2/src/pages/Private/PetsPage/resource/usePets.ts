@@ -150,6 +150,7 @@ export interface IPetsLits {
   fechaNacimiento: Date
   especie: string
   sexo: string
+  descripcion:string
   createdAt: Date
   updatedAt: Date
 }

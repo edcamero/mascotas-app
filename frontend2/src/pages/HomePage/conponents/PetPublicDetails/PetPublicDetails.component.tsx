@@ -42,12 +42,21 @@ const PetPublicDetails: React.FC = () => {
   const { isLoading, petDetails } = UsePetPublicDetails(id ?? '', setAlertMessage)
   const [openMessage, setOpenMessage] = React.useState<boolean>(false)
   let navigate = useNavigate()
+
   const handleOnClickButtonAdot = React.useCallback(
     (id: string) => {
-      navigate(`/pets/adoctar/${id}`)
+      navigate(`/pets/${id}/adopt`)
     },
     [navigate]
   )
+
+  const handleOnClickButtonSponsor= React.useCallback(
+    (id: string) => {
+      navigate(`/pets/${id}/sponsor`)
+    },
+    [navigate]
+  )
+
 
   return (
     <>
@@ -147,7 +156,18 @@ const PetPublicDetails: React.FC = () => {
                       handleOnClickButtonAdot(petDetails.ID)
                     }}
                   >
-                    Adoctar
+                    Adoptar
+                  </Button>
+                  <Button
+                    color="success"
+                    size="small"
+                    variant="contained"
+                    startIcon={<PetsIcon />}
+                    onClick={() => {
+                      handleOnClickButtonSponsor(petDetails.ID)
+                    }}
+                  >
+                    Apadrinar
                   </Button>
                 </ButtonGroup>
               </Grid>

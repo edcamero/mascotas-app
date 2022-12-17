@@ -184,66 +184,70 @@ const Petsform: React.FC<IPetsformProps> = (props) => {
                     onChange={(newValue) => {
                       props.setPetFormAttributes({
                         ...props.petFormAttributes,
-                        fechaNacimiento: newValue ,
+                        fechaNacimiento: newValue,
                       })
                     }}
                     renderInput={(params) => <TextField sx={{ width: '100%' }} {...params} />}
                   />
                 </LocalizationProvider>
               </Grid>
-              <Grid item xs={6} sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}>
-                <TextField
-                  select
-                  variant="outlined"
-                  required
-                  margin="normal"
-                  fullWidth
-                  id="Especie"
-                  label="Especie del Animal"
-                  name="Especie"
-                  autoComplete="off"
-                  autoFocus
-                  value={props.petFormAttributes.especie}
-                  onChange={handleChangeSpecie}
-                  error={props.petErrors?.especie ? true : false}
-                  helperText={props.petErrors?.especie}
-                >
-                  {species.map((option) => (
-                    <MenuItem key={option.nombre} value={option.nombre}>
-                      {option.nombre}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-              <Grid item xs={6} sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}>
-                <TextField
-                  select
-                  variant="outlined"
-                  required
-                  margin="normal"
-                  fullWidth
-                  id="raza"
-                  label="Raza del Animal"
-                  name="raza"
-                  autoComplete="off"
-                  autoFocus
-                  value={props.petFormAttributes.raza}
-                  onChange={(e) => {
-                    props.setPetFormAttributes({
-                      ...props.petFormAttributes,
-                      raza: e.target.value as string,
-                    })
-                  }}
-                  error={props.petErrors?.especie ? true : false}
-                  helperText={props.petErrors?.especie}
-                >
-                  {specie?.razas?.map((option) => (
-                    <MenuItem key={option.nombre} value={option.nombre}>
-                      {option.nombre}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
+              {!isLoading && (
+                <Grid item xs={6} sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}>
+                  <TextField
+                    select
+                    variant="outlined"
+                    required
+                    margin="normal"
+                    fullWidth
+                    id="Especie"
+                    label="Especie del Animal"
+                    name="Especie"
+                    autoComplete="off"
+                    autoFocus
+                    value={props.petFormAttributes.especie}
+                    onChange={handleChangeSpecie}
+                    error={props.petErrors?.especie ? true : false}
+                    helperText={props.petErrors?.especie}
+                  >
+                    {species.map((option) => (
+                      <MenuItem key={option.nombre} value={option.nombre}>
+                        {option.nombre}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+              )}
+              {!isLoading && (
+                <Grid item xs={6} sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}>
+                  <TextField
+                    select
+                    variant="outlined"
+                    required
+                    margin="normal"
+                    fullWidth
+                    id="raza"
+                    label="Raza del Animal"
+                    name="raza"
+                    autoComplete="off"
+                    autoFocus
+                    value={props.petFormAttributes.raza}
+                    onChange={(e) => {
+                      props.setPetFormAttributes({
+                        ...props.petFormAttributes,
+                        raza: e.target.value as string,
+                      })
+                    }}
+                    error={props.petErrors?.especie ? true : false}
+                    helperText={props.petErrors?.especie}
+                  >
+                    {specie?.razas?.map((option) => (
+                      <MenuItem key={option.nombre} value={option.nombre}>
+                        {option.nombre}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Grid>
+              )}
               <Grid item xs={6} sx={{ p: '2px 4px', display: 'flex', alignItems: 'center' }}>
                 <FormControl>
                   <FormLabel id="demo-row-radio-buttons-group-label">Sexo</FormLabel>

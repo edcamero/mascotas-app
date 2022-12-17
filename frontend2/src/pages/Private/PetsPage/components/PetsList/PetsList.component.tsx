@@ -27,7 +27,7 @@ import EnhancedTableHead from './EnhancedTableHead.component'
 
 const propsTableToolbar = {
   title: 'Animales',
-  messageAdd: 'Agregar nueva animal',
+  messageAdd: 'Agregar nuevo animal',
   urlCreate: '/pets/create',
 }
 
@@ -119,7 +119,7 @@ const PetsList = () => {
       <BackDropLoadApi open={isLoading} />
       <MessagesComponent open={openMessage} setOpen={setOpenMessage} {...alertMessage} />
       <Box sx={{ width: '100%' }}>
-        <Paper sx={{ width: '100%', mb: 2 }}>
+        <Paper sx={{ width: '100%', marginY: 6 }}>
           <EnhancedTableToolbar numSelected={selected.length} {...propsTableToolbar} />
           <TableContainer>
             <Table
@@ -146,6 +146,7 @@ const PetsList = () => {
                     enAdopcion: pet.enAdopcion,
                     fechaNacimiento: pet.fechaNacimiento,
                     especie: pet.especie,
+                    descripcion: pet.descripcion,
                     sexo: pet.sexo,
                     createdAt: pet.createdAt,
                     updatedAt: pet.updatedAt,

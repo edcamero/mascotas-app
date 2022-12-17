@@ -33,6 +33,7 @@ import MaleIcon from '@mui/icons-material/Male'
 import ColorLensIcon from '@mui/icons-material/ColorLens'
 import InfoIcon from '@mui/icons-material/Info'
 import PetViewTab from './PetViewTab.component'
+import SpaRoundedIcon from '@mui/icons-material/SpaRounded'
 
 interface IPetViewProps {}
 
@@ -89,9 +90,12 @@ const PetView: React.FC<IPetViewProps> = () => {
                   </ListItem>
                   <ListItem>
                     <ListItemAvatar>
-                      <TrendingUpIcon color={'warning'} />
+                      <SpaRoundedIcon color={'info'} />
                     </ListItemAvatar>
-                    <ListItemText primary="Tamaño" secondary={petDetails.tamaño} />
+                    <ListItemText
+                      primary="Especie"
+                      secondary={`${petDetails.especie} - ${petDetails.raza}`}
+                    />
                   </ListItem>
                 </List>
               </Grid>
@@ -134,22 +138,38 @@ const PetView: React.FC<IPetViewProps> = () => {
                   </ListItem>
                 </List>
               </Grid>
-              <Grid container justifyContent="flex-end">
-                <ButtonGroup disableElevation variant="contained">
-                  <Button
-                    color="secondary"
-                    size="small"
-                    variant="contained"
-                    startIcon={<EditIcon />}
-                    onClick={() => {
-                      handleOnClickButtonEdit(petDetails.ID)
-                    }}
-                  >
-                    Editar
-                  </Button>
-                  <SpecieDelete specieId={petDetails.ID} setAlertMessage={setAlertMessage} />
-                </ButtonGroup>
+
+              <Grid container direction="row" justifyContent="center" alignItems="center" spacing={1}xs={12}>
+                <Grid item xs={6}>
+                  <List sx={{ width: '100%' }}>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <TrendingUpIcon color={'warning'} />
+                      </ListItemAvatar>
+                      <ListItemText primary="Tamaño" secondary={petDetails.tamaño} />
+                    </ListItem>
+                  </List>
+                </Grid>
+                <Grid item xs={6}>
+                  <Grid container item justifyContent="flex-end">
+                    <ButtonGroup disableElevation variant="contained">
+                      <Button
+                        color="secondary"
+                        size="small"
+                        variant="contained"
+                        startIcon={<EditIcon />}
+                        onClick={() => {
+                          handleOnClickButtonEdit(petDetails.ID)
+                        }}
+                      >
+                        Editar
+                      </Button>
+                      <SpecieDelete specieId={petDetails.ID} setAlertMessage={setAlertMessage} />
+                    </ButtonGroup>
+                  </Grid>
+                </Grid>
               </Grid>
+
               <Grid
                 container
                 direction="row"

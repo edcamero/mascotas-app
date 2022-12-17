@@ -4,10 +4,12 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/edcamero/api-go/models"
 	"github.com/edcamero/api-go/util"
+	"github.com/google/uuid"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -18,11 +20,17 @@ type PetsService interface {
 	Count(ctx context.Context) (int64, error)
 	Save(ctx context.Context, newAnimal *models.Animal) (bool, error)
 	GetAll(ctx context.Context, page int64, rango int64) ([]models.AnimalView, error)
+	GetAllFilter(ctx context.Context, filter *models.AnimaFilterPublic, page int64, rango int64) ([]models.AnimalView, error)
 	GetAllPrivate(ctx context.Context) ([]models.Animal, error)
 	GetByID(ctx context.Context, id string) (models.AnimalDetail, error)
 	GetByIDPrivate(ctx context.Context, id string) (models.Animal, error)
 	AddPhoto(ctx context.Context, id string, photo models.Foto) error
+	AddPeso(ctx context.Context, id string, newPeso *models.ControlPeso) error
+	AddVacuna(ctx context.Context, id string, newVacuna *models.ControlVacuna) error
 	GetPhotosByIDPrivate(ctx context.Context, id string) ([]models.Foto, error)
+	GetClue(adopt *models.AdoptanteClue) (models.AnimalDetail, error)
+	GetPesosByIDPrivate(ctx context.Context, id string) (models.ControlPesoAnimal, error)
+	GetVacuneByIDPrivate(ctx context.Context, id string) (models.ControlVacunaAnimal, error)
 }
 
 type petsService struct {
@@ -34,6 +42,7 @@ var _ PetsService = (*petsService)(nil)
 func NewPetsService(collection *mongo.Collection) PetsService {
 	return &petsService{animalCollection: collection}
 }
+
 func (service petsService) Count(ctx context.Context) (int64, error) {
 	count, err := service.animalCollection.CountDocuments(ctx, bson.D{})
 	if err != nil {
@@ -92,6 +101,55 @@ func (service petsService) GetAll(ctx context.Context, page int64, rango int64) 
 	return results, nil
 }
 
+func (service petsService) GetAllFilter(ctx context.Context, filter *models.AnimaFilterPublic, page int64, rango int64) ([]models.AnimalView, error) {
+
+	var endItem int64 = page * rango
+	var startItem int64 = 0
+	if page > 0 {
+		startItem = (page - 1) * rango
+	}
+
+	projection := bson.D{
+		primitive.E{Key: "nombre", Value: 1},
+		primitive.E{Key: "color", Value: 1},
+		primitive.E{Key: "tamaño", Value: 1},
+		primitive.E{Key: "esterilizado", Value: 1},
+		primitive.E{Key: "descripcion", Value: 1},
+		primitive.E{Key: "fecha_nacimiento", Value: 1},
+		primitive.E{Key: "especie", Value: 1},
+		primitive.E{Key: "raza", Value: 1},
+		primitive.E{Key: "fotos", Value: bson.D{primitive.E{Key: "$slice", Value: 1}}},
+		primitive.E{Key: "sexo", Value: 1},
+	}
+
+	filterMongo := bson.D{primitive.E{Key: "sexo", Value: filter.Sexo}, primitive.E{Key: "especie", Value: filter.Especie}, primitive.E{Key: "tamaño", Value: filter.Tamaño}}
+	findOptions := options.Find().SetProjection(projection).SetSkip(startItem).SetLimit(endItem).SetSort(bson.D{primitive.E{Key: "score", Value: -1}})
+	cursor, err := service.animalCollection.Find(ctx, filterMongo, findOptions)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	defer cursor.Close(ctx)
+
+	var results []models.AnimalView
+
+	for cursor.Next(ctx) {
+		if err = cursor.Err(); err != nil {
+			fmt.Println("este error cursor")
+			return nil, err
+		}
+		var elem models.AnimalView
+		err = cursor.Decode(&elem)
+		if err != nil {
+			fmt.Println(err)
+			return nil, err
+		}
+		results = append(results, elem)
+	}
+
+	return results, nil
+}
+
 func (service petsService) Save(ctx context.Context, newAnimal *models.Animal) (bool, error) {
 	if newAnimal.ID.IsZero() {
 		newAnimal.ID = primitive.NewObjectID()
@@ -101,6 +159,7 @@ func (service petsService) Save(ctx context.Context, newAnimal *models.Animal) (
 	newAnimal.UpdatedAt = time.Now()
 	newAnimal.Fotos = []models.Foto{}
 	newAnimal.Score = 0
+	newAnimal.Estado = true
 
 	_, err := service.animalCollection.InsertOne(ctx, newAnimal)
 	if err != nil {
@@ -178,6 +237,34 @@ func (service petsService) GetByIDPrivate(ctx context.Context, id string) (model
 
 }
 
+func (service petsService) GetPesosByIDPrivate(ctx context.Context, id string) (models.ControlPesoAnimal, error) {
+	var controlPesoAnimal models.ControlPesoAnimal
+	filter, err := matchID(id)
+	if err != nil {
+		return controlPesoAnimal, err
+	}
+	err = service.animalCollection.FindOne(ctx, filter).Decode(&controlPesoAnimal)
+	if err == mongo.ErrNoDocuments {
+		return controlPesoAnimal, err
+	}
+	return controlPesoAnimal, err
+
+}
+
+func (service petsService) GetVacuneByIDPrivate(ctx context.Context, id string) (models.ControlVacunaAnimal, error) {
+	var controlVacuneAnimal models.ControlVacunaAnimal
+	filter, err := matchID(id)
+	if err != nil {
+		return controlVacuneAnimal, err
+	}
+	err = service.animalCollection.FindOne(ctx, filter).Decode(&controlVacuneAnimal)
+	if err == mongo.ErrNoDocuments {
+		return controlVacuneAnimal, err
+	}
+	return controlVacuneAnimal, err
+
+}
+
 func (service petsService) AddPhoto(ctx context.Context, id string, photo models.Foto) error {
 
 	filter, err := matchID(id)
@@ -195,6 +282,67 @@ func (service petsService) AddPhoto(ctx context.Context, id string, photo models
 	}
 
 	_, err = service.animalCollection.UpdateOne(ctx, filter, updatePetPhotos)
+
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return util.ErrNotFound
+		}
+		return err
+	}
+
+	return nil
+}
+
+func (service petsService) AddPeso(ctx context.Context, id string, newPeso *models.ControlPeso) error {
+
+	filter, err := matchID(id)
+	if err != nil {
+		return err
+	}
+	elem := bson.D{}
+
+	newPeso.Id = strings.Replace(uuid.New().String(), "-", "", -1)
+	newPeso.CreatedAt = time.Now()
+
+	if newPeso.Id != "" {
+		elem = append(elem, bson.E{Key: "control_peso", Value: newPeso})
+	}
+
+	updatePetPeso := bson.D{
+		{Key: "$push", Value: elem},
+	}
+
+	_, err = service.animalCollection.UpdateOne(ctx, filter, updatePetPeso)
+
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return util.ErrNotFound
+		}
+		return err
+	}
+
+	return nil
+}
+
+func (service petsService) AddVacuna(ctx context.Context, id string, newVacuna *models.ControlVacuna) error {
+
+	filter, err := matchID(id)
+	if err != nil {
+		return err
+	}
+	elem := bson.D{}
+
+	newVacuna.Id = strings.Replace(uuid.New().String(), "-", "", -1)
+
+	if newVacuna.Id != "" {
+		elem = append(elem, bson.E{Key: "control_vacuna", Value: newVacuna})
+	}
+
+	updatePetPeso := bson.D{
+		{Key: "$push", Value: elem},
+	}
+
+	_, err = service.animalCollection.UpdateOne(ctx, filter, updatePetPeso)
 
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
@@ -227,4 +375,27 @@ func (service petsService) GetPhotosByIDPrivate(ctx context.Context, id string) 
 	err = singleResult.Decode(&result)
 
 	return result.Fotos, err
+}
+
+func (service petsService) GetClue(adopt *models.AdoptanteClue) (models.AnimalDetail, error) {
+	var petValue models.AnimalDetail
+
+	filterObject := GetClueIA(adopt)
+
+	fmt.Println(filterObject)
+
+	filter := bson.D{
+		//{Key: "color", Value: filterObject.Color},
+		//{Key: "raza", Value: filterObject.Raza},
+		{Key: "tamaño", Value: filterObject.Tamaño},
+		{Key: "especie", Value: filterObject.Especie},
+		{Key: "estado", Value: true},
+		{Key: "en_adopcion", Value: true},
+	}
+
+	err := service.animalCollection.FindOne(nil, filter).Decode(&petValue)
+	if err == mongo.ErrNoDocuments {
+		return petValue, err
+	}
+	return petValue, err
 }

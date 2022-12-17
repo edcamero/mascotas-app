@@ -36,19 +36,24 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 		usersCollection   = database.Collection("usuarios")
 		petsCollection    = database.Collection("animal")
 		speciesCollection = database.Collection("especies")
+		adoptCollection   = database.Collection("adopciones")
 
 		// Services.
 
 		authService    = services.NewAuthService(usersCollection)
 		petsService    = services.NewPetsService(petsCollection)
 		speciesService = services.NewSpeciesService(speciesCollection)
+		adoptService   = services.NewAdoptService(adoptCollection)
 		uploadService  = services.NewUploadservice()
+		usersServices  = services.NewUserService(usersCollection)
 
 		//Controllers
 
 		authController    = controllers.NewAuthController(authService)
 		petsController    = controllers.NewPetsController(petsService, uploadService)
 		speciesController = controllers.NewSpeciesController(speciesService)
+		adoptController   = controllers.NewAdoptControllerr(adoptService, petsService)
+		usersController   = controllers.NewUserController(usersServices)
 	)
 
 	j := jwt.New(jwt.Config{
@@ -64,9 +69,13 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 
 	api := app.Party("/api")
 	api.Post("/login", authController.Login)
+	api.Post("/forgotpassword", authController.Forgotpassword)
 	api.Get("/pets/page/{page:uint64}/base/{base:uint64}", petsController.GetAll)
+	api.Post("/pets/page/{page:uint64}/base/{base:uint64}", petsController.GetAllFilter)
 	api.Get("/pets/count", petsController.Count)
+	api.Post("/pets/clue", petsController.GetClue)
 	api.Get("/pets/{id:string}", petsController.GetByID)
+	api.Post("/pets/{id:string}/adopt", adoptController.Save)
 	api.Use(util.Verify())
 	api.Use(j.Serve)
 	api.Get("/refresh", authController.RefreshToken)
@@ -89,10 +98,15 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 
 	//pets
 	adminApi.Get("/pets", petsController.GetAllPrivate)
+
 	adminApi.Post("/pets", petsController.SavePrivate)
 	adminApi.Get("/pets/{id:string}", petsController.GetByIDPrivate)
 	adminApi.Get("/pets/{id:string}/photo", petsController.GetPhotosByID)
+	adminApi.Get("/pets/{id:string}/pesos", petsController.GetPesosByIDPrivate)
+	adminApi.Get("/pets/{id:string}/vacune", petsController.GetVacuneByIDPrivate)
 	adminApi.Post("/pets/{id:string}/photo/upload", iris.LimitRequestBodySize(10<<20), petsController.UploadFile)
+	adminApi.Post("/pets/{id:string}/peso/save", petsController.AddPeso)
+	adminApi.Post("/pets/{id:string}/vacune/save", petsController.AddVacuna)
 
 	//species
 	adminApi.Get("/species", speciesController.GetAllPrivate)
@@ -100,5 +114,12 @@ func AddRutas(app *iris.Application, database *mongo.Database) {
 	adminApi.Get("/species/{id:string}", speciesController.GetByID)
 	adminApi.Put("/species/{id:string}", speciesController.UpdatedPrivate)
 	adminApi.Delete("/species/{id:string}", speciesController.DeletePrivate)
+
+	//adopts
+	adminApi.Get("/adopts", adoptController.GetAllPrivate)
+	adminApi.Get("/adopts/{id:string}", adoptController.GetByIDPrivate)
+
+	//users
+	adminApi.Get("/users", usersController.GetAllPrivate)
 
 }

@@ -3,13 +3,14 @@ import React from 'react'
 import imagebackgraud from '../../images/background1.jpg'
 import { useTheme } from '@mui/material/styles'
 import PetPublic from './conponents/PetsPublic/PetPublic.component'
+import WrapperPayPet from '../PayPet/WrapperPayPet.component'
+import ButtonSuggest from './conponents/ButtonSuggest/ButtonSuggest.component'
 
 const HomePage: React.FC = () => {
- 
   const theme = useTheme()
-  
+
   return (
-    <>      
+    <>
       <Grid
         container
         direction="row"
@@ -71,6 +72,8 @@ const HomePage: React.FC = () => {
           </Grid>
         </div>
         <PetPublic />
+        <ButtonSuggest/>
+        <WrapperPayPet />
       </Grid>
     </>
   )

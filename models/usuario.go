@@ -33,7 +33,26 @@ type UsuarioView struct {
 	ImagePerfil string             `json:"imagePerfil" bson:"image_perfil"`
 }
 
+type UsuarioList struct {
+	ID       primitive.ObjectID `json:"id" bson:"_id"`
+	UserName string             `json:"username" bson:"username"`
+	Rol      Rol                `json:"rol" bson:"rol"`
+	FullName string             `json:"fullname" bson:"fullname"`
+	Email    string             `json:"email" bson:"email"`
+}
+
 type UsuarioLoginResponse struct {
 	User  UsuarioView   `json:"user"`
 	Token jwt.TokenPair `json:"token"`
+}
+
+// ? ForgotPasswordInput struct
+type ForgotPasswordInput struct {
+	Email string `json:"email" binding:"required"`
+}
+
+// ? ResetPasswordInput struct
+type ResetPasswordInput struct {
+	Password        string `json:"password" binding:"required"`
+	PasswordConfirm string `json:"passwordConfirm" binding:"required"`
 }

@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"fmt"
 	"log"
 	"path/filepath"
 
@@ -51,6 +52,41 @@ func (handler *PetsService) GetAll(ctx iris.Context) {
 
 }
 
+func (handler *PetsService) GetAllFilter(ctx iris.Context) {
+	page, err := ctx.Params().GetInt64("page")
+	base, err := ctx.Params().GetInt64("base")
+
+	if err != nil {
+		log.Print(err)
+		ctx.StopWithStatus(iris.StatusBadRequest)
+		return
+	}
+
+	petFilter := new(models.AnimaFilterPublic)
+
+	err = ctx.ReadJSON(petFilter)
+
+	if err != nil {
+		log.Print(err)
+		ctx.StopWithStatus(iris.StatusBadRequest)
+		return
+	}
+
+	pets, err := handler.service.GetAllFilter(nil, petFilter, page, base)
+	if err != nil {
+		ctx.StopWithStatus(iris.StatusInternalServerError)
+		return
+	}
+
+	if pets == nil {
+		// will return "null" if empty, with this "trick" we return "[]" json.
+		pets = make([]models.AnimalView, 0)
+	}
+
+	ctx.JSON(pets)
+
+}
+
 func (handler *PetsService) GetAllPrivate(ctx iris.Context) {
 	pets, err := handler.service.GetAllPrivate(nil)
 	if err != nil {
@@ -78,6 +114,7 @@ func (handler *PetsService) GetByID(ctx iris.Context) {
 	ctx.JSON(pet)
 
 }
+
 func (handler *PetsService) GetByIDPrivate(ctx iris.Context) {
 	id := ctx.Params().Get("id")
 	pet, err := handler.service.GetByIDPrivate(nil, id)
@@ -87,6 +124,27 @@ func (handler *PetsService) GetByIDPrivate(ctx iris.Context) {
 	}
 
 	ctx.JSON(pet)
+}
+
+func (handler *PetsService) GetPesosByIDPrivate(ctx iris.Context) {
+	id := ctx.Params().Get("id")
+	petPesos, err := handler.service.GetPesosByIDPrivate(nil, id)
+	if err != nil {
+		ctx.StopWithStatus(iris.StatusNotFound)
+		return
+	}
+
+	ctx.JSON(petPesos)
+}
+func (handler *PetsService) GetVacuneByIDPrivate(ctx iris.Context) {
+	id := ctx.Params().Get("id")
+	petPesos, err := handler.service.GetVacuneByIDPrivate(nil, id)
+	if err != nil {
+		ctx.StopWithStatus(iris.StatusNotFound)
+		return
+	}
+
+	ctx.JSON(petPesos)
 }
 
 func (handler *PetsService) SavePrivate(ctx iris.Context) {
@@ -142,6 +200,58 @@ func (handler *PetsService) UploadFile(ctx iris.Context) {
 	ctx.JSON(photo)
 }
 
+func (handler *PetsService) AddPeso(ctx iris.Context) {
+	id := ctx.Params().Get("id")
+	newPeso := new(models.ControlPeso)
+
+	err := ctx.ReadJSON(newPeso)
+
+	log.Print(newPeso)
+
+	if err != nil {
+		ctx.StatusCode(iris.StatusInternalServerError)
+		log.Print(err)
+		ctx.Application().Logger().Warnf("Error while bad request Peso: %v", err.Error())
+		return
+	}
+
+	err = handler.service.AddPeso(nil, id, newPeso)
+
+	if err != nil {
+		ctx.StatusCode(iris.StatusConflict)
+		ctx.Application().Logger().Warnf("Error while add file in database: %v", err.Error())
+		return
+	}
+	ctx.StatusCode(iris.StatusCreated)
+	ctx.JSON(newPeso)
+}
+
+func (handler *PetsService) AddVacuna(ctx iris.Context) {
+	id := ctx.Params().Get("id")
+	newVacune := new(models.ControlVacuna)
+
+	err := ctx.ReadJSON(newVacune)
+
+	log.Print(newVacune)
+
+	if err != nil {
+		ctx.StatusCode(iris.StatusInternalServerError)
+		log.Print(err)
+		ctx.Application().Logger().Warnf("Error while bad request Vacune: %v", err.Error())
+		return
+	}
+
+	err = handler.service.AddVacuna(nil, id, newVacune)
+
+	if err != nil {
+		ctx.StatusCode(iris.StatusConflict)
+		ctx.Application().Logger().Warnf("Error while add file in database: %v", err.Error())
+		return
+	}
+	ctx.StatusCode(iris.StatusCreated)
+	ctx.JSON(newVacune)
+}
+
 func (handler *PetsService) GetPhotosByID(ctx iris.Context) {
 	id := ctx.Params().Get("id")
 	photos, err := handler.service.GetPhotosByIDPrivate(nil, id)
@@ -153,4 +263,25 @@ func (handler *PetsService) GetPhotosByID(ctx iris.Context) {
 	}
 
 	ctx.JSON(photos)
+}
+
+func (handler *PetsService) GetClue(ctx iris.Context) {
+
+	dataAdopt := new(models.AdoptanteClue)
+
+	err := ctx.ReadJSON(dataAdopt)
+
+	if err != nil {
+		util.FailJSON(ctx, iris.StatusBadRequest, err, "Malformed request payload")
+		return
+	}
+
+	pet, err := handler.service.GetClue(dataAdopt)
+	if err != nil {
+		fmt.Println(err)
+		ctx.StopWithStatus(iris.StatusNotFound)
+		return
+	}
+
+	ctx.JSON(pet)
 }

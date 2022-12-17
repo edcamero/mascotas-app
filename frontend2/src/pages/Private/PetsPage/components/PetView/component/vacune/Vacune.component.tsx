@@ -13,7 +13,7 @@ import React from 'react'
 import EnhancedTableHead from './EnhancedTableHead.component'
 import useAxios from '../../../../../../../services/axios.services'
 import IMessageAttributes from '../../../../../../../components/MessagesComponent/Resources/IMessageAttributes'
-import { dommiVacune, IPetVacunes } from './resource/usePetVacune'
+import { IPetVacunes, IPetVacunesControl } from './resource/usePetVacune'
 import {
   getComparator,
   Order,
@@ -24,15 +24,17 @@ import BackDropLoadApi from '../../../../../../../components/backDropLoad/BackDr
 import MessagesComponent from '../../../../../../../components/MessagesComponent/MessagesComponent'
 import EnhancedTableToolbar from '../../../../../../../components/tableComponent/EnhancedTableToolbar'
 import messagesList from '../../../../../../../components/MessagesComponent/Resources/MessagesList'
+import { useParams } from 'react-router-dom'
 
 const propsTableToolbar = {
   title: 'Vacunas',
   messageAdd: 'Agregar nueva vacuna',
-  urlCreate: '/pets/create',
+  urlCreate: 'add',
 }
 
-const Vacune:React.FC = () => {
+const Vacune: React.FC = () => {
   const { axios } = useAxios()
+  let { id } = useParams()
   const [isLoading, setIsLoading] = React.useState(true)
   const [petVacunes, setPetVacune] = React.useState<IPetVacunes[]>([])
   const [alertMessage, setAlertMessage] = React.useState<IMessageAttributes>(messageAttributes)
@@ -82,10 +84,13 @@ const Vacune:React.FC = () => {
   }
 
   React.useEffect(() => {
-    if (isLoading) {
+    if (id !== undefined && isLoading) {
       axios
-        .get(process.env.REACT_APP_API_URL + 'admin/pets')
-        .then((response) => setPetVacune(dommiVacune as IPetVacunes[]))
+        .get(process.env.REACT_APP_API_URL + `admin/pets/${id}/vacune`)
+        .then((response) => {
+          let vacunePet = response.data as IPetVacunesControl
+          setPetVacune(vacunePet.controlVacunas ?? [])
+        })
         .catch((error) => {
           setAlertMessage(messagesList.INTERNAL_ERROR)
         })
@@ -93,7 +98,7 @@ const Vacune:React.FC = () => {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isLoading])
+  }, [isLoading, id])
 
   React.useEffect(() => {
     if (alertMessage.message !== '') {
@@ -130,12 +135,11 @@ const Vacune:React.FC = () => {
                 {stableSort(
                   petVacunes.map((petVacune) => ({
                     // eslint-disable-next-line @typescript-eslint/naming-convention
-                    ID: petVacune.ID,
+                    id: petVacune.id,
                     nombre: petVacune.nombre,
                     peso: petVacune.peso,
                     nextControlAt: petVacune.nextControlAt,
                     createdAt: petVacune.createdAt,
-                    updatedAt: petVacune.updatedAt,
                   })),
                   getComparator(order, orderBy)
                 )
@@ -149,16 +153,16 @@ const Vacune:React.FC = () => {
                         tabIndex={-1}
                         key={row.nombre}
                       >
-                        <TableCell id={row.ID} align="right">
+                        <TableCell id={row.id} align="right">
                           {row.nombre}
                         </TableCell>
-                        <TableCell id={row.ID} align="right">
+                        <TableCell id={row.id} align="right">
                           {row.peso}
                         </TableCell>
-                        <TableCell id={row.ID} align="right">
+                        <TableCell id={row.id} align="right">
                           {format(new Date(row.createdAt ?? 0), 'dd/MM/yyyy')}
                         </TableCell>
-                        <TableCell id={row.ID} align="right">
+                        <TableCell id={row.id} align="right">
                           {format(new Date(row.nextControlAt ?? 0), 'dd/MM/yyyy')}
                         </TableCell>
                       </TableRow>

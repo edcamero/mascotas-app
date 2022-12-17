@@ -28,7 +28,7 @@ const FilterPetPublic: React.FC<IFilterPetPublicProps> = ({ setPets }) => {
   const clickSearchPet = () => {
     setIsLoading(true)
     axios
-      .post(process.env.REACT_APP_API_URL + 'admin/pets/filter', filter)
+      .post(process.env.REACT_APP_API_URL + `pets/page/${1}/base/${6}`, filter)
       .then((response) => {
         setPets(response.data as IPetsPublic[])
       })

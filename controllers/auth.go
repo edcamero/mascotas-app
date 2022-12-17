@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"log"
+	"time"
 
 	otroJwt "github.com/iris-contrib/middleware/jwt"
 	"github.com/kataras/iris/v12"
@@ -46,7 +47,6 @@ func (handler *AuthService) Login(ctx iris.Context) {
 	}
 
 	ctx.JSON(user)
-
 }
 
 func (handler *AuthService) RefreshToken(ctx iris.Context) {
@@ -92,7 +92,7 @@ func AuthenticatedAdmin(ctx iris.Context) {
 
 	user := ctx.Values().Get("jwt").(*otroJwt.Token)
 	item := user.Claims.(otroJwt.MapClaims)
-	if item["rol"] == "admin" {
+	if item["rol"] == "admin" || float64(time.Now().Unix()) < item["exp"].(float64) {
 		ctx.Next()
 	} else {
 		userJson, _ := json.Marshal(user)
@@ -111,4 +111,20 @@ func AuthenticatedFundacion(ctx iris.Context) {
 	} else {
 		ctx.StopWithStatus(iris.StatusUnauthorized)
 	}
+}
+
+func (handler *AuthService) Forgotpassword(ctx iris.Context) {
+	email := ctx.FormValue("email")
+	_, err := handler.service.Forgotpassword(nil, email)
+	if err != nil {
+		if err.Error() == "404" {
+			ctx.StopWithError(iris.StatusNotFound, errors.New("email not found"))
+			return
+		}
+
+		ctx.StopWithStatus(iris.StatusBadRequest)
+		return
+	}
+
+	ctx.StopWithStatus(iris.StatusOK)
 }

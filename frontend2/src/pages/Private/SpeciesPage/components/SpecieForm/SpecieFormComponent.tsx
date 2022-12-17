@@ -29,6 +29,7 @@ interface ISpecieFormComponentProps {
   clickFormSpecie: () => void
   specieErrors?: ISpecieFormAttributesErrors
 }
+
 const SpecieFormComponent: React.FC<ISpecieFormComponentProps> = (props) => {
   const [subspecie, setSubspecie] = React.useState<IRazas>(subSpecieInitial)
 
